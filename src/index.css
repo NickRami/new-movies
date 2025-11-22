@@ -4,25 +4,34 @@
 
 @layer base {
   :root {
-    --background: 0 0% 6%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 72% 51%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 64%;
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 0 72% 51%;
+    /* Paleta cine moderna (oscuro + acentos rojo/cian) */
+    --background: 222 47% 7%;           /* fondo principal muy oscuro (azul marino) */
+    --foreground: 210 40% 98%;          /* texto principal casi blanco */
+
+    --card: 222 47% 11%;                /* tarjetas ligeramente más claras */
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 350 84% 56%;             /* rojo vibrante tipo Netflix/TMDB */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 17%;           /* gris azulado para fondos suaves */
+    --secondary-foreground: 210 40% 96%;
+
+    --muted: 215 25% 20%;               /* fondos apagados (chips, tags) */
+    --muted-foreground: 215 20% 72%;    /* texto apagado */
+
+    --accent: 191 97% 37%;              /* cian vibrante para detalles sutiles si se requiere */
+    --accent-foreground: 200 50% 96%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 19% 30%;
+    --input: 215 19% 30%;
+    --ring: 350 84% 56%;
     --radius: 0.5rem;
   }
 }
@@ -34,9 +43,7 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: hsl(var(--background));

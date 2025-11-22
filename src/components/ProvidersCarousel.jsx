@@ -1,12 +1,17 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useProviders } from '../hooks/useMovies';
 
 export default function ProvidersCarousel() {
   const { providers, loading, error } = useProviders();
+  const [paused, setPaused] = useState(false);
 
   if (loading || error || !providers || providers.length === 0) {
     return null;
   }
+
+  // Duplicamos la lista para crear un efecto de loop continuo
+  const loopProviders = [...providers, ...providers];
 
   return (
     <section className="bg-card/60 border-y border-border/50">
@@ -24,36 +29,50 @@ export default function ProvidersCarousel() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex gap-4 overflow-x-auto pb-2 no-scrollbar"
-          drag="x"
-          dragConstraints={{ left: -150, right: 0 }}
-          dragElastic={0.08}
+          className="relative overflow-hidden"
         >
-          {providers.map((provider, index) => (
-            <motion.div
-              key={provider.provider_id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.03 }}
-              whileHover={{ y: -4, scale: 1.03 }}
-              className="flex-shrink-0"
-            >
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-background border border-border flex items-center justify-center overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                {provider.logo_path ? (
-                  <img
-                    src={provider.logo_path}
-                    alt={provider.provider_name}
-                    className="max-w-full max-h-full object-contain"
-                    loading="lazy"
-                  />
-                ) : (
-                  <span className="text-xs text-muted-foreground text-center px-2">
-                    {provider.provider_name}
-                  </span>
-                )}
-              </div>
-            </motion.div>
-          ))}
+          <motion.div
+            className="flex gap-4 pb-2 no-scrollbar"
+            style={{ width: 'max-content' }}
+            animate={
+              paused
+                ? { x: 0 }
+                : { x: ['0%', '-50%'] }
+            }
+            transition={
+              paused
+                ? { duration: 0.2 }
+                : { duration: 30, ease: 'linear', repeat: Infinity }
+            }
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            {loopProviders.map((provider, index) => (
+              <motion.div
+                key={`${provider.provider_id}-${index}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: Math.min(index * 0.03, 0.5) }}
+                whileHover={{ y: -4, scale: 1.03 }}
+                className="flex-shrink-0"
+              >
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-background border border-border flex items-center justify-center overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
+                  {provider.logo_path ? (
+                    <img
+                      src={provider.logo_path}
+                      alt={provider.provider_name}
+                      className="max-w-full max-h-full object-contain"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="text-xs text-muted-foreground text-center px-2">
+                      {provider.provider_name}
+                    </span>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
       </div>
     </section>
