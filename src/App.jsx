@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import MovieDetails from './pages/MovieDetails';
 import Favorites from './pages/Favorites';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -15,6 +16,7 @@ function App() {
   return (
     <FavoritesProvider>
       <Router>
+        <ScrollToTop />
         <div className="min-h-screen bg-background flex flex-col">
           <Sidebar
             collapsed={isSidebarCollapsed}

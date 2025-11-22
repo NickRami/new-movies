@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home,
-  Search,
   Heart,
   Menu,
   X,
@@ -39,7 +38,6 @@ export default function Sidebar({ collapsed = false, onToggle }) {
 
   const menuItems = [
     { path: '/', label: 'Inicio', icon: Home },
-    { path: '/search', label: 'Buscar', icon: Search },
     { path: '/favorites', label: 'Favoritos', icon: Heart, badge: favorites.length },
   ];
 
@@ -255,14 +253,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
             )}
           </nav>
 
-          {!collapsed && (
-            <div className="p-4 border-t border-border">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <TrendingUp className="w-4 h-4" />
-                <span>Powered by TMDB</span>
-              </div>
-            </div>
-          )}
+          
         </div>
       </aside>
     </>

@@ -18,12 +18,18 @@ export default function SearchBar() {
     e.preventDefault();
     if (query.trim()) {
       navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+    } else {
+      // Si no hay texto, volvemos al estado base de búsqueda
+      navigate('/search');
     }
   };
 
   const handleChange = (e) => {
     const value = e.target.value;
     setQuery(value);
+
+    // Búsqueda en vivo: actualizamos la URL para que la página de Search
+    // use el query y muestre resultados en tiempo real (con debounce en el hook).
     if (value.trim()) {
       navigate(`/search?q=${encodeURIComponent(value.trim())}`, { replace: true });
     } else {
@@ -46,7 +52,7 @@ export default function SearchBar() {
           value={query}
           onChange={handleChange}
           placeholder="Buscar películas..."
-          className="w-full pl-12 pr-4 py-3 bg-card border-border focus:border-primary focus:ring-primary"
+          className="w-full pl-12 pr-4 py-3 bg-transparent border-0 border-b border-border/60 rounded-none focus-visible:ring-0 focus:border-primary focus:outline-none placeholder:text-muted-foreground text-sm md:text-base"
         />
       </div>
     </motion.form>
