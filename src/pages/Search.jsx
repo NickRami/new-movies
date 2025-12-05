@@ -3,7 +3,7 @@ import { Search as SearchIcon } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { useSearchMovies } from '../hooks/useMovies';
 import MovieList from '../components/MovieList';
-import SearchHero3D from '../components/SearchHero3D';
+import SearchHero from '../components/SearchHero';
 
 export default function Search() {
   const [searchParams] = useSearchParams();
@@ -25,13 +25,13 @@ export default function Search() {
       className="pt-16 lg:pt-4 pb-10 min-h-screen"
     >
       <div className="container mx-auto px-4 lg:px-8">
-        {/* Header / Hero de búsqueda con escena 3D */}
+        {/* Header / Hero de búsqueda moderno */}
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
         >
-          <SearchHero3D />
+          <SearchHero />
         </motion.div>
 
         {/* Resumen de búsqueda */}
