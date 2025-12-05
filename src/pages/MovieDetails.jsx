@@ -206,8 +206,8 @@ export default function MovieDetails() {
               <div>
                 <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">Equipo</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                  {movie.credits.crew.slice(0, 6).map((person) => (
-                    <div key={person.id} className="glass-dark p-2 sm:p-3 rounded-lg border border-border/50">
+                  {movie.credits.crew.slice(0, 6).map((person, idx) => (
+                    <div key={`crew-${person.id}-${idx}`} className="glass-dark p-2 sm:p-3 rounded-lg border border-border/50">
                       <p className="font-semibold text-foreground text-xs sm:text-sm">{person.name}</p>
                       <p className="text-muted-foreground text-[0.7rem] sm:text-xs">{person.job}</p>
                     </div>
@@ -278,7 +278,7 @@ export default function MovieDetails() {
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
               {movie.credits.cast.slice(0, 12).map((actor, index) => (
                 <motion.div
-                  key={actor.id}
+                  key={`cast-${actor.id}-${index}`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 + index * 0.05 }}
@@ -316,7 +316,7 @@ export default function MovieDetails() {
             <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">Películas Similares</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
               {movie.similar.slice(0, 12).map((similarMovie, index) => (
-                <MovieCard key={similarMovie.id} movie={similarMovie} index={index} />
+                <MovieCard key={`similar-${similarMovie.id}-${index}`} movie={similarMovie} index={index} />
               ))}
             </div>
           </motion.div>
