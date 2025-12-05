@@ -6,6 +6,7 @@ import {
   fetchProviders,
   fetchGenres,
   fetchMoviesByGenre,
+  fetchUpcoming,
 } from '../services/tmdb';
 
 export function useTrendingMovies() {
@@ -28,6 +29,31 @@ export function useTrendingMovies() {
     }
 
     loadMovies();
+  }, []);
+
+  return { movies, loading, error };
+}
+
+export function useUpcomingMovies() {
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function loadUpcoming() {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchUpcoming();
+        setMovies(data.slice(0, 12));
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadUpcoming();
   }, []);
 
   return { movies, loading, error };

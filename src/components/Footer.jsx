@@ -45,7 +45,7 @@ export default function Footer() {
               >
                 <Film className="w-5 h-5 text-primary" />
               </motion.div>
-              <h3 className="text-xl font-bold tracking-tight">Movies</h3>
+              <h3 className="text-xl font-bold tracking-tight">CineScope</h3>
             </div>
             <p className="text-muted-foreground mb-4 max-w-md text-sm md:text-base">
               Explora las tendencias del cine, descubre nuevos estrenos y guarda tus
@@ -56,9 +56,9 @@ export default function Footer() {
                 href="https://github.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.08, y: -1 }}
+                whileHover={{ scale: 1.1, y: -3, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-lg bg-muted hover:bg-accent transition-colors"
+                className="p-2 rounded-lg glass-dark border border-border/50 hover:border-primary/50 hover:shadow-glow-primary transition-all duration-300"
                 aria-label="GitHub"
               >
                 <Github className="w-5 h-5" />
@@ -67,18 +67,18 @@ export default function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.08, y: -1 }}
+                whileHover={{ scale: 1.1, y: -3, rotate: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-lg bg-muted hover:bg-accent transition-colors"
+                className="p-2 rounded-lg glass-dark border border-border/50 hover:border-primary/50 hover:shadow-glow-primary transition-all duration-300"
                 aria-label="Twitter"
               >
                 <Twitter className="w-5 h-5" />
               </motion.a>
               <motion.a
                 href="mailto:contact@movies.com"
-                whileHover={{ scale: 1.08, y: -1 }}
+                whileHover={{ scale: 1.1, y: -3, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-lg bg-muted hover:bg-accent transition-colors"
+                className="p-2 rounded-lg glass-dark border border-border/50 hover:border-primary/50 hover:shadow-glow-primary transition-all duration-300"
                 aria-label="Email"
               >
                 <Mail className="w-5 h-5" />
@@ -148,7 +148,7 @@ export default function Footer() {
           className="mt-8 pt-6 border-t border-border/60 flex flex-col md:flex-row justify-between items-center gap-4"
         >
           <p className="text-muted-foreground text-xs md:text-sm text-center md:text-left">
-            © {currentYear} Movies. Todos los derechos reservados.
+            © {currentYear} CineScope. Todos los derechos reservados.
           </p>
          
         </motion.div>

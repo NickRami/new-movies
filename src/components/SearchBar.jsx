@@ -41,18 +41,24 @@ export default function SearchBar() {
     <motion.form
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       onSubmit={handleSubmit}
       className="w-full max-w-2xl mx-auto"
     >
-      <div className="relative">
-        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+      <div className="relative group">
+        <motion.div
+          animate={{ scale: query ? 1.1 : 1 }}
+          transition={{ duration: 0.3 }}
+          className="absolute left-4 top-1/2 transform -translate-y-1/2"
+        >
+          <Search className="w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors duration-300" />
+        </motion.div>
         <Input
           type="text"
           value={query}
           onChange={handleChange}
           placeholder="Buscar películas..."
-          className="w-full pl-12 pr-4 py-3 bg-transparent border-0 border-b border-border/60 rounded-none focus-visible:ring-0 focus:border-primary focus:outline-none placeholder:text-muted-foreground text-sm md:text-base"
+          className="w-full pl-12 pr-4 py-3 glass-dark border-0 border-b-2 border-border/60 rounded-none focus-visible:ring-0 focus:border-primary focus:outline-none placeholder:text-muted-foreground text-sm md:text-base transition-all duration-300"
         />
       </div>
     </motion.form>

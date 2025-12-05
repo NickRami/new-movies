@@ -68,6 +68,21 @@ export async function fetchTrending() {
 }
 
 /**
+ * Obtiene las próximas películas en estreno
+ */
+export async function fetchUpcoming() {
+  const data = await fetchFromTMDB('/movie/upcoming');
+
+  if (!data.results) return [];
+
+  return data.results.map(movie => ({
+    ...movie,
+    poster_path: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : null,
+    backdrop_path: movie.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${movie.backdrop_path}` : null,
+  }));
+}
+
+/**
  * Busca películas por query
  */
 export async function searchMovies(query) {

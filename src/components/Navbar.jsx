@@ -26,8 +26,8 @@ export default function Navbar() {
     <motion.nav
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border"
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="sticky top-0 z-30 glass-dark border-b border-border/50 shadow-lg"
     >
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center gap-3">
@@ -35,10 +35,10 @@ export default function Navbar() {
           <div className="flex-1 flex items-center">
             <Link 
               to="/" 
-              className="flex items-center gap-2 text-xl font-bold text-primary hover:text-primary/80 transition-colors lg:hidden"
+              className="flex items-center gap-2 text-xl font-bold text-primary hover:text-primary/80 transition-all duration-300 hover:scale-105 lg:hidden"
             >
               <Film className="w-5 h-5" />
-              <span>Movies</span>
+              <span>CineScope</span>
             </Link>
           </div>
 
@@ -49,14 +49,14 @@ export default function Navbar() {
               onSubmit={handleSubmit}
               className="hidden md:flex items-center w-full max-w-xs md:max-w-sm"
             >
-              <div className="relative w-full">
-                <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <div className="relative w-full group">
+                <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors duration-300" />
                 <Input
                   type="text"
                   value={term}
                   onChange={(e) => setTerm(e.target.value)}
                   placeholder="Buscar películas..."
-                  className="pl-9 pr-3 py-2 h-9 text-xs sm:text-sm bg-card border-border focus-visible:ring-primary"
+                  className="pl-9 pr-3 py-2 h-9 text-xs sm:text-sm glass border-border/50 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300"
                 />
               </div>
             </form>
@@ -66,14 +66,14 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs sm:text-sm px-3 py-1.5"
+                className="text-xs sm:text-sm px-3 py-1.5 hover:scale-105 transition-transform"
                 type="button"
               >
                 <LogIn className="w-4 h-4 mr-1" />
                 Iniciar sesión
               </Button>
               <Button
-                variant="default"
+                variant="gradient"
                 size="sm"
                 className="text-xs sm:text-sm px-3 py-1.5"
                 type="button"
@@ -88,7 +88,7 @@ export default function Navbar() {
               <Button
                 variant="outline"
                 size="icon"
-                className="w-8 h-8"
+                className="w-8 h-8 hover:scale-110 transition-transform"
                 type="button"
               >
                 <LogIn className="w-4 h-4" />

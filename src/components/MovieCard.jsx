@@ -27,7 +27,7 @@ export default function MovieCard({ movie, index = 0 }) {
         to={`/movie/${movie.id}`}
         className="block h-full"
       >
-        <Card className="group relative h-full overflow-hidden border-border bg-card hover:border-primary/50 transition-all duration-300">
+        <Card className="group relative h-full overflow-hidden border-border bg-card hover:border-primary/50 transition-all duration-300 hover:shadow-glow-primary">
           <div className="relative aspect-[2/3] overflow-hidden bg-muted">
             {movie.poster_path ? (
               <motion.img
@@ -35,7 +35,7 @@ export default function MovieCard({ movie, index = 0 }) {
                 alt={movie.title}
                 className="w-full h-full object-cover"
                 whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
                 loading="lazy"
               />
             ) : (
@@ -46,26 +46,27 @@ export default function MovieCard({ movie, index = 0 }) {
             
             <motion.button
               onClick={handleFavoriteClick}
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.15, rotate: 5 }}
               whileTap={{ scale: 0.9 }}
-              className="absolute top-2 right-2 z-10 bg-background/80 hover:bg-background rounded-full p-2 backdrop-blur-sm transition-colors"
+              className="absolute top-2 right-2 z-10 glass-dark rounded-full p-2 transition-all duration-300 hover:shadow-glow"
               aria-label={favorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
             >
               <Star
                 className={cn(
-                  "w-5 h-5 transition-colors",
-                  favorite ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground"
+                  "w-5 h-5 transition-all duration-300",
+                  favorite ? "fill-yellow-400 text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.6)]" : "text-muted-foreground"
                 )}
               />
             </motion.button>
 
             <motion.div
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
-              className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/80 to-transparent p-3"
+              initial={{ opacity: 0, y: 10 }}
+              whileHover={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/90 to-transparent p-3 backdrop-blur-sm"
             >
               <div className="flex items-center gap-2">
-                <span className="text-yellow-400 text-sm font-semibold flex items-center gap-1">
+                <span className="text-yellow-400 text-sm font-semibold flex items-center gap-1 drop-shadow-lg">
                   <Star className="w-4 h-4 fill-yellow-400" />
                   {movie.vote_average?.toFixed(1) || 'N/A'}
                 </span>
@@ -73,8 +74,8 @@ export default function MovieCard({ movie, index = 0 }) {
             </motion.div>
           </div>
 
-          <div className="p-4">
-            <h3 className="text-foreground font-semibold text-sm line-clamp-2 group-hover:text-primary transition-colors">
+          <div className="p-4 bg-gradient-to-b from-card to-card/80">
+            <h3 className="text-foreground font-semibold text-sm line-clamp-2 group-hover:text-primary transition-colors duration-300">
               {movie.title}
             </h3>
             {movie.release_date && (

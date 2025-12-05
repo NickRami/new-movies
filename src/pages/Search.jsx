@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
-import { Search as SearchIcon, Film } from 'lucide-react';
+import { Search as SearchIcon } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { useSearchMovies } from '../hooks/useMovies';
-import SearchBar from '../components/SearchBar';
 import MovieList from '../components/MovieList';
+import SearchHero3D from '../components/SearchHero3D';
 
 export default function Search() {
   const [searchParams] = useSearchParams();
@@ -25,39 +25,13 @@ export default function Search() {
       className="pt-16 lg:pt-4 pb-10 min-h-screen"
     >
       <div className="container mx-auto px-4 lg:px-8">
-        {/* Header / Hero de búsqueda */}
+        {/* Header / Hero de búsqueda con escena 3D */}
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="mb-8"
         >
-          <div className="rounded-3xl px-4 py-5 md:px-6 md:py-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
-              <div className="flex items-start gap-3">
-                <div className="mt-1 hidden sm:flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/15 text-primary">
-                  <SearchIcon className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <SearchIcon className="w-6 h-6 text-primary sm:hidden" />
-                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
-                      Buscar películas
-                    </h1>
-                  </div>
-                  <p className="text-sm md:text-base text-muted-foreground flex items-center gap-1">
-                    <Film className="w-4 h-4 text-muted-foreground" />
-                    Encuentra títulos, descubre nuevas historias y explora el catálogo de TMDB.
-                  </p>
-                </div>
-              </div>
-
-              {/* Barra de búsqueda principal */}
-              <div className="w-full md:max-w-md">
-                <SearchBar />
-              </div>
-            </div>
-          </div>
+          <SearchHero3D />
         </motion.div>
 
         {/* Resumen de búsqueda */}
@@ -92,20 +66,36 @@ export default function Search() {
         {/* Estado inicial sin búsqueda */}
         {isIdleState ? (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
             className="mt-10 flex flex-col items-center justify-center text-center gap-3"
           >
-            <div className="h-16 w-16 rounded-3xl bg-card border border-border flex items-center justify-center mb-2 shadow-lg">
-              <SearchIcon className="w-7 h-7 text-muted-foreground" />
-            </div>
-            <p className="text-foreground text-lg font-semibold">
+            <motion.div 
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              className="h-16 w-16 rounded-3xl glass-dark border border-border/50 flex items-center justify-center mb-2 shadow-glow-primary"
+            >
+              <SearchIcon className="w-7 h-7 text-primary" />
+            </motion.div>
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="text-foreground text-lg font-semibold"
+            >
               Comienza una nueva búsqueda
-            </p>
-            <p className="text-muted-foreground text-sm max-w-md">
+            </motion.p>
+            <motion.p 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="text-muted-foreground text-sm max-w-md"
+            >
               Escribe el título de una película, una saga o una palabra clave en la barra de
               búsqueda para ver resultados al instante.
-            </p>
+            </motion.p>
           </motion.div>
         ) : (
           <MovieList movies={movies} loading={loading} error={error} />

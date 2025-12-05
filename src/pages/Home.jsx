@@ -26,20 +26,26 @@ export default function Home() {
 
       {/* Trending Movies Section */}
       <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
         className="py-10"
       >
         <div className="container mx-auto px-4 lg:px-8">
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
             className="mb-8"
           >
             <div className="flex items-center gap-3 mb-4">
-              <TrendingUp className="w-8 h-8 text-primary" />
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.4, type: "spring", stiffness: 200 }}
+              >
+                <TrendingUp className="w-8 h-8 text-primary drop-shadow-glow" />
+              </motion.div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground">
                 Películas Trending
               </h2>
@@ -59,18 +65,28 @@ export default function Home() {
             genreSections.map((section, sectionIndex) => (
               <motion.div
                 key={section.genre.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + sectionIndex * 0.1 }}
+                transition={{ delay: 0.5 + sectionIndex * 0.15, duration: 0.6, ease: "easeOut" }}
                 className="space-y-4"
               >
-                <div className="flex items-center justify-between gap-2">
-                  <h3 className="text-2xl font-semibold text-foreground">
+                <div className="flex items-center justify-between gap-2 glass-dark p-4 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300">
+                  <motion.h3 
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.6 + sectionIndex * 0.15, duration: 0.5 }}
+                    className="text-2xl font-semibold text-foreground"
+                  >
                     {section.genre.name}
-                  </h3>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">
+                  </motion.h3>
+                  <motion.p 
+                    initial={{ x: 20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.6 + sectionIndex * 0.15, duration: 0.5 }}
+                    className="text-xs text-muted-foreground uppercase tracking-wide px-3 py-1 glass rounded-full border border-primary/20"
+                  >
                     Categoría
-                  </p>
+                  </motion.p>
                 </div>
                 <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
                   {section.movies.map((movie, index) => (
