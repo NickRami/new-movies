@@ -148,35 +148,42 @@ function HeroCarousel() {
       {/* 2. LAYER: Content & 3D Carousel */}
       <div className="relative z-10 w-full h-full flex flex-col justify-center">
          
-         <div className="w-full max-w-[1400px] mx-auto px-4 perspective-[1200px]">
+         <div className="container mx-auto px-4 lg:px-8 perspective-[1200px]">
             
             {config.isMobile ? (
                 // Mobile View
-                <div className="flex flex-col space-y-4">
-                     <div className="px-4 mb-4 text-center">
-                        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-2 border border-primary/20">
-                            <Sparkles className="w-3 h-3" />
-                            Estreno
-                        </span>
-                        <h1 className="text-3xl font-extrabold text-white mb-2 leading-tight">
+                <div className="flex flex-col space-y-6 pt-4">
+                     <div className="px-4 text-center space-y-3">
+                        {/* Tag */}
+                        <div className="flex justify-center">
+                             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white/70 text-[10px] font-semibold uppercase tracking-widest backdrop-blur-md">
+                                <Sparkles className="w-3 h-3 text-yellow-400" />
+                                Estreno
+                            </span>
+                        </div>
+                        
+                        {/* Title */}
+                        <h1 className="text-3xl font-bold text-white tracking-tight leading-none drop-shadow-lg line-clamp-2">
                             {activeMovie?.title}
                         </h1>
-                        <p className="text-sm text-gray-300 line-clamp-2 mb-4">
-                            {activeMovie?.overview}
-                        </p>
-                        <Link to={`/movie/${activeMovie?.id}`}>
-                            <Button className="w-full bg-white text-black hover:bg-gray-200">
-                                <Play className="w-4 h-4 mr-2 fill-current" /> Ver Detalles
-                            </Button>
-                        </Link>
+                        
+                        {/* Meta */}
+                        <div className="flex items-center justify-center gap-3 text-xs font-medium text-white/60">
+                            <span>{new Date(activeMovie?.release_date).getFullYear()}</span>
+                            <span className="w-1 h-1 bg-white/30 rounded-full" />
+                            <div className="flex items-center gap-1">
+                                <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+                                <span className="text-white/80">{activeMovie?.vote_average?.toFixed(1)}</span>
+                            </div>
+                        </div>
                      </div>
 
-                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-8 pb-8 no-scrollbar touch-pan-x">
+                    {/* Snap List */}
+                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-8 pb-4 no-scrollbar touch-pan-x">
                         {displayMovies.map((movie, idx) => (
                             <Link to={`/movie/${movie.id}`} key={movie.id} className="snap-center shrink-0 w-[200px] aspect-[2/3] relative rounded-xl overflow-hidden shadow-lg border border-white/10"
                                 onClick={(e) => { 
-                                    // If clicking non-active, just scroll logic if needed, or allow router link
-                                    // For this simple mobile implementation, link is fine.
+                                     // Optional: scroll active logic
                                 }}
                             >
                                 <img 
@@ -184,45 +191,64 @@ function HeroCarousel() {
                                     alt={movie.title} 
                                     className="w-full h-full object-cover"
                                 />
-                                {/* Mobile active indicator if we wanted, but not strictly needed for flat list */}
                             </Link>
                         ))}
+                    </div>
+                    
+                    {/* Mobile Button at bottom */}
+                    <div className="px-8 pb-2">
+                         <Link to={`/movie/${activeMovie?.id}`}>
+                             <Button className="w-full h-12 rounded-xl bg-white text-black font-bold shadow-lg text-base">
+                                 Ver Detalles
+                             </Button>
+                         </Link>
                     </div>
                 </div>
             ) : (
                 // Desktop View: Optimized 3D Coverflow
-                <div className="flex flex-col items-center">
-                    {/* Header Info */}
-                    <div className="mb-6 md:mb-10 text-center max-w-2xl mx-auto space-y-4 h-[200px] flex flex-col justify-end pb-4 pointer-events-none">
+                <div className="flex flex-col items-center justify-center h-full pb-10">
+                    {/* Header Info - Modern Typography */}
+                    <div className="relative z-[60] text-center max-w-4xl mx-auto flex flex-col items-center justify-end pointer-events-none mb-6">
                         <motion.div
                             key={activeMovie?.id}
-                            initial={{ opacity: 0, y: 15 }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, ease: "easeOut" }}
-                            className="pointer-events-auto"
+                            transition={{ duration: 0.6, ease: "easeOut" }}
+                            className="pointer-events-auto flex flex-col items-center space-y-3 md:space-y-4"
                         >
-                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-rose-400 text-xs font-bold uppercase tracking-widest mb-4 shadow-glow">
-                                <Sparkles className="w-3 h-3" />
-                                Estrenos Destacados
+                            {/* Premium Tag */}
+                            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/80 text-[10px] md:text-xs font-medium uppercase tracking-[0.2em] shadow-sm">
+                                <Sparkles className="w-3 h-3 text-amber-300" />
+                                Estreno Exclusivo
                             </span>
-                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 mb-4 drop-shadow-2xl line-clamp-1 pb-1">
+
+                            {/* Cinema Title - Responsive Sizes */}
+                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white tracking-tighter leading-[1.05] drop-shadow-2xl max-w-4xl px-4 line-clamp-2 pb-1">
                                 {activeMovie?.title}
                             </h1>
-                             <div className="flex items-center justify-center gap-4 text-sm text-gray-400 mb-6">
-                                <span className="flex items-center gap-1"><CalendarDays className="w-4 h-4" /> {formatDate(activeMovie?.release_date)}</span>
-                                <span className="w-1 h-1 bg-gray-600 rounded-full" />
-                                <span className="flex items-center gap-1 text-yellow-500"><Star className="w-4 h-4 fill-current" /> {activeMovie?.vote_average?.toFixed(1)}</span>
+                            
+                            {/* Metadata Row */}
+                             <div className="flex items-center gap-4 md:gap-6 text-sm md:text-base font-medium text-white/60 tracking-wide">
+                                <span className="text-white/90">{formatDate(activeMovie?.release_date)}</span>
+                                <span className="w-1 h-1 bg-white/20 rounded-full" />
+                                <div className="flex items-center gap-2 text-white/90">
+                                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                                    <span>{activeMovie?.vote_average?.toFixed(1)}</span>
+                                </div>
+                                <span className="w-1 h-1 bg-white/20 rounded-full" />
+                                <span className="hidden sm:inline">Película</span>
                             </div>
                             
-                            <div className="flex justify-center gap-4">
+                            {/* Action Buttons */}
+                            <div className="flex items-center gap-4 pt-4 md:pt-6">
                                 <Link to={`/movie/${activeMovie?.id}`}>
-                                    <Button size="lg" className="rounded-full bg-white text-black hover:bg-gray-200 font-bold px-8 shadow-glow transition-transform hover:scale-105">
-                                        <Play className="w-4 h-4 mr-2 fill-black" /> Ver Ahora
+                                    <Button className="h-10 md:h-12 px-6 md:px-8 rounded-xl bg-white text-black hover:bg-gray-200 font-bold text-sm md:text-base transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                                        <Play className="w-4 h-4 md:w-5 md:h-5 mr-2 fill-current" /> Reproducir
                                     </Button>
                                 </Link>
                                 <Link to={`/movie/${activeMovie?.id}`}>
-                                    <Button size="lg" variant="outline" className="rounded-full border-white/20 hover:bg-white/10 font-bold px-8 backdrop-blur-sm transition-transform hover:scale-105">
-                                        <Info className="w-4 h-4 mr-2" /> Más Info
+                                    <Button variant="outline" className="h-10 md:h-12 px-6 md:px-8 rounded-xl border-white/20 bg-white/5 text-white hover:bg-white/10 font-medium text-sm md:text-base backdrop-blur-md transition-all hover:scale-105">
+                                        <Info className="w-4 h-4 md:w-5 md:h-5 mr-2" /> Más Información
                                     </Button>
                                 </Link>
                             </div>
@@ -230,9 +256,9 @@ function HeroCarousel() {
                     </div>
 
                     {/* 3D Cards Container */}
-                    <div className="relative h-[300px] md:h-[350px] lg:h-[400px] w-full flex items-center justify-center preserve-3d will-change-transform">
+                    <div className="relative h-[280px] md:h-[340px] lg:h-[400px] w-full flex items-center justify-center preserve-3d will-change-transform mt-auto mb-auto">
                         <AnimatePresence initial={false}>
-                            {visibleIndices.map(({ index: realIndex, offset }) => {
+                             {visibleIndices.map(({ index: realIndex, offset }) => {
                                 const movie = displayMovies[realIndex];
                                 return (
                                     <DesktopCard
@@ -249,8 +275,8 @@ function HeroCarousel() {
                         </AnimatePresence>
                     </div>
 
-                    {/* Navigation Controls */}
-                    <div className="flex items-center gap-8 mt-8">
+                    {/* Navigation Controls - Absolute bottom or flex */}
+                    <div className="flex items-center gap-8 mt-2 md:mt-6 z-50">
                          <button 
                             onClick={prevSlide} 
                             className="p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all hover:scale-110 active:scale-95"
@@ -275,7 +301,6 @@ function HeroCarousel() {
                             <ChevronRight className="w-6 h-6" />
                          </button>
                     </div>
-
                 </div>
             )}
          </div>

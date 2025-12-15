@@ -18,7 +18,8 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Carousel */}
-      <div className="pt-16 lg:pt-0">
+      {/* Hero Carousel */}
+      <div>
         <HeroCarousel />
       </div>
 
