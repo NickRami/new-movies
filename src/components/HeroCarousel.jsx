@@ -1,15 +1,20 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
 import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
   Play,
   Sparkles,
+  Star,
+  Info
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { useUpcomingMovies } from '../hooks/useMovies';
+import { cn } from '../lib/utils';
+
+const DRAG_THRESHOLD = 50;
 
 function formatDate(dateString) {
   if (!dateString) return 'Próximamente';
@@ -21,285 +26,330 @@ function formatDate(dateString) {
   });
 }
 
-export default function HeroCarousel() {
+function HeroCarousel() {
   const { movies, loading, error } = useUpcomingMovies();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
-  const visibleMovies = useMemo(() => movies.slice(0, 8), [movies]);
+  // Responsive configuration
+  const [config, setConfig] = useState({
+    isMobile: false,
+    cardWidth: 260,
+    gap: 240,
+    zDepth: 350
+  });
 
+  // Handle Resize
   useEffect(() => {
-    if (!visibleMovies.length) return;
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % visibleMovies.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [visibleMovies.length]);
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const isMobile = width < 768; // Mobile breakpoint
+      
+      let cardWidth = 260; // Default Desktop
+      let gap = 240;
+      let zDepth = 350;
 
-  const handlePrev = () => {
-    if (!visibleMovies.length) return;
-    setActiveIndex((prev) =>
-      prev === 0 ? visibleMovies.length - 1 : prev - 1
-    );
+      if (width >= 768 && width < 1024) {
+          // Tablet
+          cardWidth = 200;
+          gap = 160;
+          zDepth = 280;
+      } else if (width >= 1024 && width < 1440) {
+          // Small Desktop / Laptop
+          cardWidth = 240;
+          gap = 210;
+          zDepth = 320;
+      } else if (width >= 1440) {
+          // Large Desktop
+          cardWidth = 280;
+          gap = 260;
+          zDepth = 400;
+      }
+
+      setConfig({ isMobile, cardWidth, gap, zDepth });
+    };
+
+    handleResize(); // Initial call
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Limit movies for carousel performance
+  const displayMovies = useMemo(() => movies.slice(0, 15), [movies]);
+
+  // Auto-play with Pause mechanism
+  useEffect(() => {
+     if (!displayMovies.length || config.isMobile || isPaused) return;
+     const interval = setInterval(() => {
+        setActiveIndex(prev => (prev === displayMovies.length - 1 ? 0 : prev + 1));
+     }, 5000);
+     return () => clearInterval(interval);
+  }, [displayMovies.length, config.isMobile, isPaused]);
+
+
+  const nextSlide = () => {
+    setActiveIndex((prev) => (prev === displayMovies.length - 1 ? 0 : prev + 1));
   };
 
-  const handleNext = () => {
-    if (!visibleMovies.length) return;
-    setActiveIndex((prev) => (prev + 1) % visibleMovies.length);
+  const prevSlide = () => {
+    setActiveIndex((prev) => (prev === 0 ? displayMovies.length - 1 : prev - 1));
   };
+  
+  // Calculate visible indices to reduce DOM nodes
+  const visibleIndices = useMemo(() => {
+     const indices = [];
+     for (let i = -3; i <= 3; i++) {
+         let idx = activeIndex + i;
+         if (idx < 0) idx = displayMovies.length + idx;
+         if (idx >= displayMovies.length) idx = idx - displayMovies.length;
+         indices.push({ index: idx, offset: i });
+     }
+     return indices;
+  }, [activeIndex, displayMovies.length]);
 
-  if (loading && !visibleMovies.length) {
-    return null;
-  }
+  if (loading && displayMovies.length === 0) return null;
+  if (error && displayMovies.length === 0) return null;
 
-  if (error || !visibleMovies.length) {
-    return null;
-  }
-
-  const activeMovie = visibleMovies[activeIndex];
+  const activeMovie = displayMovies[activeIndex];
 
   return (
-    <div className="relative h-[60vh] sm:h-[65vh] md:h-[75vh] lg:h-[82vh] w-full overflow-hidden">
-      {/* Fondo hero usando la película activa */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeMovie.id}
-          initial={{ opacity: 0, scale: 1.03 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 1.01 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="absolute inset-0 will-change-transform"
-        >
-          {activeMovie.backdrop_path ? (
-            <div
-              className="absolute inset-0 bg-cover bg-center scale-[1.15]"
-              style={{
-                backgroundImage: `url(${activeMovie.backdrop_path})`,
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/40" />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-            </div>
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-background" />
-          )}
-        </motion.div>
+    <div 
+        className="relative h-[85vh] w-full overflow-hidden bg-background"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+    >
+      {/* 1. LAYER: Background Backdrop */}
+      <AnimatePresence mode="popLayout" initial={false}>
+          <motion.div
+              key={activeMovie?.id || "default"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+              className="absolute inset-0 z-0 overflow-hidden"
+          >
+              {activeMovie?.backdrop_path ? (
+                  <>
+                    <img 
+                        src={activeMovie.backdrop_path} 
+                        alt="Backdrop" 
+                        className="w-full h-full object-cover opacity-30 select-none blur-sm"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
+                  </>
+              ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-primary/10 to-background" />
+              )}
+          </motion.div>
       </AnimatePresence>
 
-      {/* Contenido hero */}
-      <div className="relative z-10 flex h-full items-center">
-        <div className="container mx-auto px-4 lg:px-8">
-          {/* Cabecera de estrenos */}
-          <div className="mb-4 sm:mb-6 max-w-xl space-y-2">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-rose-500/40 glass-dark px-2 sm:px-3 py-1 text-xs font-medium text-rose-100 shadow-glow animate-pulse-glow"
-            >
-              <Sparkles className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-rose-200" />
-              <span className="uppercase tracking-[0.22em] text-[0.65rem] sm:text-[0.7rem]">
-                Estrenos en 3D
-              </span>
-            </motion.div>
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5 }}
-              className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight drop-shadow-xl"
-            >
-              Descubre los próximos lanzamientos
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-xl hidden sm:block"
-            >
-              Explora en un carrusel 3D las películas que llegarán pronto a
-              cines y plataformas de streaming. Elige un estreno y mira sus
-              detalles al instante.
-            </motion.p>
-            {activeMovie && (
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.5 }}
-                className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1 text-xs text-muted-foreground"
-              >
-                {activeMovie.release_date && (
-                  <div className="inline-flex items-center gap-1 rounded-full glass-dark px-2 py-1 border border-border/70 hover:border-primary/50 transition-all duration-300">
-                    <CalendarDays className="h-3 sm:h-3.5 w-3 sm:w-3.5" />
-                    <span className="text-[0.7rem] sm:text-xs">Estreno: {formatDate(activeMovie.release_date)}</span>
-                  </div>
-                )}
-                {activeMovie.vote_average && (
-                  <span className="rounded-full glass-dark px-2 py-1 text-emerald-300 border border-emerald-500/30 shadow-glow-accent text-[0.7rem] sm:text-xs">
-                    Anticipación: {activeMovie.vote_average.toFixed(1)} ★
-                  </span>
-                )}
-                <Link to={`/movie/${activeMovie.id}`}>
-                  <Button
-                    variant="gradient"
-                    size="sm"
-                    className="ml-0 md:ml-2 gap-1 sm:gap-1.5 shadow-lg shadow-primary/40 hover:shadow-primary/60 text-xs h-8 sm:h-9"
-                  >
-                    <Play className="h-3 sm:h-3.5 w-3 sm:w-3.5" />
-                    <span className="hidden sm:inline">Ver detalles del estreno</span>
-                    <span className="sm:hidden">Ver detalles</span>
-                  </Button>
-                </Link>
-              </motion.div>
-            )}
-          </div>
+      
+      {/* 2. LAYER: Content & 3D Carousel */}
+      <div className="relative z-10 w-full h-full flex flex-col justify-center">
+         
+         <div className="w-full max-w-[1400px] mx-auto px-4 perspective-[1200px]">
+            
+            {config.isMobile ? (
+                // Mobile View
+                <div className="flex flex-col space-y-4">
+                     <div className="px-4 mb-4 text-center">
+                        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-2 border border-primary/20">
+                            <Sparkles className="w-3 h-3" />
+                            Estreno
+                        </span>
+                        <h1 className="text-3xl font-extrabold text-white mb-2 leading-tight">
+                            {activeMovie?.title}
+                        </h1>
+                        <p className="text-sm text-gray-300 line-clamp-2 mb-4">
+                            {activeMovie?.overview}
+                        </p>
+                        <Link to={`/movie/${activeMovie?.id}`}>
+                            <Button className="w-full bg-white text-black hover:bg-gray-200">
+                                <Play className="w-4 h-4 mr-2 fill-current" /> Ver Detalles
+                            </Button>
+                        </Link>
+                     </div>
 
-          {/* Glow de fondo para el carrusel */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.9 }}
-            transition={{ duration: 0.8 }}
-            className="pointer-events-none absolute inset-x-4 bottom-4 h-40 bg-gradient-to-r from-rose-500/40 via-purple-500/30 to-sky-500/40 blur-3xl"
-          />
-
-          {/* Carrusel 3D de tarjetas */}
-          <div className="relative mt-4 sm:mt-6 flex items-center justify-center">
-            {/* Glow base */}
-            <div className="pointer-events-none absolute inset-x-10 -bottom-8 h-28 rounded-full bg-rose-500/25 blur-3xl hidden sm:block" />
-
-            <div className="relative flex h-[240px] sm:h-[280px] md:h-[320px] w-full items-center justify-center overflow-visible">
-              {visibleMovies.map((movie, index) => {
-                const offset = index - activeIndex;
-                const wrappedOffset =
-                  offset > visibleMovies.length / 2
-                    ? offset - visibleMovies.length
-                    : offset < -visibleMovies.length / 2
-                    ? offset + visibleMovies.length
-                    : offset;
-
-                const distance = Math.abs(wrappedOffset);
-                const isActive = wrappedOffset === 0;
-
-                // Responsive spacing
-                const translateX = wrappedOffset * (window.innerWidth < 640 ? 140 : window.innerWidth < 768 ? 160 : 190);
-                const scale = isActive ? 1 : 0.8 - distance * 0.05;
-                const rotateY = wrappedOffset * (window.innerWidth < 640 ? -12 : -18);
-                const opacity = Math.max(0, 1 - distance * 0.45);
-                const zIndex = 10 - distance;
-
-                return (
-                  <motion.div
-                    key={movie.id}
-                    className="absolute origin-center"
-                    style={{ zIndex }}
-                    animate={{
-                      x: translateX,
-                      scale,
-                      rotateY,
-                      opacity,
-                    }}
-                    transition={{
-                      type: 'spring',
-                      stiffness: 110,
-                      damping: 18,
-                    }}
-                    onClick={() => setActiveIndex(index)}
-                  >
-                    <motion.div
-                      whileHover={{
-                        y: -10,
-                        rotateY: isActive ? 3 : rotateY,
-                        scale: isActive ? 1.04 : scale + 0.04,
-                      }}
-                      transition={{
-                        type: 'spring',
-                        stiffness: 200,
-                        damping: 18,
-                      }}
-                      className="group relative h-[200px] w-32 sm:h-[240px] sm:w-40 md:h-[280px] md:w-44 lg:h-[300px] lg:w-52 cursor-pointer overflow-visible"
-                    >
-                      {/* Glow individual */}
-                      <div className="pointer-events-none absolute inset-x-6 -bottom-6 h-14 rounded-full bg-rose-500/25 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 hidden sm:block" />
-
-                      <div className="relative h-full w-full origin-center rounded-2xl sm:rounded-3xl border border-border/80 bg-gradient-to-b from-slate-900/95 via-slate-950 to-slate-950 shadow-xl shadow-black/60 backdrop-blur-sm">
-                        <AnimatePresence initial={false} mode="wait">
-                          {isActive && movie.backdrop_path && (
-                            <motion.div
-                              key={movie.backdrop_path}
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 0.3 }}
-                              exit={{ opacity: 0 }}
-                              className="absolute inset-0 rounded-3xl overflow-hidden"
+                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-8 pb-8 no-scrollbar touch-pan-x">
+                        {displayMovies.map((movie, idx) => (
+                            <Link to={`/movie/${movie.id}`} key={movie.id} className="snap-center shrink-0 w-[200px] aspect-[2/3] relative rounded-xl overflow-hidden shadow-lg border border-white/10"
+                                onClick={(e) => { 
+                                    // If clicking non-active, just scroll logic if needed, or allow router link
+                                    // For this simple mobile implementation, link is fine.
+                                }}
                             >
-                              <img
-                                src={movie.backdrop_path}
-                                alt={movie.title}
-                                className="h-full w-full object-cover opacity-70"
-                                loading="lazy"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/90" />
-                            </motion.div>
-                          )}
+                                <img 
+                                    src={movie.poster_path} 
+                                    alt={movie.title} 
+                                    className="w-full h-full object-cover"
+                                />
+                                {/* Mobile active indicator if we wanted, but not strictly needed for flat list */}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            ) : (
+                // Desktop View: Optimized 3D Coverflow
+                <div className="flex flex-col items-center">
+                    {/* Header Info */}
+                    <div className="mb-6 md:mb-10 text-center max-w-2xl mx-auto space-y-4 h-[200px] flex flex-col justify-end pb-4 pointer-events-none">
+                        <motion.div
+                            key={activeMovie?.id}
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                            className="pointer-events-auto"
+                        >
+                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-rose-400 text-xs font-bold uppercase tracking-widest mb-4 shadow-glow">
+                                <Sparkles className="w-3 h-3" />
+                                Estrenos Destacados
+                            </span>
+                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 mb-4 drop-shadow-2xl line-clamp-1 pb-1">
+                                {activeMovie?.title}
+                            </h1>
+                             <div className="flex items-center justify-center gap-4 text-sm text-gray-400 mb-6">
+                                <span className="flex items-center gap-1"><CalendarDays className="w-4 h-4" /> {formatDate(activeMovie?.release_date)}</span>
+                                <span className="w-1 h-1 bg-gray-600 rounded-full" />
+                                <span className="flex items-center gap-1 text-yellow-500"><Star className="w-4 h-4 fill-current" /> {activeMovie?.vote_average?.toFixed(1)}</span>
+                            </div>
+                            
+                            <div className="flex justify-center gap-4">
+                                <Link to={`/movie/${activeMovie?.id}`}>
+                                    <Button size="lg" className="rounded-full bg-white text-black hover:bg-gray-200 font-bold px-8 shadow-glow transition-transform hover:scale-105">
+                                        <Play className="w-4 h-4 mr-2 fill-black" /> Ver Ahora
+                                    </Button>
+                                </Link>
+                                <Link to={`/movie/${activeMovie?.id}`}>
+                                    <Button size="lg" variant="outline" className="rounded-full border-white/20 hover:bg-white/10 font-bold px-8 backdrop-blur-sm transition-transform hover:scale-105">
+                                        <Info className="w-4 h-4 mr-2" /> Más Info
+                                    </Button>
+                                </Link>
+                            </div>
+                        </motion.div>
+                    </div>
+
+                    {/* 3D Cards Container */}
+                    <div className="relative h-[300px] md:h-[350px] lg:h-[400px] w-full flex items-center justify-center preserve-3d will-change-transform">
+                        <AnimatePresence initial={false}>
+                            {visibleIndices.map(({ index: realIndex, offset }) => {
+                                const movie = displayMovies[realIndex];
+                                return (
+                                    <DesktopCard
+                                        key={movie.id}
+                                        movie={movie}
+                                        isActive={offset === 0}
+                                        offset={offset}
+                                        config={config}
+                                        onClick={() => setActiveIndex(realIndex)}
+                                        onDrag={(dir) => dir === 'left' ? nextSlide() : prevSlide()}
+                                    />
+                                );
+                            })}
                         </AnimatePresence>
+                    </div>
 
-                        <div className="relative flex h-full flex-col p-3">
-                          <div className="flex-1">
-                            <div className="mb-2 overflow-hidden rounded-2xl border border-border/70 bg-black/40">
-                              <img
-                                src={movie.poster_path}
-                                alt={movie.title}
-                                className="h-36 w-full object-cover"
-                                loading="lazy"
-                              />
-                            </div>
-                            <h3 className="line-clamp-2 text-sm font-semibold text-foreground">
-                              {movie.title || movie.name}
-                            </h3>
-                            <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-300/80">
-                              <CalendarDays className="h-3.5 w-3.5" />
-                              <span>{formatDate(movie.release_date)}</span>
-                            </div>
-                          </div>
+                    {/* Navigation Controls */}
+                    <div className="flex items-center gap-8 mt-8">
+                         <button 
+                            onClick={prevSlide} 
+                            className="p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all hover:scale-110 active:scale-95"
+                            aria-label="Previous"
+                         >
+                            <ChevronLeft className="w-6 h-6" />
+                         </button>
+                         {/* Simple Indicators */}
+                         <div className="flex gap-1.5">
+                             {displayMovies.slice(0, 8).map((_, idx) => (
+                                 <div 
+                                    key={idx} 
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${idx === activeIndex || (activeIndex >= 8 && idx===7) ? 'w-8 bg-primary shadow-glow-primary' : 'w-1.5 bg-white/20'}`} 
+                                 />
+                             ))}
+                         </div>
+                         <button 
+                            onClick={nextSlide} 
+                            className="p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all hover:scale-110 active:scale-95"
+                            aria-label="Next"
+                         >
+                            <ChevronRight className="w-6 h-6" />
+                         </button>
+                    </div>
 
-                          <div className="mt-3 flex items-center justify-between text-[0.7rem] text-slate-300/80">
-                            <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-300 border border-emerald-500/30">
-                              {movie.vote_average
-                                ? `${movie.vote_average.toFixed(1)} ★`
-                                : 'Sin votos'}
-                            </span>
-                            <span className="rounded-full border border-rose-500/40 bg-rose-500/10 px-2 py-0.5 text-rose-200">
-                              Estreno
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Controles hero */}
-            <motion.button
-              whileHover={{ scale: 1.1, x: -5 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handlePrev}
-              className="hidden xl:inline-flex items-center justify-center rounded-full glass-dark hover:border-primary/50 text-foreground shadow-lg hover:shadow-glow-primary transition-all duration-300 w-9 h-9 md:w-10 md:h-10 absolute left-0 2xl:left-6 top-1/2 -translate-y-1/2 z-30"
-              aria-label="Película anterior"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1, x: 5 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleNext}
-              className="hidden xl:inline-flex items-center justify-center rounded-full glass-dark hover:border-primary/50 text-foreground shadow-lg hover:shadow-glow-primary transition-all duration-300 w-9 h-9 md:w-10 md:h-10 absolute right-0 2xl:right-6 top-1/2 -translate-y-1/2 z-30"
-              aria-label="Siguiente película"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </motion.button>
-          </div>
-        </div>
+                </div>
+            )}
+         </div>
       </div>
     </div>
   );
 }
+
+// Optimized Card Component
+function DesktopCard({ movie, isActive, offset, config, onClick, onDrag }) {
+    
+    const absOffset = Math.abs(offset);
+    const zIndex = 50 - absOffset;
+    
+    // 3D Transform values
+    const x = offset * config.gap;
+    const z = -absOffset * config.zDepth; 
+    const rotateY = offset > 0 ? -25 : offset < 0 ? 25 : 0;
+    const scale = 1 - absOffset * 0.15;
+    const opacity = Math.max(0, 1 - absOffset * 0.4);
+
+    const handleDragEnd = (_, info) => {
+        if (Math.abs(info.offset.x) > 20) { 
+             if (info.offset.x < 0) onDrag("left");
+             else onDrag("right");
+        }
+    };
+
+    return (
+        <motion.div
+            // 'layout' removed for pure 3D transform control
+            className={cn(
+                "absolute aspect-[2/3] rounded-2xl overflow-hidden cursor-pointer shadow-2xl bg-black origin-center",
+                isActive ? "ring-2 ring-primary/80 shadow-[0_0_50px_rgba(220,38,38,0.5)] z-50 brightness-110" : "grayscale-[0.7] hover:grayscale-[0.2] brightness-[0.4] hover:brightness-[0.6]"
+            )}
+            style={{ 
+                zIndex,
+                width: config.cardWidth,
+            }} 
+            initial={false}
+            animate={{
+                x,
+                z,
+                rotateY,
+                scale,
+                opacity,
+            }}
+            transition={{ 
+                type: "spring", 
+                stiffness: 120, // Slightly softer spring for premium feel
+                damping: 20, 
+                mass: 1 
+            }}
+            onClick={onClick}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.05} 
+            onDragEnd={handleDragEnd}
+            whileHover={isActive ? { scale: 1.02 } : {}}
+        >
+            <img 
+                src={movie.poster_path} 
+                alt={movie.title} 
+                className="w-full h-full object-cover select-none pointer-events-none" 
+            />
+            {/* Gloss Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            {/* Darker scrim for non-active cards */}
+            {!isActive && (
+                <div className="absolute inset-0 bg-black/40 transition-colors duration-500" />
+            )}
+        </motion.div>
+    );
+}
+
+export default HeroCarousel;

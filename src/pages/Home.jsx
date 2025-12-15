@@ -6,6 +6,7 @@ import ProvidersCarousel from '../components/ProvidersCarousel';
 import MovieList from '../components/MovieList';
 import MovieCard from '../components/MovieCard';
 
+
 export default function Home() {
   const { movies, loading, error } = useTrendingMovies();
   const {
