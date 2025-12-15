@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useSearchMovies } from '../hooks/useMovies';
 import MovieList from '../components/MovieList';
 import SearchHero from '../components/SearchHero';
+import BackNavigation from '../components/BackNavigation';
 
 export default function Search() {
   const [searchParams] = useSearchParams();
@@ -25,6 +26,9 @@ export default function Search() {
       className="pt-16 lg:pt-4 pb-10 min-h-screen"
     >
       <div className="container mx-auto px-4 lg:px-8">
+        <div className="mb-6">
+          <BackNavigation />
+        </div>
         {/* Header / Hero de búsqueda moderno */}
         <motion.div
           initial={{ y: -20, opacity: 0 }}

@@ -68,6 +68,7 @@ export default function Navbar() {
                 size="sm"
                 className="text-xs sm:text-sm px-3 py-1.5 hover:scale-105 transition-transform"
                 type="button"
+                onClick={() => navigate('/login')}
               >
                 <LogIn className="w-4 h-4 mr-1" />
                 Iniciar sesión
@@ -90,6 +91,7 @@ export default function Navbar() {
                 size="icon"
                 className="w-8 h-8 hover:scale-110 transition-transform"
                 type="button"
+                onClick={() => navigate('/login')}
               >
                 <LogIn className="w-4 h-4" />
               </Button>

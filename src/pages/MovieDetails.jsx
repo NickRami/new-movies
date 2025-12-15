@@ -8,6 +8,7 @@ import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Loader2 } from 'lucide-react';
 import { cn } from '../lib/utils';
+import BackNavigation from '../components/BackNavigation';
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -93,6 +94,9 @@ export default function MovieDetails() {
                   transition={{ delay: 0.3, duration: 0.6 }}
                   className="max-w-4xl"
                 >
+                  <div className="mb-6">
+                    <BackNavigation />
+                  </div>
                   {/* Título */}
                   <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-1 sm:mb-2 md:mb-3 drop-shadow-lg leading-tight">
                     {movie.title}
@@ -141,15 +145,7 @@ export default function MovieDetails() {
 
                   {/* Botones de acción */}
                   <div className="flex flex-wrap gap-2 sm:gap-3">
-                    <Button
-                      onClick={() => navigate(-1)}
-                      variant="outline"
-                      size="sm"
-                      className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9 md:h-10"
-                    >
-                      <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                      Volver
-                    </Button>
+{/* Removed manual back button */}
                     <Button
                       onClick={() => toggleFavorite(movie)}
                       variant={favorite ? "default" : "outline"}

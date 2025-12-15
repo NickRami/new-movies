@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
 import MovieList from '../components/MovieList';
+import BackNavigation from '../components/BackNavigation';
 
 export default function Favorites() {
   const { favorites } = useFavorites();
@@ -14,6 +15,9 @@ export default function Favorites() {
       className="pt-16 lg:pt-4 pb-10 min-h-screen"
     >
       <div className="container mx-auto px-4 lg:px-8">
+        <div className="mb-6">
+           <BackNavigation />
+        </div>
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
