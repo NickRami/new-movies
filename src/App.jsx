@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { FavoritesProvider } from './context/FavoritesContext';
+import { AuthProvider } from './context/AuthContext';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -15,7 +16,8 @@ function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
-    <FavoritesProvider>
+    <AuthProvider>
+      <FavoritesProvider>
       <Router>
         <ScrollToTop />
         <div className="min-h-screen bg-background flex flex-col">
@@ -42,7 +44,8 @@ function App() {
           </div>
         </div>
       </Router>
-    </FavoritesProvider>
+      </FavoritesProvider>
+    </AuthProvider>
   );
 }
 

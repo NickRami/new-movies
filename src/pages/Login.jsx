@@ -1,15 +1,19 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LogIn, Mail, Lock, Film, ArrowRight } from 'lucide-react';
+import { LogIn, Mail, Lock, Film, ArrowRight, User } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import BackNavigation from '../components/BackNavigation';
 
+import { useAuth } from '../context/AuthContext';
+
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
+    nickname: '',
     email: '',
     password: ''
   });
@@ -25,8 +29,13 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     
-    // Simulación de login
+    // Simular un delay de red
     setTimeout(() => {
+      login({ 
+        name: formData.nickname, 
+        email: formData.email 
+      });
+
       setLoading(false);
       navigate('/');
     }, 1500);
@@ -67,6 +76,20 @@ export default function Login() {
              </div>
 
              <form onSubmit={handleSubmit} className="space-y-4">
+               <div className="space-y-2">
+                 <div className="relative group">
+                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors duration-300" />
+                   <Input
+                     name="nickname"
+                     type="text"
+                     placeholder="Tu Nickname"
+                     value={formData.nickname}
+                     onChange={handleChange}
+                     className="pl-10 bg-background/50 border-border/50 focus:border-primary/50"
+                     required
+                   />
+                 </div>
+               </div>
                <div className="space-y-2">
                  <div className="relative group">
                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors duration-300" />
