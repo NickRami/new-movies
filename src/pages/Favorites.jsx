@@ -3,6 +3,8 @@ import { Heart } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
 import MovieList from '../components/MovieList';
 import BackNavigation from '../components/BackNavigation';
+import { getContainerClasses } from '../lib/layout-constants';
+import { cn } from '../lib/utils';
 
 export default function Favorites() {
   const { favorites } = useFavorites();
@@ -12,12 +14,17 @@ export default function Favorites() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="pt-16 lg:pt-4 pb-10 min-h-screen"
+      className={cn(
+        "min-h-screen",
+        "pt-8 md:pt-12",
+        "pb-16 md:pb-20"
+      )}
     >
-      <div className="container mx-auto px-4 lg:px-8">
+      <div className={getContainerClasses()}>
         <div className="mb-6">
-           <BackNavigation />
+          <BackNavigation />
         </div>
+        
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

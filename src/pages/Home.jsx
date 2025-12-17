@@ -5,6 +5,8 @@ import SearchHero from '../components/SearchHero';
 import MovieList from '../components/MovieList';
 import MovieCard from '../components/MovieCard';
 import { useTranslation } from 'react-i18next';
+import { getContainerClasses, SPACING } from '../lib/layout-constants';
+import { cn } from '../lib/utils';
 
 export default function Home() {
   const { movies, loading, error } = useTrendingMovies();
@@ -17,7 +19,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Search Hero - Main Entry Point */}
+      {/* Hero Section */}
       <SearchHero />
 
       {/* Trending Movies Section */}
@@ -26,9 +28,13 @@ export default function Home() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-        className="py-10"
+        className={cn(
+          SPACING.sectionGap.mobile,
+          SPACING.sectionGap.tablet,
+          SPACING.sectionGap.desktop
+        )}
       >
-        <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24">
+        <div className={getContainerClasses()}>
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -56,9 +62,15 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Películas por categorías */}
-      <section className="pb-12 md:pb-20">
-        <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24 space-y-12">
+      {/* Genre Sections - NO PAGINATION HERE */}
+      <section 
+        className={cn(
+          "pb-16 md:pb-24",
+          SPACING.sectionGap.mobile,
+          SPACING.sectionGap.tablet
+        )}
+      >
+        <div className={cn(getContainerClasses(), "space-y-12 md:space-y-16")}>
           {!loadingGenres && !errorGenres && genreSections.length > 0 && (
             genreSections.map((section, sectionIndex) => (
               <motion.div
@@ -86,6 +98,8 @@ export default function Home() {
                     {t('nav.genres')}
                   </motion.p>
                 </div>
+                
+                {/* Horizontal Scrollable Carousel - NO PAGINATION */}
                 <div className="flex gap-4 overflow-x-auto pb-4 pt-2 no-scrollbar pl-1">
                   {section.movies.map((movie, index) => (
                     <div

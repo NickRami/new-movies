@@ -18,7 +18,7 @@ export default function MovieDetails() {
 
   if (loading) {
     return (
-      <div className="pt-16 lg:pt-4 pb-10 min-h-screen flex flex-col items-center justify-center">
+      <div className="pt-8 md:pt-12 pb-10 min-h-screen flex flex-col items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -44,7 +44,7 @@ export default function MovieDetails() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="pt-16 lg:pt-4 pb-10 min-h-screen flex items-center justify-center"
+        className="pt-8 md:pt-12 pb-10 min-h-screen flex items-center justify-center"
       >
         <Card className="glass-dark p-8 text-center max-w-md border-destructive/30">
           <p className="text-destructive text-xl mb-4">Error loading movie</p>
@@ -64,7 +64,7 @@ export default function MovieDetails() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="pt-16 lg:pt-4 pb-10 min-h-screen"
+      className="pb-10 min-h-screen"
     >
       {/* Hero Section con backdrop */}
       <div className="relative w-full mb-6 sm:mb-8 md:mb-10 overflow-hidden">

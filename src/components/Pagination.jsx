@@ -34,7 +34,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
   const pages = getPageNumbers();
 
   return (
-    <div className="flex justify-center items-center gap-2 mt-8 py-4">
+    <div className="flex justify-center items-center gap-2 py-6">
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}

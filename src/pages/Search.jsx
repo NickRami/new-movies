@@ -6,6 +6,8 @@ import { useSearchMovies } from '../hooks/useMovies';
 import MovieList from '../components/MovieList';
 import BackNavigation from '../components/BackNavigation';
 import Pagination from '../components/Pagination';
+import { getContainerClasses, SPACING, NAVBAR_HEIGHT } from '../lib/layout-constants';
+import { cn } from '../lib/utils';
 
 export default function Search() {
   const [searchParams] = useSearchParams();
@@ -27,7 +29,7 @@ export default function Search() {
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: NAVBAR_HEIGHT, behavior: 'smooth' });
   };
 
   return (
@@ -35,40 +37,44 @@ export default function Search() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="pt-24 lg:pt-32 pb-10 min-h-screen"
+      className={cn(
+        "min-h-screen",
+        "pt-8 md:pt-12",
+        "pb-16 md:pb-20"
+      )}
     >
-      <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24">
+      <div className={getContainerClasses()}>
         <div className="mb-8">
           <BackNavigation />
         </div>
         
-        {/* Resumen de búsqueda / Título de página */}
+        {/* Page Title */}
         {(showQueryLabel || showGenreLabel) && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-             {showQueryLabel && (
-                <div className="space-y-2">
-                    <p className="text-muted-foreground uppercase text-sm font-semibold tracking-wider">Search Results</p>
-                    <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                      {query}
-                    </h1>
-                </div>
+            {showQueryLabel && (
+              <div className="space-y-2">
+                <p className="text-muted-foreground uppercase text-sm font-semibold tracking-wider">Search Results</p>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+                  {query}
+                </h1>
+              </div>
             )}
             {showGenreLabel && (
-                <div className="space-y-2">
-                    <p className="text-muted-foreground uppercase text-sm font-semibold tracking-wider">Genre Explorer</p>
-                    <h1 className="text-3xl md:text-4xl font-bold text-foreground">
-                      {genreName}
-                    </h1>
-                </div>
+              <div className="space-y-2">
+                <p className="text-muted-foreground uppercase text-sm font-semibold tracking-wider">Genre Explorer</p>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+                  {genreName}
+                </h1>
+              </div>
             )}
           </motion.div>
         )}
 
-        {/* Estado inicial sin búsqueda */}
+        {/* Idle State */}
         {isIdleState ? (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -103,14 +109,18 @@ export default function Search() {
           </motion.div>
         ) : (
           <>
+            {/* Movie Grid */}
             <MovieList movies={movies} loading={loading} error={error} />
             
+            {/* Pagination - ONLY in Search/Genre views */}
             {!loading && !error && movies.length > 0 && totalPages > 1 && (
+              <div className={cn(SPACING.marginTop['2xl'], "mb-8")}>
                 <Pagination 
-                    currentPage={page}
-                    totalPages={totalPages > 500 ? 500 : totalPages}
-                    onPageChange={handlePageChange}
+                  currentPage={page}
+                  totalPages={totalPages > 500 ? 500 : totalPages}
+                  onPageChange={handlePageChange}
                 />
+              </div>
             )}
           </>
         )}
