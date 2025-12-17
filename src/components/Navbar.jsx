@@ -58,7 +58,7 @@ export default function Navbar() {
                   type="text"
                   value={term}
                   onChange={(e) => setTerm(e.target.value)}
-                  placeholder="Buscar películas..."
+                  placeholder="Search for movies, genres or stars..."
                   className="pl-9 pr-3 py-2 h-9 text-xs sm:text-sm glass border-border/50 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300"
                 />
               </div>

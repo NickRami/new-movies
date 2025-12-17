@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { cn } from '../lib/utils';
 
-export default function BackNavigation({ className, label = "Volver" }) {
+export default function BackNavigation({ className, label = "Back" }) {
   const navigate = useNavigate();
 
   return (

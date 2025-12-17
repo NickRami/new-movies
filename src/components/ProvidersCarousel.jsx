@@ -18,10 +18,10 @@ export default function ProvidersCarousel() {
       <div className="container mx-auto px-4 lg:px-8 py-6">
         <div className="flex items-center justify-between mb-4 gap-2">
           <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-            Disponible en
+            Available on
           </h2>
           <p className="text-xs text-muted-foreground">
-            Proveedores de streaming de TMDB
+            TMDB Streaming Providers
           </p>
         </div>
 

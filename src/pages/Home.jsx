@@ -49,11 +49,11 @@ export default function Home() {
                 <TrendingUp className="w-8 h-8 text-primary drop-shadow-glow" />
               </motion.div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-                Películas Trending
+                Trending Movies
               </h2>
             </div>
             <p className="text-muted-foreground text-lg">
-              Las películas más populares de esta semana
+              Most popular movies this week
             </p>
           </motion.div>
           <MovieList movies={movies} loading={loading} error={error} />
@@ -87,7 +87,7 @@ export default function Home() {
                     transition={{ delay: 0.6 + sectionIndex * 0.15, duration: 0.5 }}
                     className="text-xs text-muted-foreground uppercase tracking-wide px-3 py-1 glass rounded-full border border-primary/20"
                   >
-                    Categoría
+                    Genre
                   </motion.p>
                 </div>
                 <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">

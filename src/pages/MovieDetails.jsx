@@ -33,7 +33,7 @@ export default function MovieDetails() {
           transition={{ delay: 0.2 }}
           className="mt-4 text-muted-foreground"
         >
-          Cargando detalles...
+          Loading details...
         </motion.p>
       </div>
     );
@@ -47,10 +47,10 @@ export default function MovieDetails() {
         className="pt-16 lg:pt-4 pb-10 min-h-screen flex items-center justify-center"
       >
         <Card className="glass-dark p-8 text-center max-w-md border-destructive/30">
-          <p className="text-destructive text-xl mb-4">Error al cargar la película</p>
+          <p className="text-destructive text-xl mb-4">Error loading movie</p>
           <Button onClick={() => navigate('/')} variant="gradient">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Volver al inicio
+            Back to Home
           </Button>
         </Card>
       </motion.div>
@@ -153,8 +153,8 @@ export default function MovieDetails() {
                       className="gap-1.5 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9 md:h-10"
                     >
                       <Heart className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4", favorite && "fill-current")} />
-                      <span className="hidden sm:inline">{favorite ? 'En favoritos' : 'Añadir a favoritos'}</span>
-                      <span className="sm:hidden">{favorite ? 'Favorito' : 'Añadir'}</span>
+                      <span className="hidden sm:inline">{favorite ? 'In Favorites' : 'Add to Favorites'}</span>
+                      <span className="sm:hidden">{favorite ? 'Faved' : 'Add'}</span>
                     </Button>
                     {trailer && (
                       <Button
@@ -166,7 +166,7 @@ export default function MovieDetails() {
                         }}
                       >
                         <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                        <span className="hidden sm:inline">Ver trailer</span>
+                         <span className="hidden sm:inline">Watch Trailer</span>
                         <span className="sm:hidden">Trailer</span>
                       </Button>
                     )}
@@ -190,8 +190,8 @@ export default function MovieDetails() {
           >
             {movie.overview && (
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2 sm:mb-3">Sinopsis</h2>
-                <p className="text-muted-foreground leading-relaxed text-sm sm:text-base md:text-lg">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2 sm:mb-3">Overview</h2>
+                <p className="text-muted-foreground leading-relaxed text-sm sm:text-base md:text-lg max-w-prose">
                   {movie.overview}
                 </p>
               </div>
@@ -200,7 +200,7 @@ export default function MovieDetails() {
             {/* Equipo */}
             {movie.credits?.crew && movie.credits.crew.length > 0 && (
               <div>
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">Equipo</h3>
+                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2 sm:mb-3">Crew</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   {movie.credits.crew.slice(0, 6).map((person, idx) => (
                     <div key={`crew-${person.id}-${idx}`} className="glass-dark p-2 sm:p-3 rounded-lg border border-border/50">
@@ -228,7 +228,7 @@ export default function MovieDetails() {
               />
             ) : (
               <div className="w-full max-w-sm mx-auto lg:max-w-none aspect-[2/3] glass-dark rounded-xl sm:rounded-2xl flex items-center justify-center border border-border/50">
-                <span className="text-muted-foreground">Sin imagen</span>
+                <span className="text-muted-foreground">No image</span>
               </div>
             )}
           </motion.div>
@@ -270,7 +270,7 @@ export default function MovieDetails() {
             transition={{ delay: 0.7 }}
             className="mb-8 sm:mb-10 md:mb-12"
           >
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">Reparto Principal</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">Top Cast</h2>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 sm:gap-4">
               {movie.credits.cast.slice(0, 12).map((actor, index) => (
                 <motion.div
@@ -290,7 +290,7 @@ export default function MovieDetails() {
                       />
                     ) : (
                       <div className="w-full aspect-[2/3] glass-dark flex items-center justify-center">
-                        <span className="text-muted-foreground text-[0.65rem] sm:text-xs">Sin foto</span>
+                        <span className="text-muted-foreground text-[0.65rem] sm:text-xs">No photo</span>
                       </div>
                     )}
                   </div>
@@ -309,7 +309,7 @@ export default function MovieDetails() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.9 }}
           >
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">Películas Similares</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6">Similar Movies</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
               {movie.similar.slice(0, 12).map((similarMovie, index) => (
                 <MovieCard key={`similar-${similarMovie.id}-${index}`} movie={similarMovie} index={index} />

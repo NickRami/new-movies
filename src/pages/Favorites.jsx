@@ -26,7 +26,7 @@ export default function Favorites() {
         >
           <div className="flex items-center gap-3 mb-4">
             <Heart className="w-8 h-8 text-primary fill-primary" />
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground">Mis Favoritos</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground">My Favorites</h1>
           </div>
         </motion.div>
         
@@ -37,8 +37,8 @@ export default function Favorites() {
             className="text-center py-20"
           >
             <Heart className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground text-lg mb-2">No tienes películas favoritas aún</p>
-            <p className="text-muted-foreground/70">Agrega películas a tus favoritos usando el botón ⭐</p>
+            <p className="text-muted-foreground text-lg mb-2">No favorite movies yet</p>
+            <p className="text-muted-foreground/70">Start adding movies by clicking the heart icon.</p>
           </motion.div>
         ) : (
           <>
@@ -47,7 +47,7 @@ export default function Favorites() {
               animate={{ opacity: 1 }}
               className="text-muted-foreground mb-8"
             >
-              Tienes {favorites.length} {favorites.length === 1 ? 'película favorita' : 'películas favoritas'}
+              You have {favorites.length} {favorites.length === 1 ? 'favorite movie' : 'favorite movies'}
             </motion.p>
             <MovieList movies={favorites} loading={false} error={null} />
           </>

@@ -56,21 +56,17 @@ export default function MovieList({ movies, loading, error }) {
             transition={{ delay: 0.3 }}
             className="text-destructive/90 text-lg mb-4"
           >
-            {error}
+            Something went wrong while loading movies.
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-left glass rounded-lg p-4 mt-4 border border-border/50"
+            className="text-center glass rounded-lg p-4 mt-4 border border-border/50"
           >
-            <p className="text-foreground text-sm mb-2 font-semibold">Solución:</p>
-            <ol className="text-muted-foreground text-sm list-decimal list-inside space-y-1">
-              <li>Asegúrate de tener un archivo <code className="glass px-2 py-0.5 rounded text-xs">. env</code> en la raíz del proyecto</li>
-              <li>Agrega tu API key: <code className="glass px-2 py-0.5 rounded text-xs">VITE_TMDB_API_KEY=tu_api_key</code></li>
-              <li>Obtén tu API key en: <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">TMDB Settings</a></li>
-              <li>Reinicia el servidor de desarrollo después de agregar la API key</li>
-            </ol>
+            <p className="text-muted-foreground text-sm">
+              Please check your internet connection or try again later.
+            </p>
           </motion.div>
         </Card>
       </motion.div>

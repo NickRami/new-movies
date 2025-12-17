@@ -23,7 +23,7 @@ export default function SearchHero() {
             className="inline-flex items-center gap-2 rounded-full border border-primary/30 glass px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium"
           >
             <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
-            <span className="text-foreground">Busca entre miles de películas</span>
+            <span className="text-foreground">Browse through thousands of movies</span>
           </motion.div>
 
           {/* Título */}
@@ -34,10 +34,10 @@ export default function SearchHero() {
             className="space-y-2 sm:space-y-3"
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
-              ¿Qué quieres ver hoy?
+              What do you want to watch?
             </h1>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Busca por título, explora por género o descubre nuevas historias
+              Search by title, explore genres, or discover new stories
             </p>
           </motion.div>
 
@@ -60,15 +60,15 @@ export default function SearchHero() {
           >
             <div className="flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-glow" />
-              <span>Resultados en tiempo real</span>
+              <span>Real-time results</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-glow" />
-              <span>Miles de películas</span>
+              <span>Thousands of movies</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse-glow" />
-              <span>Filtros por género</span>
+              <span>Filter by genre</span>
             </div>
           </motion.div>
         </div>

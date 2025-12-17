@@ -158,24 +158,19 @@ function HeroCarousel() {
                         <div className="flex justify-center">
                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white/70 text-[10px] font-semibold uppercase tracking-widest backdrop-blur-md">
                                 <Sparkles className="w-3 h-3 text-yellow-400" />
-                                Estreno
+                                CineScope
                             </span>
                         </div>
                         
                         {/* Title */}
-                        <h1 className="text-3xl font-bold text-white tracking-tight leading-none drop-shadow-lg line-clamp-2">
-                            {activeMovie?.title}
+                        <h1 className="text-3xl font-bold text-white tracking-tight leading-none drop-shadow-lg">
+                            Explore Movies
                         </h1>
                         
-                        {/* Meta */}
-                        <div className="flex items-center justify-center gap-3 text-xs font-medium text-white/60">
-                            <span>{new Date(activeMovie?.release_date).getFullYear()}</span>
-                            <span className="w-1 h-1 bg-white/30 rounded-full" />
-                            <div className="flex items-center gap-1">
-                                <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                                <span className="text-white/80">{activeMovie?.vote_average?.toFixed(1)}</span>
-                            </div>
-                        </div>
+                        {/* Subhead Mobile */}
+                        <p className="text-sm text-white/70 max-w-[280px] mx-auto">
+                            Discover ratings and details instantly.
+                        </p>
                      </div>
 
                     {/* Snap List */}
@@ -197,9 +192,9 @@ function HeroCarousel() {
                     
                     {/* Mobile Button at bottom */}
                     <div className="px-8 pb-2">
-                         <Link to={`/movie/${activeMovie?.id}`}>
-                             <Button className="w-full h-12 rounded-xl bg-white text-black font-bold shadow-lg text-base">
-                                 Ver Detalles
+                         <Link to="/search">
+                             <Button className="w-full h-12 rounded-xl bg-primary text-white font-bold shadow-lg text-base">
+                                 Start Exploring
                              </Button>
                          </Link>
                     </div>
@@ -216,39 +211,27 @@ function HeroCarousel() {
                             transition={{ duration: 0.6, ease: "easeOut" }}
                             className="pointer-events-auto flex flex-col items-center space-y-3 md:space-y-4"
                         >
-                            {/* Premium Tag */}
+                            {/* Premium Tag - Ahora estático/Producto */}
                             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-white/80 text-[10px] md:text-xs font-medium uppercase tracking-[0.2em] shadow-sm">
                                 <Sparkles className="w-3 h-3 text-amber-300" />
-                                Estreno Exclusivo
+                                Discover CineScope
                             </span>
 
-                            {/* Cinema Title - Responsive Sizes */}
-                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white tracking-tighter leading-[1.05] drop-shadow-2xl max-w-4xl px-4 line-clamp-2 pb-1">
-                                {activeMovie?.title}
+                            {/* Headline Principal */}
+                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-white tracking-tighter leading-[1.05] drop-shadow-2xl max-w-4xl px-4 pb-2">
+                                Explore Movies Instantly
                             </h1>
                             
-                            {/* Metadata Row */}
-                             <div className="flex items-center gap-4 md:gap-6 text-sm md:text-base font-medium text-white/60 tracking-wide">
-                                <span className="text-white/90">{formatDate(activeMovie?.release_date)}</span>
-                                <span className="w-1 h-1 bg-white/20 rounded-full" />
-                                <div className="flex items-center gap-2 text-white/90">
-                                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                                    <span>{activeMovie?.vote_average?.toFixed(1)}</span>
-                                </div>
-                                <span className="w-1 h-1 bg-white/20 rounded-full" />
-                                <span className="hidden sm:inline">Película</span>
-                            </div>
+                            {/* Subheadline */}
+                            <p className="text-lg md:text-xl font-normal text-white/80 max-w-2xl px-4 leading-relaxed drop-shadow-md">
+                                Search and explore thousands of movies using real-time data from a public movie API.
+                            </p>
                             
                             {/* Action Buttons */}
-                            <div className="flex items-center gap-4 pt-4 md:pt-6">
-                                <Link to={`/movie/${activeMovie?.id}`}>
-                                    <Button className="h-10 md:h-12 px-6 md:px-8 rounded-xl bg-white text-black hover:bg-gray-200 font-bold text-sm md:text-base transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                                        <Play className="w-4 h-4 md:w-5 md:h-5 mr-2 fill-current" /> Reproducir
-                                    </Button>
-                                </Link>
-                                <Link to={`/movie/${activeMovie?.id}`}>
-                                    <Button variant="outline" className="h-10 md:h-12 px-6 md:px-8 rounded-xl border-white/20 bg-white/5 text-white hover:bg-white/10 font-medium text-sm md:text-base backdrop-blur-md transition-all hover:scale-105">
-                                        <Info className="w-4 h-4 md:w-5 md:h-5 mr-2" /> Más Información
+                            <div className="flex items-center gap-4 pt-6 md:pt-8">
+                                <Link to="/search">
+                                    <Button className="h-12 md:h-14 px-8 md:px-10 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-base md:text-lg transition-all hover:scale-105 shadow-[0_0_30px_rgba(220,38,38,0.4)]">
+                                        Start Exploring
                                     </Button>
                                 </Link>
                             </div>

@@ -27,132 +27,60 @@ export default function Footer() {
         style={{ backgroundSize: '200% 100%' }}
       />
 
-      <div className="container mx-auto px-4 lg:px-8 py-10 md:py-12 relative">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10">
-          {/* Logo y descripción */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="col-span-1 md:col-span-2"
-          >
-            <div className="flex items-center gap-2 mb-4">
-              <motion.div
-                animate={{ y: [0, -3, 0] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="inline-flex items-center justify-center rounded-xl bg-primary/10 p-2"
-              >
+        <div className="container mx-auto px-4 lg:px-8 py-10 md:py-12 relative">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10">
+            {/* Logo y descripción */}
+            <div className="col-span-1 md:col-span-2">
+                <div className="flex items-center gap-2 mb-4">
                 <Film className="w-5 h-5 text-primary" />
-              </motion.div>
-              <h3 className="text-xl font-bold tracking-tight">CineScope</h3>
+                <h3 className="text-xl font-bold tracking-tight">CineScope</h3>
+                </div>
+                <p className="text-muted-foreground mb-6 max-w-sm text-sm">
+                Movie exploration app built with modern frontend technologies.
+                Designed for optimal user experience and performance.
+                </p>
+                <div className="flex gap-4">
+                    {/* Tech Stack Chips */}
+                    <div className="flex flex-wrap gap-2">
+                        {['React', 'Vite', 'Tailwind', 'TMDB API'].map(tech => (
+                             <span key={tech} className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-medium text-white/60">
+                                {tech}
+                            </span>
+                        ))}
+                    </div>
+                </div>
             </div>
-            <p className="text-muted-foreground mb-4 max-w-md text-sm md:text-base">
-              Explora las tendencias del cine, descubre nuevos estrenos y guarda tus
-              películas favoritas en un solo lugar.
+
+            {/* Navegación - Keeping it minimal */}
+            <div className="col-span-1 md:col-span-2 md:justify-self-end flex flex-col md:items-end">
+                <h4 className="font-semibold mb-4 text-sm tracking-wide uppercase text-muted-foreground">
+                Project Links
+                </h4>
+                <ul className="space-y-3 text-sm md:text-right">
+                <li>
+                    <a href="https://github.com/NickRami" target="_blank" rel="noreferrer" className="text-foreground/80 hover:text-primary transition-colors">
+                        GitHub Profile
+                    </a>
+                </li>
+                 <li>
+                    <Link to="/search" className="text-foreground/80 hover:text-primary transition-colors">
+                        Search Movies
+                    </Link>
+                </li>
+                </ul>
+            </div>
+            </div>
+
+            {/* Línea inferior y copy */}
+            <div className="mt-12 pt-6 border-t border-border/40 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-muted-foreground/60 text-xs">
+                © 2025 CineScope. All rights reserved.
             </p>
-            <div className="flex gap-3">
-              <motion.a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -3, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-lg glass-dark border border-border/50 hover:border-primary/50 hover:shadow-glow-primary transition-all duration-300"
-                aria-label="GitHub"
-              >
-                <Github className="w-5 h-5" />
-              </motion.a>
-              <motion.a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.1, y: -3, rotate: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-lg glass-dark border border-border/50 hover:border-primary/50 hover:shadow-glow-primary transition-all duration-300"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-5 h-5" />
-              </motion.a>
-              <motion.a
-                href="mailto:contact@movies.com"
-                whileHover={{ scale: 1.1, y: -3, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-lg glass-dark border border-border/50 hover:border-primary/50 hover:shadow-glow-primary transition-all duration-300"
-                aria-label="Email"
-              >
-                <Mail className="w-5 h-5" />
-              </motion.a>
+            <p className="text-muted-foreground/60 text-xs flex items-center gap-1">
+                Built with <Heart className="w-3 h-3 text-primary/80" /> by Ramiro
+            </p>
             </div>
-          </motion.div>
-
-          {/* Navegación */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <h4 className="font-semibold mb-4 text-sm tracking-wide uppercase text-muted-foreground">
-              Navegación
-            </h4>
-            <ul className="space-y-2 text-sm">
-              {footerLinks.navegacion.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="group inline-flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <span>{link.label}</span>
-                    <span className="h-[1px] w-0 group-hover:w-6 bg-primary transition-all duration-200" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-
-          {/* Recursos */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h4 className="font-semibold mb-4 text-sm tracking-wide uppercase text-muted-foreground">
-              Recursos
-            </h4>
-            <ul className="space-y-2 text-sm">
-              {footerLinks.recursos.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <span>{link.label}</span>
-                    <span className="h-[1px] w-0 group-hover:w-6 bg-primary transition-all duration-200" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
         </div>
-
-        {/* Línea inferior y copy */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-          className="mt-8 pt-6 border-t border-border/60 flex flex-col md:flex-row justify-between items-center gap-4"
-        >
-          <p className="text-muted-foreground text-xs md:text-sm text-center md:text-left">
-            © {currentYear} CineScope. Todos los derechos reservados.
-          </p>
-         
-        </motion.div>
-      </div>
     </footer>
   );
 }

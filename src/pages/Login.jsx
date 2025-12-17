@@ -52,7 +52,7 @@ export default function Login() {
 
       <div className="container relative z-10 px-4 flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-md mb-6">
-            <BackNavigation label="Volver" />
+            <BackNavigation label="Back" />
         </div>
 
         <motion.div
@@ -71,8 +71,8 @@ export default function Login() {
                >
                  <Film className="w-8 h-8 text-primary" />
                </motion.div>
-               <h1 className="text-2xl font-bold tracking-tight mb-2">Bienvenido de nuevo</h1>
-               <p className="text-muted-foreground text-sm">Ingresa tus credenciales para continuar</p>
+               <h1 className="text-2xl font-bold tracking-tight mb-2">Welcome Back</h1>
+               <p className="text-muted-foreground text-sm">Enter your credentials to continue</p>
              </div>
 
              <form onSubmit={handleSubmit} className="space-y-4">
@@ -82,7 +82,7 @@ export default function Login() {
                    <Input
                      name="nickname"
                      type="text"
-                     placeholder="Tu Nickname"
+                     placeholder="Your Nickname"
                      value={formData.nickname}
                      onChange={handleChange}
                      className="pl-10 bg-background/50 border-border/50 focus:border-primary/50"
@@ -96,7 +96,7 @@ export default function Login() {
                    <Input
                      name="email"
                      type="email"
-                     placeholder="correo@ejemplo.com"
+                     placeholder="email@example.com"
                      value={formData.email}
                      onChange={handleChange}
                      className="pl-10 bg-background/50 border-border/50 focus:border-primary/50"
@@ -123,10 +123,10 @@ export default function Login() {
                <div className="flex items-center justify-between text-xs">
                  <label className="flex items-center gap-2 cursor-pointer group">
                    <input type="checkbox" className="rounded border-border/50 bg-background/50 text-primary focus:ring-primary shadow-sm" />
-                   <span className="text-muted-foreground group-hover:text-foreground transition-colors">Recordarme</span>
+                   <span className="text-muted-foreground group-hover:text-foreground transition-colors">Remember me</span>
                  </label>
                  <a href="#" className="text-primary hover:text-primary/80 transition-colors hover:underline">
-                   ¿Olvidaste tu contraseña?
+                   Forgot password?
                  </a>
                </div>
 
@@ -139,11 +139,11 @@ export default function Login() {
                  {loading ? (
                    <span className="flex items-center gap-2">
                      <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                     Ingresando...
+                     Signing in...
                    </span>
                  ) : (
                    <span className="flex items-center gap-2">
-                     Iniciar Sesión 
+                     Sign In 
                      <ArrowRight className="w-4 h-4" />
                    </span>
                  )}
@@ -151,9 +151,9 @@ export default function Login() {
              </form>
 
              <div className="mt-6 text-center text-sm text-muted-foreground">
-               ¿No tienes una cuenta?{' '}
+               Don't have an account?{' '}
                <Link to="#" className="text-primary font-semibold hover:text-primary/80 transition-colors">
-                 Regístrate
+                 Sign up
                </Link>
              </div>
            </div>

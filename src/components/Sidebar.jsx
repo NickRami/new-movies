@@ -37,8 +37,8 @@ export default function Sidebar({ collapsed = false, onToggle }) {
   }, []);
 
   const menuItems = [
-    { path: '/', label: 'Inicio', icon: Home },
-    { path: '/favorites', label: 'Favoritos', icon: Heart, badge: favorites.length },
+    { path: '/', label: 'Home', icon: Home },
+    { path: '/favorites', label: 'Favorites', icon: Heart, badge: favorites.length },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -121,7 +121,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
                     <div className="mt-8 pt-4 border-t border-border/60">
                       <div className="flex items-center justify-between mb-3">
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                          Categorías
+                          Genres
                         </p>
                         <span className="text-[0.65rem] text-muted-foreground/60 px-2 py-0.5 rounded-full glass border border-border/30">
                           {genres.length}
@@ -253,7 +253,7 @@ export default function Sidebar({ collapsed = false, onToggle }) {
               <div className="mt-4">
                 <div className="flex items-center justify-between mb-3 px-1">
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                    Categorías
+                    Genres
                   </p>
                   <span className="text-[0.65rem] text-muted-foreground/60 px-2 py-0.5 rounded-full glass border border-border/30">
                     {genres.length}
