@@ -22,7 +22,9 @@ const resources = {
       "nav": {
         "home": "Home",
         "favorites": "Favorites",
-        "genres": "Genres"
+        "genres": "Genres",
+        "genresMenuTitle": "Explore by Genre",
+        "genresMenuSubtitle": "Discover movies by category"
       },
       "favorites": {
           "title": "My Favorites",
@@ -48,7 +50,9 @@ const resources = {
       "nav": {
         "home": "Inicio",
         "favorites": "Favoritos",
-        "genres": "Géneros"
+        "genres": "Géneros",
+        "genresMenuTitle": "Explorar por Género",
+        "genresMenuSubtitle": "Descubre películas por categoría"
       },
       "favorites": {
           "title": "Mis Favoritos",

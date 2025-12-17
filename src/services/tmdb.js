@@ -15,13 +15,15 @@ function validateApiKey() {
 
 /**
  * Realiza una petición a la API de TMDB
+ * @param {string} endpoint - El endpoint de la API
+ * @param {string} language - El código de idioma (ej: 'es-ES', 'en-US')
  */
-async function fetchFromTMDB(endpoint) {
+async function fetchFromTMDB(endpoint, language = 'es-ES') {
   try {
     validateApiKey();
     
     const separator = endpoint.includes('?') ? '&' : '?';
-    const url = `${BASE_URL}${endpoint}${separator}api_key=${API_KEY}&language=es-ES`;
+    const url = `${BASE_URL}${endpoint}${separator}api_key=${API_KEY}&language=${language}`;
     
     const response = await fetch(url);
     const data = await response.json();
@@ -58,8 +60,8 @@ async function fetchFromTMDB(endpoint) {
 /**
  * Obtiene las películas trending de la semana
  */
-export async function fetchTrending(page = 1) {
-  const data = await fetchFromTMDB(`/trending/movie/week?page=${page}`);
+export async function fetchTrending(page = 1, language = 'es-ES') {
+  const data = await fetchFromTMDB(`/trending/movie/week?page=${page}`, language);
   const results = data.results.map(movie => ({
     ...movie,
     poster_path: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : null,
@@ -71,8 +73,8 @@ export async function fetchTrending(page = 1) {
 /**
  * Obtiene las próximas películas en estreno
  */
-export async function fetchUpcoming() {
-  const data = await fetchFromTMDB('/movie/upcoming');
+export async function fetchUpcoming(language = 'es-ES') {
+  const data = await fetchFromTMDB('/movie/upcoming', language);
 
   if (!data.results) return [];
 
@@ -89,12 +91,12 @@ export async function fetchUpcoming() {
 /**
  * Busca películas por query
  */
-export async function searchMovies(query, page = 1) {
+export async function searchMovies(query, page = 1, language = 'es-ES') {
   if (!query || query.trim() === '') {
     return { results: [], total_pages: 0 };
   }
   
-  const data = await fetchFromTMDB(`/search/movie?query=${encodeURIComponent(query)}&page=${page}`);
+  const data = await fetchFromTMDB(`/search/movie?query=${encodeURIComponent(query)}&page=${page}`, language);
   const results = data.results.map(movie => ({
     ...movie,
     poster_path: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : null,
@@ -106,12 +108,12 @@ export async function searchMovies(query, page = 1) {
 /**
  * Obtiene los detalles completos de una película
  */
-export async function getMovieDetails(id) {
+export async function getMovieDetails(id, language = 'es-ES') {
   const [movie, credits, videos, similar] = await Promise.all([
-    fetchFromTMDB(`/movie/${id}`),
-    fetchFromTMDB(`/movie/${id}/credits`),
-    fetchFromTMDB(`/movie/${id}/videos`),
-    fetchFromTMDB(`/movie/${id}/similar`),
+    fetchFromTMDB(`/movie/${id}`, language),
+    fetchFromTMDB(`/movie/${id}/credits`, language),
+    fetchFromTMDB(`/movie/${id}/videos`, language),
+    fetchFromTMDB(`/movie/${id}/similar`, language),
   ]);
 
   return {
@@ -156,19 +158,20 @@ export async function fetchProviders() {
 /**
  * Obtiene la lista de géneros de películas
  */
-export async function fetchGenres() {
-  const data = await fetchFromTMDB('/genre/movie/list');
+export async function fetchGenres(language = 'es-ES') {
+  const data = await fetchFromTMDB('/genre/movie/list', language);
   return data.genres || [];
 }
 
 /**
  * Obtiene películas por género
  */
-export async function fetchMoviesByGenre(genreId, page = 1) {
+export async function fetchMoviesByGenre(genreId, page = 1, language = 'es-ES') {
   if (!genreId) return { results: [], total_pages: 0 };
 
   const data = await fetchFromTMDB(
-    `/discover/movie?with_genres=${genreId}&sort_by=popularity.desc&page=${page}`
+    `/discover/movie?with_genres=${genreId}&sort_by=popularity.desc&page=${page}`,
+    language
   );
 
   const results = data.results.map(movie => ({

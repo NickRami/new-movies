@@ -29,19 +29,20 @@ export default function NavbarAdaptive() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [genres, setGenres] = useState([]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     async function loadGenres() {
       try {
-        const data = await fetchGenres();
+        const language = i18n.language === 'es' ? 'es-ES' : 'en-US';
+        const data = await fetchGenres(language);
         setGenres(data);
       } catch (error) {
         console.error('Error loading genres:', error);
       }
     }
     loadGenres();
-  }, []);
+  }, [i18n.language]);
 
   const isActive = (path) => location.pathname === path;
 

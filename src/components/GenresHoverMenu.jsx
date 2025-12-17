@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 
 /**
@@ -29,6 +30,7 @@ import { cn } from '../lib/utils';
 
 export default function GenresHoverMenu({ genres, onGenreClick }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     // Wrapper: Contains both trigger and menu
@@ -50,7 +52,7 @@ export default function GenresHoverMenu({ genres, onGenreClick }) {
           isOpen && "bg-white/5 text-foreground"
         )}
       >
-        <span>Genres</span>
+        <span>{t('nav.genres')}</span>
         <ChevronDown 
           className={cn(
             "w-4 h-4 transition-transform duration-300",
@@ -92,10 +94,10 @@ export default function GenresHoverMenu({ genres, onGenreClick }) {
               {/* Header */}
               <div className="mb-4 pb-3 border-b border-white/10">
                 <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-                  Explore by Genre
+                  {t('nav.genresMenuTitle')}
                 </h3>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Discover movies by category
+                  {t('nav.genresMenuSubtitle')}
                 </p>
               </div>
 
