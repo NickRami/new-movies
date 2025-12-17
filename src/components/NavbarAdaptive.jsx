@@ -16,6 +16,7 @@ import {
 } from './ui/dropdown-menu';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
+import GenresHoverMenu from './GenresHoverMenu';
 import { fetchGenres } from '../services/tmdb';
 import { cn } from '../lib/utils';
 
@@ -106,47 +107,12 @@ export default function NavbarAdaptive() {
                 )}
               </Link>
 
-              {/* Genres Dropdown - Desktop - MODERNIZED */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <motion.button 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 px-3 py-1.5 rounded-full hover:bg-white/5 group"
-                  >
-                    <span>{t('nav.genres') || 'Genres'}</span>
-                    <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform duration-300" />
-                  </motion.button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent 
-                  align="start" 
-                  className="w-64 max-h-[420px] overflow-y-auto backdrop-blur-2xl bg-background/95 border-white/10 shadow-2xl"
-                  sideOffset={8}
-                >
-                  <div className="p-2 border-b border-white/10 mb-1">
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2">
-                      Explore by Genre
-                    </p>
-                  </div>
-                  {genres.map((genre, index) => (
-                    <DropdownMenuItem
-                      key={genre.id}
-                      onClick={() => handleGenreClick(genre)}
-                      className="cursor-pointer hover:bg-primary/10 focus:bg-primary/10 rounded-lg mx-1 my-0.5 transition-all duration-200 group"
-                    >
-                      <motion.div
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.02 }}
-                        className="flex items-center justify-between w-full"
-                      >
-                        <span className="group-hover:text-primary transition-colors">{genre.name}</span>
-                        <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200 text-primary" />
-                      </motion.div>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* Genres Hover Menu - Desktop - PROFESSIONAL HOVER */}
+              <GenresHoverMenu 
+                genres={genres}
+                onGenreClick={handleGenreClick}
+              />
+
 
               <Link
                 to="/favorites"
