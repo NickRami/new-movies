@@ -58,13 +58,14 @@ async function fetchFromTMDB(endpoint) {
 /**
  * Obtiene las películas trending de la semana
  */
-export async function fetchTrending() {
-  const data = await fetchFromTMDB('/trending/movie/week');
-  return data.results.map(movie => ({
+export async function fetchTrending(page = 1) {
+  const data = await fetchFromTMDB(`/trending/movie/week?page=${page}`);
+  const results = data.results.map(movie => ({
     ...movie,
     poster_path: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : null,
     backdrop_path: movie.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${movie.backdrop_path}` : null,
   }));
+  return { results, total_pages: data.total_pages };
 }
 
 /**
@@ -85,17 +86,21 @@ export async function fetchUpcoming() {
 /**
  * Busca películas por query
  */
-export async function searchMovies(query) {
+/**
+ * Busca películas por query
+ */
+export async function searchMovies(query, page = 1) {
   if (!query || query.trim() === '') {
-    return [];
+    return { results: [], total_pages: 0 };
   }
   
-  const data = await fetchFromTMDB(`/search/movie?query=${encodeURIComponent(query)}`);
-  return data.results.map(movie => ({
+  const data = await fetchFromTMDB(`/search/movie?query=${encodeURIComponent(query)}&page=${page}`);
+  const results = data.results.map(movie => ({
     ...movie,
     poster_path: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : null,
     backdrop_path: movie.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${movie.backdrop_path}` : null,
   }));
+  return { results, total_pages: data.total_pages };
 }
 
 /**
@@ -160,17 +165,18 @@ export async function fetchGenres() {
  * Obtiene películas por género
  */
 export async function fetchMoviesByGenre(genreId, page = 1) {
-  if (!genreId) return [];
+  if (!genreId) return { results: [], total_pages: 0 };
 
   const data = await fetchFromTMDB(
     `/discover/movie?with_genres=${genreId}&sort_by=popularity.desc&page=${page}`
   );
 
-  return data.results.map(movie => ({
+  const results = data.results.map(movie => ({
     ...movie,
     poster_path: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : null,
     backdrop_path: movie.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${movie.backdrop_path}` : null,
   }));
+  return { results, total_pages: data.total_pages };
 }
 
 

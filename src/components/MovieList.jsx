@@ -26,7 +26,7 @@ export default function MovieList({ movies, loading, error }) {
           transition={{ delay: 0.2 }}
           className="mt-4 text-muted-foreground text-sm"
         >
-          Cargando películas...
+          Loading movies...
         </motion.p>
       </motion.div>
     );
@@ -95,7 +95,7 @@ export default function MovieList({ movies, loading, error }) {
           transition={{ delay: 0.3 }}
           className="text-muted-foreground text-lg"
         >
-          No se encontraron películas
+          No movies found
         </motion.p>
         <motion.p 
           initial={{ opacity: 0, y: 10 }}
@@ -103,7 +103,7 @@ export default function MovieList({ movies, loading, error }) {
           transition={{ delay: 0.4 }}
           className="text-muted-foreground/60 text-sm mt-2"
         >
-          Intenta con otra búsqueda o categoría
+          Try adjusting your search or category
         </motion.p>
       </motion.div>
     );
@@ -114,7 +114,7 @@ export default function MovieList({ movies, loading, error }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6"
+      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
     >
       {movies.map((movie, index) => (
         <MovieCard key={movie.id} movie={movie} index={index} />

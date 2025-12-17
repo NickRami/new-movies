@@ -9,8 +9,9 @@ import {
   fetchUpcoming,
 } from '../services/tmdb';
 
-export function useTrendingMovies() {
+export function useTrendingMovies(page = 1) {
   const [movies, setMovies] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -19,8 +20,9 @@ export function useTrendingMovies() {
       try {
         setLoading(true);
         setError(null);
-        const data = await fetchTrending();
-        setMovies(data);
+        const data = await fetchTrending(page);
+        setMovies(data.results);
+        setTotalPages(data.total_pages);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -29,9 +31,9 @@ export function useTrendingMovies() {
     }
 
     loadMovies();
-  }, []);
+  }, [page]);
 
-  return { movies, loading, error };
+  return { movies, totalPages, loading, error };
 }
 
 export function useUpcomingMovies() {
@@ -59,8 +61,9 @@ export function useUpcomingMovies() {
   return { movies, loading, error };
 }
 
-export function useSearchMovies(query, genreId) {
+export function useSearchMovies(query, genreId, page = 1) {
   const [movies, setMovies] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -69,6 +72,7 @@ export function useSearchMovies(query, genreId) {
       // Sin query ni género: limpiar resultados
       if ((!query || query.trim() === '') && !genreId) {
         setMovies([]);
+        setTotalPages(0);
         return;
       }
 
@@ -79,13 +83,14 @@ export function useSearchMovies(query, genreId) {
         let data;
         if (genreId && (!query || query.trim() === '')) {
           // Búsqueda por género únicamente
-          data = await fetchMoviesByGenre(genreId);
+          data = await fetchMoviesByGenre(genreId, page);
         } else {
           // Búsqueda por texto (ignora género si hay query)
-          data = await searchMovies(query);
+          data = await searchMovies(query, page);
         }
 
-        setMovies(data);
+        setMovies(data.results);
+        setTotalPages(data.total_pages);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -95,9 +100,9 @@ export function useSearchMovies(query, genreId) {
 
     const timeoutId = setTimeout(search, 500);
     return () => clearTimeout(timeoutId);
-  }, [query, genreId]);
+  }, [query, genreId, page]);
 
-  return { movies, loading, error };
+  return { movies, totalPages, loading, error };
 }
 
 export function useMovieDetails(id) {
@@ -186,13 +191,13 @@ export function useGenreSections() {
         const genresToUse =
           selectedGenres.length > 0 ? selectedGenres : genres.slice(0, 5);
 
-        const moviesByGenre = await Promise.all(
-          genresToUse.map((genre) => fetchMoviesByGenre(genre.id))
+        const moviesByGenreData = await Promise.all(
+          genresToUse.map((genre) => fetchMoviesByGenre(genre.id, 1))
         );
 
         const mappedSections = genresToUse.map((genre, index) => ({
           genre,
-          movies: (moviesByGenre[index] || []).slice(0, 12),
+          movies: (moviesByGenreData[index]?.results || []).slice(0, 12),
         }));
 
         setSections(mappedSections);

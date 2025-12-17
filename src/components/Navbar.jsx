@@ -1,3 +1,4 @@
+
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -6,6 +7,8 @@ import { useAuth } from '../context/AuthContext';
 import { Film, LogIn, UserPlus, Search as SearchIcon, User, LogOut, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
   const location = useLocation();
@@ -14,6 +17,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [term, setTerm] = useState('');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { t } = useTranslation();
 
   const isActive = (path) => {
     return location.pathname === path;
@@ -58,11 +62,16 @@ export default function Navbar() {
                   type="text"
                   value={term}
                   onChange={(e) => setTerm(e.target.value)}
-                  placeholder="Search for movies, genres or stars..."
+                  placeholder={t('search.placeholder')}
                   className="pl-9 pr-3 py-2 h-9 text-xs sm:text-sm glass border-border/50 focus-visible:ring-primary focus-visible:border-primary/50 transition-all duration-300"
                 />
               </div>
             </form>
+
+            {/* Desktop Actions */}
+            <div className="hidden md:flex items-center gap-4">
+               <LanguageSwitcher />
+            </div>
 
             {/* Auth Buttons / User Profile */}
             <div className="flex items-center gap-2">

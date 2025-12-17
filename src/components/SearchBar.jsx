@@ -57,8 +57,8 @@ export default function SearchBar() {
           type="text"
           value={query}
           onChange={handleChange}
-          placeholder="Buscar películas..."
-          className="w-full pl-12 pr-4 py-3 glass-dark border-0 border-b-2 border-border/60 rounded-none focus-visible:ring-0 focus:border-primary focus:outline-none placeholder:text-muted-foreground text-sm md:text-base transition-all duration-300"
+          placeholder="Search movies, genres or actors..."
+          className="w-full pl-12 pr-4 py-3 glass-dark border border-border/50 rounded-full focus-visible:ring-0 focus:border-primary focus:outline-none placeholder:text-muted-foreground text-sm md:text-base transition-all duration-300 shadow-lg shadow-black/10"
         />
       </div>
     </motion.form>

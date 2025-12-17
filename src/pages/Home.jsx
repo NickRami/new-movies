@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion';
 import { TrendingUp } from 'lucide-react';
 import { useTrendingMovies, useGenreSections } from '../hooks/useMovies';
-import HeroCarousel from '../components/HeroCarousel';
-import ProvidersCarousel from '../components/ProvidersCarousel';
+import SearchHero from '../components/SearchHero';
 import MovieList from '../components/MovieList';
 import MovieCard from '../components/MovieCard';
-
+import { useTranslation } from 'react-i18next';
 
 export default function Home() {
   const { movies, loading, error } = useTrendingMovies();
+  const { t } = useTranslation();
   const {
     sections: genreSections,
     loading: loadingGenres,
@@ -17,23 +17,18 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Carousel */}
-      {/* Hero Carousel */}
-      <div>
-        <HeroCarousel />
-      </div>
-
-      {/* Carousel de proveedores */}
-      <ProvidersCarousel />
+      {/* Search Hero - Main Entry Point */}
+      <SearchHero />
 
       {/* Trending Movies Section */}
       <motion.section
+        id="trending-section"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
         className="py-10"
       >
-        <div className="container mx-auto px-4 lg:px-8">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24">
           <motion.div
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -49,20 +44,21 @@ export default function Home() {
                 <TrendingUp className="w-8 h-8 text-primary drop-shadow-glow" />
               </motion.div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-                Trending Movies
+                {t('home.trendingTitle')}
               </h2>
             </div>
             <p className="text-muted-foreground text-lg">
-              Most popular movies this week
+              {t('home.trendingSubtitle')}
             </p>
           </motion.div>
+          
           <MovieList movies={movies} loading={loading} error={error} />
         </div>
       </motion.section>
 
       {/* Películas por categorías */}
-      <section className="pb-10">
-        <div className="container mx-auto px-4 lg:px-8 space-y-8">
+      <section className="pb-12 md:pb-20">
+        <div className="container mx-auto px-6 md:px-12 lg:px-16 xl:px-24 space-y-12">
           {!loadingGenres && !errorGenres && genreSections.length > 0 && (
             genreSections.map((section, sectionIndex) => (
               <motion.div
@@ -70,7 +66,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + sectionIndex * 0.15, duration: 0.6, ease: "easeOut" }}
-                className="space-y-4"
+                className="space-y-6"
               >
                 <div className="flex items-center justify-between gap-2 glass-dark p-4 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300">
                   <motion.h3 
@@ -87,14 +83,14 @@ export default function Home() {
                     transition={{ delay: 0.6 + sectionIndex * 0.15, duration: 0.5 }}
                     className="text-xs text-muted-foreground uppercase tracking-wide px-3 py-1 glass rounded-full border border-primary/20"
                   >
-                    Genre
+                    {t('nav.genres')}
                   </motion.p>
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+                <div className="flex gap-4 overflow-x-auto pb-4 pt-2 no-scrollbar pl-1">
                   {section.movies.map((movie, index) => (
                     <div
                       key={movie.id}
-                      className="w-36 sm:w-40 md:w-44 flex-shrink-0"
+                      className="w-36 sm:w-40 md:w-44 flex-shrink-0 transition-transform duration-300 hover:scale-105"
                     >
                       <MovieCard movie={movie} index={index} />
                     </div>
