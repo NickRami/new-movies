@@ -81,7 +81,7 @@ export default function SearchHero() {
   );
 }
 
-// Background Component - Deep & Immersive
+// Hero Background with Cinematic Vignette
 function HeroBackground({ currentMovie }) {
   return (
     <AnimatePresence mode="wait">
@@ -90,101 +90,118 @@ function HeroBackground({ currentMovie }) {
         initial={{ opacity: 0, scale: 1.1 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }} // Custom easeOutCubic approx for cinematic feel
+        transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }} 
         className="absolute inset-0"
         style={{ zIndex: Z_INDEX.background }}
       >
-        {/* Main Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${currentMovie.backdrop_path})` }}
         />
         
-        {/* Professional Gradient Layering */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/40 to-transparent" />
-        <div className="absolute inset-0 bg-black/20" />
+        {/* Cinematic Gradient Overlays */}
+        {/* 1. Base dimming */}
+        <div className="absolute inset-0 bg-black/10" />
+        {/* 2. Left-side Heavy Vignette for Text Readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent" />
+        {/* 3. Bottom fade for smooth carousel integration */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
       </motion.div>
     </AnimatePresence>
   );
 }
 
-// Content Component - Clean, Minimal, Impactful
+// Content Component - Developer Design Edition
 function HeroContent({ currentMovie, isFavorite, toggleFavorite, t }) {
   return (
-    <div className="w-full space-y-4 md:space-y-6 lg:space-y-8 max-w-4xl">
+    <div className="w-full space-y-6 md:space-y-8 max-w-4xl relative z-10 font-sans">
       
-      {/* 1. Badge & Meta */}
+      {/* 1. Ultra-Premium Glass Badge */}
       <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        key={`meta-${currentMovie.id}`}
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        key={`badge-${currentMovie.id}`}
         transition={{ delay: 0.2, duration: 0.5 }}
-        className="flex items-center flex-wrap gap-3"
       >
-        <span className="bg-primary text-white text-[10px] md:text-xs font-bold px-2.5 py-1 rounded shadow-lg shadow-primary/20 uppercase tracking-widest">
-          {t('hero.featured')}
-        </span>
-        
-        <div className="flex items-center gap-3 text-sm font-medium text-gray-200">
-          <span className="flex items-center gap-1.5">
-            <Star className="w-4 h-4 text-accent fill-accent" /> 
-            {currentMovie.vote_average.toFixed(1)}
-          </span>
-          <span className="w-1 h-1 bg-white/30 rounded-full" />
-          <span>{new Date(currentMovie.release_date).getFullYear()}</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl shadow-inner shadow-white/5">
+           <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_rgba(234,179,8,0.8)]"/>
+           <span className="text-[10px] md:text-xs font-bold text-white/90 tracking-[0.2em] uppercase">
+             {t('hero.featured')}
+           </span>
         </div>
       </motion.div>
 
-      {/* 2. Title */}
+      {/* 2. Title - Metallic Gradient Finish */}
       <motion.h1
         key={`title-${currentMovie.id}`}
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-black text-white leading-[0.95] tracking-tight drop-shadow-xl"
+        transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
+        className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 leading-[0.9] tracking-tighter drop-shadow-2xl"
       >
         {currentMovie.title}
       </motion.h1>
 
-      {/* 3. Description (Overview) */}
+      {/* 3. Metadata - Clean & Monospaced Numbers */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        key={`meta-${currentMovie.id}`}
+        transition={{ delay: 0.35, duration: 0.5 }}
+        className="flex items-center gap-6 text-sm md:text-base font-medium text-gray-300"
+      >
+        <span className="text-white font-mono">{new Date(currentMovie.release_date).getFullYear()}</span>
+        <span className="flex items-center gap-1.5 text-accent">
+           <Star className="w-4 h-4 fill-current" />
+           <span className="font-mono text-white">{currentMovie.vote_average.toFixed(1)}</span>
+        </span>
+        <span className="px-2 py-0.5 rounded border border-white/20 text-[10px] font-bold tracking-widest uppercase text-white/80">HD</span>
+        <span className="px-2 py-0.5 rounded border border-white/20 text-[10px] font-bold tracking-widest uppercase text-white/80">5.1</span>
+      </motion.div>
+
+      {/* 4. Description */}
       <motion.p
         key={`desc-${currentMovie.id}`}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.6 }}
-        className="text-base sm:text-lg text-gray-300 line-clamp-2 md:line-clamp-3 max-w-2xl font-body leading-relaxed drop-shadow-md"
+        className="text-base sm:text-lg text-gray-400 line-clamp-3 md:line-clamp-3 max-w-2xl font-body leading-relaxed max-h-24"
       >
         {currentMovie.overview}
       </motion.p>
 
-      {/* 4. Actions */}
+      {/* 5. Actions - Button Shine Effect */}
       <motion.div
         key={`actions-${currentMovie.id}`}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.6 }}
-        className="flex flex-wrap items-center gap-3 md:gap-4 pt-2 md:pt-4"
+        className="flex flex-wrap items-center gap-4 pt-4"
       >
         <Link 
           to={`/movie/${currentMovie.id}`}
-          className="group px-6 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-all duration-200 flex items-center gap-2 shadow-lg shadow-white/10 active:scale-95 text-sm md:text-base"
+          className="group relative h-12 px-8 bg-white text-black font-bold rounded-lg overflow-hidden flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300 active:scale-95"
         >
-          <Play className="w-4 h-4 fill-current group-hover:scale-110 transition-transform" />
-          {t('hero.viewDetails')}
+          {/* Shine Effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/80 to-transparent w-full -translate-x-full group-hover:animate-shine z-0" />
+          
+          <span className="relative z-10 flex items-center gap-2">
+            <Play className="w-4 h-4 fill-current group-hover:scale-110 transition-transform" />
+            {t('hero.viewDetails')}
+          </span>
         </Link>
         
         <button 
           onClick={() => toggleFavorite(currentMovie)}
           className={cn(
-            "group px-6 py-3 rounded-lg border font-medium flex items-center gap-2 transition-all duration-200 active:scale-95 text-sm md:text-base backdrop-blur-sm",
+            "h-12 w-12 rounded-lg border flex items-center justify-center transition-all duration-300 active:scale-95 backdrop-blur-md",
             isFavorite(currentMovie.id) 
-              ? "bg-primary/20 border-primary text-primary hover:bg-primary/30" 
-              : "bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/40"
+              ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(124,58,237,0.3)]" 
+              : "bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/30"
           )}
+          title={isFavorite(currentMovie.id) ? t('hero.removeFromFavorites') : t('hero.addToFavorites')}
         >
-          <Heart className={cn("w-4 h-4 transition-transform", isFavorite(currentMovie.id) ? "fill-current" : "group-hover:scale-110")} />
-          {isFavorite(currentMovie.id) ? t('hero.removeFromFavorites') : t('hero.addToFavorites')}
+          <Heart className={cn("w-5 h-5 transition-transform", isFavorite(currentMovie.id) ? "fill-current scale-110" : "group-hover:scale-110")} />
         </button>
       </motion.div>
     </div>
