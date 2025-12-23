@@ -4,35 +4,40 @@
 
 @layer base {
   :root {
-    /* Paleta cine moderna (oscuro + acentos rojo/cian) */
-    --background: 222 47% 7%;           /* fondo principal muy oscuro (azul marino) */
-    --foreground: 210 40% 98%;          /* texto principal casi blanco */
+    /* Paleta cine moderna Premium - Deep Dark & Violet */
+    --background: 240 10% 4%;           /* #0a0a0b (Casi negro puro) */
+    --foreground: 0 0% 98%;             /* #fafafa (Blanco suave) */
 
-    --card: 222 47% 11%;                /* tarjetas ligeramente más claras */
-    --card-foreground: 210 40% 98%;
+    --card: 240 10% 6%;                 /* #0f0f11 (Ligeramente mas claro que el fondo) */
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 350 84% 56%;             /* rojo vibrante tipo Netflix/TMDB */
+    /* Primary Accent: Electric Violet / Indigo */
+    --primary: 250 95% 65%;             /* #7c3aed (Violeta vibrante) */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 217 33% 17%;           /* gris azulado para fondos suaves */
-    --secondary-foreground: 210 40% 96%;
+    /* Secondary: Deep Blue-Gray */
+    --secondary: 240 5% 15%;            /* #262626 */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 215 25% 20%;               /* fondos apagados (chips, tags) */
-    --muted-foreground: 215 20% 72%;    /* texto apagado */
+    /* Muted for tags/metadata */
+    --muted: 240 5% 12%; 
+    --muted-foreground: 240 5% 65%;
 
-    --accent: 191 97% 37%;              /* cian vibrante para detalles sutiles si se requiere */
-    --accent-foreground: 200 50% 96%;
+    /* Accent for highlights (Gold/Yellow for stars/ratings) */
+    --accent: 45 93% 47%;               /* #eab308 (Yellow 500) */
+    --accent-foreground: 240 10% 3.9%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 19% 30%;
-    --input: 215 19% 30%;
-    --ring: 350 84% 56%;
-    --radius: 0.5rem;
+    --border: 240 5% 15%;
+    --input: 240 5% 15%;
+    --ring: 250 95% 65%;
+    
+    --radius: 0.75rem; /* Bordes un poco mas redondeados (12px) */
   }
 }
 
@@ -43,11 +48,12 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+  overflow-x: hidden; /* Prevent horizontal scrollbars globally */
 }
 
 #root {
