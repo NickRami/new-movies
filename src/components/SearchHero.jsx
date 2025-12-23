@@ -137,7 +137,7 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t }) {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
-        className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 leading-[0.9] tracking-tighter drop-shadow-2xl"
+        className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 leading-[0.9] tracking-tighter drop-shadow-2xl"
       >
         {currentMovie.title}
       </motion.h1>

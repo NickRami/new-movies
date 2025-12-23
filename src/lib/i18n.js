@@ -70,6 +70,25 @@ const resources = {
         "removeFromFavorites": "Remove from favorites",
         "noImage": "No image"
       },
+      "auth": {
+        "welcomeBack": "Welcome Back",
+        "enterCredentials": "Enter your credentials to continue",
+        "createAccount": "Create Account",
+        "joinCommunity": "Join our community of movie lovers",
+        "nickname": "Nickname",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "rememberMe": "Remember me",
+        "forgotPassword": "Forgot password?",
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "signingIn": "Signing in...",
+        "signingUp": "Signing up...",
+        "noAccount": "Don't have an account?",
+        "hasAccount": "Already have an account?",
+        "back": "Back"
+      },
       "favorites": {
           "title": "My Favorites",
           "empty": "No items yet"
@@ -145,6 +164,25 @@ const resources = {
         "addToFavorites": "Agregar a favoritos",
         "removeFromFavorites": "Quitar de favoritos",
         "noImage": "Sin imagen"
+      },
+      "auth": {
+        "welcomeBack": "Bienvenido de nuevo",
+        "enterCredentials": "Ingresa tus credenciales para continuar",
+        "createAccount": "Crear Cuenta",
+        "joinCommunity": "Únete a nuestra comunidad de cinéfilos",
+        "nickname": "Apodo",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "confirmPassword": "Confirmar Contraseña",
+        "rememberMe": "Recuérdame",
+        "forgotPassword": "¿Olvidaste tu contraseña?",
+        "signIn": "Iniciar Sesión",
+        "signUp": "Registrarse",
+        "signingIn": "Iniciando...",
+        "signingUp": "Registrando...",
+        "noAccount": "¿No tienes una cuenta?",
+        "hasAccount": "¿Ya tienes una cuenta?",
+        "back": "Atrás"
       },
       "favorites": {
           "title": "Mis Favoritos",
