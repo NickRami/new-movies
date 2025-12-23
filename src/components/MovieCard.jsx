@@ -83,7 +83,7 @@ export default function MovieCard({ movie, index = 0 }) {
 
           {/* Bottom Info Content */}
           <div className="absolute bottom-0 left-0 w-full p-4 transform translate-y-2 opacity-100 transition-all duration-300 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 z-10">
-            <h3 className="text-white font-bold text-base leading-tight line-clamp-2 drop-shadow-md mb-1">
+            <h3 className="text-white font-bold text-lg leading-tight line-clamp-2 drop-shadow-md mb-2 font-heading tracking-tight">
               {movie.title}
             </h3>
             
