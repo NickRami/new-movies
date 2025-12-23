@@ -2,8 +2,11 @@ import { motion } from 'framer-motion';
 import { Loader2, AlertCircle } from 'lucide-react';
 import MovieCard from './MovieCard';
 import { Card } from './ui/card';
+import { useTranslation } from 'react-i18next';
 
 export default function MovieList({ movies, loading, error }) {
+  const { t } = useTranslation();
+  
   if (loading) {
     return (
       <motion.div
@@ -26,7 +29,7 @@ export default function MovieList({ movies, loading, error }) {
           transition={{ delay: 0.2 }}
           className="mt-4 text-muted-foreground text-sm"
         >
-          Loading movies...
+          {t('common.loading')}
         </motion.p>
       </motion.div>
     );
@@ -48,7 +51,7 @@ export default function MovieList({ movies, loading, error }) {
             className="flex items-center justify-center gap-2 mb-4"
           >
             <AlertCircle className="w-6 h-6 text-destructive" />
-            <p className="text-destructive text-xl font-semibold">Error</p>
+            <p className="text-destructive text-xl font-semibold">{t('common.error')}</p>
           </motion.div>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -56,7 +59,7 @@ export default function MovieList({ movies, loading, error }) {
             transition={{ delay: 0.3 }}
             className="text-destructive/90 text-lg mb-4"
           >
-            Something went wrong while loading movies.
+            {t('errors.general')}
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
@@ -65,7 +68,7 @@ export default function MovieList({ movies, loading, error }) {
             className="text-center glass rounded-lg p-4 mt-4 border border-border/50"
           >
             <p className="text-muted-foreground text-sm">
-              Please check your internet connection or try again later.
+              {t('errors.connection')}
             </p>
           </motion.div>
         </Card>
@@ -95,7 +98,7 @@ export default function MovieList({ movies, loading, error }) {
           transition={{ delay: 0.3 }}
           className="text-muted-foreground text-lg"
         >
-          No movies found
+          {t('search.noResults')}
         </motion.p>
         <motion.p 
           initial={{ opacity: 0, y: 10 }}
@@ -103,7 +106,7 @@ export default function MovieList({ movies, loading, error }) {
           transition={{ delay: 0.4 }}
           className="text-muted-foreground/60 text-sm mt-2"
         >
-          Try adjusting your search or category
+          {t('search.adjustSearch')}
         </motion.p>
       </motion.div>
     );

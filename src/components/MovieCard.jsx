@@ -4,10 +4,12 @@ import { Star, Calendar, Play } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
 import { Card } from './ui/card';
 import { cn } from '../lib/utils';
+import { useTranslation } from 'react-i18next';
 
 export default function MovieCard({ movie, index = 0 }) {
   const { isFavorite, toggleFavorite } = useFavorites();
   const favorite = isFavorite(movie.id);
+  const { t } = useTranslation();
 
   const handleFavoriteClick = (e) => {
     e.preventDefault();
@@ -39,7 +41,7 @@ export default function MovieCard({ movie, index = 0 }) {
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-secondary/50">
               <span className="text-4xl mb-2">🎬</span>
-              <span className="text-muted-foreground text-sm text-center">Sin imagen</span>
+              <span className="text-muted-foreground text-sm text-center">{t('common.noImage')}</span>
             </div>
           )}
 
@@ -61,7 +63,7 @@ export default function MovieCard({ movie, index = 0 }) {
               "bg-black/30 border border-white/10 hover:bg-white/20 active:scale-95",
               favorite ? "opacity-100" : "opacity-0 group-hover:opacity-100"
             )}
-            title={favorite ? "Quitar de favoritos" : "Agregar a favoritos"}
+            title={favorite ? t('movieCard.removeFromFavorites') : t('movieCard.addToFavorites')}
           >
             <Star
               className={cn(

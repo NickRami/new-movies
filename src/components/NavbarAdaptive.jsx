@@ -210,7 +210,7 @@ export default function NavbarAdaptive() {
                           }}
                           className="w-full flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg transition-colors text-left"
                         >
-                          <span className="text-red-500">♥</span> Mis Favoritos
+                          <span className="text-red-500">♥</span> {t('nav.myFavorites')}
                         </button>
                         <button
                           onClick={() => {
@@ -219,7 +219,7 @@ export default function NavbarAdaptive() {
                           }}
                           className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors text-left"
                         >
-                          <LogOut className="w-3.5 h-3.5" /> Cerrar sesión
+                          <LogOut className="w-3.5 h-3.5" /> {t('nav.logout')}
                         </button>
                       </div>
                     </motion.div>
@@ -236,7 +236,7 @@ export default function NavbarAdaptive() {
                   onClick={() => navigate('/login')}
                 >
                   <LogIn className="w-4 h-4 mr-1" />
-                  Iniciar sesión
+                  {t('nav.login')}
                 </Button>
                 <Button
                   variant="gradient"
@@ -245,7 +245,7 @@ export default function NavbarAdaptive() {
                   type="button"
                 >
                   <UserPlus className="w-4 h-4 mr-1" />
-                  Registrarse
+                  {t('nav.register')}
                 </Button>
               </div>
             )}

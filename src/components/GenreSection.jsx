@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MovieCard from './MovieCard';
 import { Button } from './ui/button';
+import { useTranslation } from 'react-i18next';
 
 export default function GenreSection({ section, sectionIndex }) {
   const scrollContainerRef = useRef(null);
+  const { t } = useTranslation();
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -39,7 +41,7 @@ export default function GenreSection({ section, sectionIndex }) {
             size="icon"
             onClick={() => scroll('left')}
             className="h-9 w-9 rounded-full bg-background/50 hover:bg-primary hover:text-white border border-border/50 transition-all"
-            aria-label="Previous"
+            aria-label={t('common.previous')}
           >
             <ChevronLeft className="w-5 h-5" />
           </Button>
@@ -48,7 +50,7 @@ export default function GenreSection({ section, sectionIndex }) {
             size="icon"
             onClick={() => scroll('right')}
             className="h-9 w-9 rounded-full bg-background/50 hover:bg-primary hover:text-white border border-border/50 transition-all"
-            aria-label="Next"
+            aria-label={t('common.next')}
           >
             <ChevronRight className="w-5 h-5" />
           </Button>
