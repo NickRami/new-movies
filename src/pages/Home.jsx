@@ -4,6 +4,7 @@ import { useTrendingMovies, useGenreSections } from '../hooks/useMovies';
 import SearchHero from '../components/SearchHero';
 import MovieList from '../components/MovieList';
 import MovieCard from '../components/MovieCard';
+import GenreSection from '../components/GenreSection';
 import { useTranslation } from 'react-i18next';
 import { getContainerClasses, SPACING } from '../lib/layout-constants';
 import { cn } from '../lib/utils';
@@ -73,44 +74,11 @@ export default function Home() {
         <div className={cn(getContainerClasses(), "space-y-12 md:space-y-16")}>
           {!loadingGenres && !errorGenres && genreSections.length > 0 && (
             genreSections.map((section, sectionIndex) => (
-              <motion.div
-                key={section.genre.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + sectionIndex * 0.15, duration: 0.6, ease: "easeOut" }}
-                className="space-y-6"
-              >
-                <div className="flex items-center justify-between gap-2 glass-dark p-4 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300">
-                  <motion.h3 
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.6 + sectionIndex * 0.15, duration: 0.5 }}
-                    className="text-2xl font-semibold text-foreground"
-                  >
-                    {section.genre.name}
-                  </motion.h3>
-                  <motion.p 
-                    initial={{ x: 20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ delay: 0.6 + sectionIndex * 0.15, duration: 0.5 }}
-                    className="text-xs text-muted-foreground uppercase tracking-wide px-3 py-1 glass rounded-full border border-primary/20"
-                  >
-                    {t('nav.genres')}
-                  </motion.p>
-                </div>
-                
-                {/* Horizontal Scrollable Carousel - NO PAGINATION */}
-                <div className="flex gap-4 overflow-x-auto pb-4 pt-2 no-scrollbar pl-1">
-                  {section.movies.map((movie, index) => (
-                    <div
-                      key={movie.id}
-                      className="w-36 sm:w-40 md:w-44 flex-shrink-0 transition-transform duration-300 hover:scale-105"
-                    >
-                      <MovieCard movie={movie} index={index} />
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
+              <GenreSection 
+                key={section.genre.id} 
+                section={section} 
+                sectionIndex={sectionIndex} 
+              />
             ))
           )}
         </div>
