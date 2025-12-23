@@ -24,20 +24,10 @@ export default function NavbarAdaptive() {
   const { user, logout } = useAuth();
   const { t, i18n } = useTranslation();
   
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false); // Mobile search toggle
   const [term, setTerm] = useState('');
   const [genres, setGenres] = useState([]);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-
-  // Handle scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Load genres
   useEffect(() => {
@@ -60,10 +50,6 @@ export default function NavbarAdaptive() {
     if (!term.trim()) return;
     navigate(`/search?q=${encodeURIComponent(term.trim())}`);
     setIsSearchOpen(false); // Close mobile search if open
-    // Don't clear term immediately on desktop for better UX, maybe? Or clear it.
-    // Let's clear it to show fresh state.
-    // setTerm(''); 
-    // Actually, keeping the term is standard behavior until user clears it.
   };
   
   const handleGenreClick = (genre) => {
@@ -80,15 +66,11 @@ export default function NavbarAdaptive() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
-          isScrolled 
-            ? "bg-background/80 backdrop-blur-xl border-white/5 py-3" 
-            : "bg-gradient-to-b from-background/90 to-transparent border-transparent py-5"
-        )}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="fixed top-0 left-0 right-0 z-50 h-20 bg-background/70 backdrop-blur-2xl border-b border-white/5 flex items-center"
       >
         <div className={getContainerClasses()}>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between w-full">
             
             {/* --- LEFT SECTION: Logo & Desktop Links --- */}
             <div className="flex items-center gap-10">
@@ -354,8 +336,6 @@ export default function NavbarAdaptive() {
           )}
         </AnimatePresence>
       </motion.nav>
-      {/* Spacer to prevent content overlap */}
-      <div className="h-20 md:h-24" /> 
     </>
   );
 }

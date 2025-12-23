@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Calendar, Info, Heart } from 'lucide-react';
+import { Star, Calendar, Info, Heart, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTrendingMovies } from '../hooks/useMovies';
 import { useFavorites } from '../context/FavoritesContext';
@@ -75,16 +75,16 @@ export default function SearchHero() {
   );
 }
 
-// Background Component - Separated for clarity
+// Background Component - Deep & Immersive
 function HeroBackground({ currentMovie }) {
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={currentMovie.id}
-        initial={{ opacity: 0, scale: 1.05 }}
+        initial={{ opacity: 0, scale: 1.1 }}
         animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 1.05 }}
-        transition={{ duration: 1.4, ease: "easeInOut" }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }} // Custom easeOutCubic approx for cinematic feel
         className="absolute inset-0"
         style={{ zIndex: Z_INDEX.background }}
       >
@@ -94,189 +94,148 @@ function HeroBackground({ currentMovie }) {
           style={{ backgroundImage: `url(${currentMovie.backdrop_path})` }}
         />
         
-        {/* Multi-Layer Overlays for Depth */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-transparent" />
-        <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-background/40" />
-        <div className="absolute inset-0 bg-black/15 mix-blend-overlay" />
+        {/* Professional Gradient Layering */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/40 to-transparent" />
+        <div className="absolute inset-0 bg-black/20" />
       </motion.div>
     </AnimatePresence>
   );
 }
 
-// Content Component - Structured with clear hierarchy
+// Content Component - Clean, Minimal, Impactful
 function HeroContent({ currentMovie, isFavorite, toggleFavorite, t }) {
   return (
-    <div className="w-full space-y-5 md:space-y-6 lg:space-y-8">
+    <div className="w-full space-y-4 md:space-y-6 lg:space-y-8 max-w-4xl">
       
-      {/* 1. Metadata Block */}
+      {/* 1. Badge & Meta */}
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         key={`meta-${currentMovie.id}`}
-        transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
-        className={cn("flex items-center gap-4 flex-wrap", HERO.contentMaxWidth.metadata)}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        className="flex items-center flex-wrap gap-3"
       >
-        <motion.span 
-          whileHover={{ scale: 1.05 }}
-          className="bg-gradient-to-r from-primary via-primary to-purple-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-2xl shadow-primary/40 backdrop-blur-md uppercase tracking-wider border border-white/20"
-        >
+        <span className="bg-primary text-white text-[10px] md:text-xs font-bold px-2.5 py-1 rounded shadow-lg shadow-primary/20 uppercase tracking-widest">
           {t('hero.featured')}
-        </motion.span>
+        </span>
         
-        <div className="flex items-center gap-4 text-sm md:text-base text-gray-100 font-medium">
-          <span className="flex items-center gap-2 backdrop-blur-md bg-white/10 px-3 py-1 rounded-full border border-white/20">
-            <Calendar className="w-4 h-4 text-gray-300" /> 
-            {new Date(currentMovie.release_date).getFullYear()}
+        <div className="flex items-center gap-3 text-sm font-medium text-gray-200">
+          <span className="flex items-center gap-1.5">
+            <Star className="w-4 h-4 text-accent fill-accent" /> 
+            {currentMovie.vote_average.toFixed(1)}
           </span>
-          <span className="flex items-center gap-2 backdrop-blur-md bg-gradient-to-r from-yellow-500/20 to-orange-500/20 px-3 py-1 rounded-full border border-yellow-400/30">
-            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" /> 
-            <span className="text-yellow-100 font-bold">{currentMovie.vote_average.toFixed(1)}</span>
-          </span>
+          <span className="w-1 h-1 bg-white/30 rounded-full" />
+          <span>{new Date(currentMovie.release_date).getFullYear()}</span>
         </div>
       </motion.div>
 
-      {/* 2. Title Block */}
+      {/* 2. Title */}
       <motion.h1
         key={`title-${currentMovie.id}`}
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
-        className={cn(
-          "text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1]",
-          HERO.contentMaxWidth.title
-        )}
-        style={{
-          textShadow: '0 4px 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.5)'
-        }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-black text-white leading-[0.95] tracking-tight drop-shadow-xl"
       >
         {currentMovie.title}
       </motion.h1>
 
-      {/* 3. Description Block */}
+      {/* 3. Description (Overview) */}
       <motion.p
         key={`desc-${currentMovie.id}`}
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.7, ease: "easeOut" }}
-        className={cn(
-          "text-base sm:text-lg md:text-xl text-gray-200 line-clamp-3 font-normal leading-relaxed",
-          HERO.contentMaxWidth.description
-        )}
-        style={{
-          textShadow: '0 2px 10px rgba(0,0,0,0.8)'
-        }}
+        transition={{ delay: 0.4, duration: 0.6 }}
+        className="text-base sm:text-lg text-gray-300 line-clamp-2 md:line-clamp-3 max-w-2xl font-body leading-relaxed drop-shadow-md"
       >
         {currentMovie.overview}
       </motion.p>
 
-      {/* 4. Actions Block - Separated with clear margin */}
+      {/* 4. Actions */}
       <motion.div
         key={`actions-${currentMovie.id}`}
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.7, ease: "easeOut" }}
-        className={cn(
-          "flex flex-wrap items-center gap-4 pt-4 md:pt-6",
-          HERO.contentMaxWidth.actions
-        )}
+        transition={{ delay: 0.5, duration: 0.6 }}
+        className="flex flex-wrap items-center gap-3 md:gap-4 pt-2 md:pt-4"
       >
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Link 
-            to={`/movie/${currentMovie.id}`}
-            className="group px-8 py-3.5 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition-all duration-300 flex items-center gap-3 shadow-2xl shadow-black/40 active:scale-95 text-sm md:text-base"
-          >
-            <Info className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            {t('hero.viewDetails')}
-          </Link>
-        </motion.div>
+        <Link 
+          to={`/movie/${currentMovie.id}`}
+          className="group px-6 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-all duration-200 flex items-center gap-2 shadow-lg shadow-white/10 active:scale-95 text-sm md:text-base"
+        >
+          <Play className="w-4 h-4 fill-current group-hover:scale-110 transition-transform" />
+          {t('hero.viewDetails')}
+        </Link>
         
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <button 
-            onClick={() => toggleFavorite(currentMovie)}
-            className={cn(
-              "w-12 h-12 md:w-14 md:h-14 rounded-full backdrop-blur-xl border-2 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-xl",
-              isFavorite(currentMovie.id) 
-                ? "bg-primary/20 border-primary text-primary shadow-primary/30" 
-                : "bg-white/10 border-white/30 text-white hover:bg-white/20 hover:border-white/50"
-            )}
-            title={isFavorite(currentMovie.id) ? t('hero.removeFromFavorites') : t('hero.addToFavorites')}
-          >
-            <Heart className={cn("w-5 h-5 md:w-6 md:h-6 transition-all duration-300", isFavorite(currentMovie.id) && "fill-current scale-110")} />
-          </button>
-        </motion.div>
+        <button 
+          onClick={() => toggleFavorite(currentMovie)}
+          className={cn(
+            "group px-6 py-3 rounded-lg border font-medium flex items-center gap-2 transition-all duration-200 active:scale-95 text-sm md:text-base backdrop-blur-sm",
+            isFavorite(currentMovie.id) 
+              ? "bg-primary/20 border-primary text-primary hover:bg-primary/30" 
+              : "bg-white/5 border-white/20 text-white hover:bg-white/10 hover:border-white/40"
+          )}
+        >
+          <Heart className={cn("w-4 h-4 transition-transform", isFavorite(currentMovie.id) ? "fill-current" : "group-hover:scale-110")} />
+          {isFavorite(currentMovie.id) ? t('hero.removeFromFavorites') : t('hero.addToFavorites')}
+        </button>
       </motion.div>
     </div>
   );
 }
 
-// Carousel Component - Separated for modularity
+// Carousel Component - Sleek & Modern
 function HeroCarousel({ heroMovies, currentIndex, setCurrentIndex, isHovering }) {
   return (
     <div 
-      className="absolute bottom-0 right-0 left-0 pb-8 hidden md:block bg-gradient-to-t from-background via-background/95 to-transparent pt-40"
+      className="absolute bottom-0 right-0 z-20 hidden lg:block w-1/2 p-12 pr-16 xl:pr-32"
       style={{ zIndex: Z_INDEX.carousel }}
     >
-      <div className={getContainerClasses()}>
-        <div className="flex items-center gap-3 overflow-x-auto no-scrollbar py-4" style={{ scrollBehavior: 'smooth' }}>
-          {heroMovies.map((movie, index) => (
-            <motion.button
-              key={movie.id}
-              onClick={() => setCurrentIndex(index)}
-              onMouseEnter={() => setCurrentIndex(index)}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 + index * 0.05 }}
-              whileHover={{ scale: 1.08, y: -4 }}
-              whileTap={{ scale: 0.98 }}
-              className={cn(
-                "relative flex-shrink-0 w-36 md:w-44 lg:w-52 aspect-[16/9] rounded-xl overflow-hidden transition-all duration-300 ease-out group/thumb shadow-2xl",
-                index === currentIndex 
-                  ? "ring-2 ring-primary scale-105 z-10 shadow-primary/40" 
-                  : "opacity-50 hover:opacity-100 backdrop-blur-sm"
-              )}
-            >
-              <img 
-                src={movie.backdrop_path} 
-                alt={movie.title}
-                className="w-full h-full object-cover"
-              />
-              <div className={cn(
-                "absolute inset-0 transition-all duration-300",
-                index === currentIndex
-                  ? "bg-gradient-to-t from-black/60 via-transparent to-transparent"
-                  : "bg-black/50 group-hover/thumb:bg-black/30"
-              )} />
-              
-              <div className="absolute inset-x-0 bottom-0 p-3 translate-y-full group-hover/thumb:translate-y-0 transition-transform duration-300">
-                <p className="text-white text-xs font-semibold line-clamp-2 drop-shadow-lg">
-                  {movie.title}
-                </p>
-              </div>
-              
-              {index === currentIndex && !isHovering && (
-                <motion.div 
-                  layoutId="carousel-progress"
-                  initial={{ width: '0%' }}
-                  animate={{ width: '100%' }}
-                  transition={{ duration: 8, ease: "linear" }}
-                  className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary via-purple-500 to-primary shadow-lg shadow-primary/50"
+        <div className="flex justify-end gap-4 overflow-visible">
+          {heroMovies.slice(0, 3).map((movie, relativeIndex) => {
+             // Logic to show next 3 items essentially, simplified for this layout
+             const actualIndex = (currentIndex + relativeIndex + 1) % heroMovies.length;
+             const item = heroMovies[actualIndex];
+
+             return (
+              <motion.button
+                key={item.id}
+                onClick={() => setCurrentIndex(actualIndex)}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 * relativeIndex }}
+                whileHover={{ y: -5 }}
+                className="relative w-40 aspect-video rounded-lg overflow-hidden border border-white/20 shadow-2xl group transition-all hover:border-white/50"
+              >
+                <img 
+                  src={item.backdrop_path} 
+                  alt={item.title} 
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
                 />
-              )}
-              
-              {index === currentIndex && (
-                <motion.div
-                  layoutId="carousel-indicator"
-                  className="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary shadow-lg shadow-primary/50"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
-              )}
-            </motion.button>
-          ))}
-          <div className="w-6 flex-shrink-0" />
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+                  <p className="text-[10px] text-white font-bold truncate">{item.title}</p>
+                </div>
+              </motion.button>
+             );
+          })}
         </div>
-      </div>
+        
+        {/* Progress Bar for Current Item */}
+        {!isHovering && (
+           <motion.div 
+             layoutId="hero-progress"
+             className="h-1 bg-white/20 mt-6 rounded-full overflow-hidden w-full max-w-md ml-auto"
+           >
+              <motion.div 
+                initial={{ width: '0%' }}
+                animate={{ width: '100%' }}
+                transition={{ duration: 8, ease: "linear", repeat: 0 }}
+                className="h-full bg-primary origin-left"
+              />
+           </motion.div>
+        )}
     </div>
   );
 }
@@ -285,21 +244,23 @@ function HeroCarousel({ heroMovies, currentIndex, setCurrentIndex, isHovering })
 function HeroSkeleton() {
   return (
     <div 
-      className="w-full bg-muted animate-pulse relative"
+      className="w-full bg-background animate-pulse relative"
       style={getHeroHeightStyle()}
     >
       <div className={cn(
-        "absolute bottom-32 space-y-6",
+        "absolute bottom-0 left-0 w-full mb-24 md:mb-32",
         getContainerClasses()
       )}>
-        <div className="h-6 w-32 bg-muted-foreground/20 rounded" />
-        <div className="h-12 md:h-16 w-3/4 max-w-2xl bg-muted-foreground/20 rounded" />
-        <div className="h-4 w-full max-w-lg bg-muted-foreground/20 rounded" />
-        <div className="h-4 w-2/3 max-w-lg bg-muted-foreground/20 rounded" />
-        <div className="flex gap-4 pt-4">
-          <div className="h-12 w-40 rounded-full bg-muted-foreground/20" />
-          <div className="h-12 w-12 rounded-full bg-muted-foreground/20" />
-        </div>
+         <div className="max-w-3xl space-y-6">
+            <div className="h-4 w-24 bg-white/10 rounded" />
+            <div className="h-12 md:h-16 w-3/4 bg-white/10 rounded-lg" />
+            <div className="h-4 w-full bg-white/10 rounded" />
+            <div className="h-4 w-2/3 bg-white/10 rounded" />
+            <div className="flex gap-4 pt-4">
+               <div className="h-12 w-32 bg-white/10 rounded-lg" />
+               <div className="h-12 w-32 bg-white/10 rounded-lg" />
+            </div>
+         </div>
       </div>
     </div>
   );

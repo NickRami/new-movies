@@ -68,9 +68,9 @@ export const HERO = {
   
   // Padding compensation for navbar
   paddingTop: {
-    mobile: 'pt-20',        // Extra space below navbar
-    tablet: 'md:pt-24',
-    desktop: 'lg:pt-28',
+    mobile: 'pt-32',        // Increased space below navbar
+    tablet: 'md:pt-40',
+    desktop: 'lg:pt-48',
   },
   
   // Bottom padding for carousel
