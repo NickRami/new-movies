@@ -23,7 +23,8 @@ const resources = {
         "featured": "Featured",
         "viewDetails": "View Details",
         "addToFavorites": "Add to Favorites",
-        "removeFromFavorites": "Remove from Favorites"
+        "removeFromFavorites": "Remove from Favorites",
+        "nextUp": "Next Up"
       },
       "search": {
         "placeholder": "Search movies, genres or actors...",
@@ -98,7 +99,8 @@ const resources = {
         "featured": "Destacado",
         "viewDetails": "Ver Detalles",
         "addToFavorites": "Añadir a Favoritos",
-        "removeFromFavorites": "Quitar de Favoritos"
+        "removeFromFavorites": "Quitar de Favoritos",
+        "nextUp": "A continuación"
       },
       "search": {
         "placeholder": "Buscar películas, géneros o actores...",

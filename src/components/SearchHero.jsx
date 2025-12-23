@@ -21,9 +21,15 @@ export default function SearchHero() {
 
   // Auto-rotation
   useEffect(() => {
+    // Only run if:
+    // 1. We have movies
+    // 2. User is NOT hovering the carousel controls (isHovering)
+    // 3. The tab/window is visible/focused
     if (heroMovies.length > 0 && !isHovering) {
       const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % heroMovies.length);
+        if (!document.hidden) {
+           setCurrentIndex((prev) => (prev + 1) % heroMovies.length);
+        }
       }, 8000);
       return () => clearInterval(interval);
     }
@@ -35,8 +41,6 @@ export default function SearchHero() {
     <section 
       className="relative w-full overflow-hidden"
       style={getHeroHeightStyle()}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
     >
       
       {/* Background Layer */}
@@ -69,7 +73,9 @@ export default function SearchHero() {
         heroMovies={heroMovies}
         currentIndex={currentIndex}
         setCurrentIndex={setCurrentIndex}
+        setIsHovering={setIsHovering}
         isHovering={isHovering}
+        t={t}
       />
     </section>
   );
@@ -186,55 +192,65 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t }) {
 }
 
 // Carousel Component - Sleek & Modern
-function HeroCarousel({ heroMovies, currentIndex, setCurrentIndex, isHovering }) {
+function HeroCarousel({ heroMovies, currentIndex, setCurrentIndex, setIsHovering, isHovering, t }) {
+  // Calculate the visible items (Next 3)
+  const visibleItems = [];
+  for (let i = 0; i < 3; i++) {
+    const index = (currentIndex + i + 1) % heroMovies.length;
+    visibleItems.push(heroMovies[index]);
+  }
+
   return (
     <div 
       className="absolute bottom-0 right-0 z-20 hidden lg:block w-1/2 p-12 pr-16 xl:pr-32"
       style={{ zIndex: Z_INDEX.carousel }}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
     >
-        <div className="flex justify-end gap-4 overflow-visible">
-          {heroMovies.slice(0, 3).map((movie, relativeIndex) => {
-             // Logic to show next 3 items essentially, simplified for this layout
-             const actualIndex = (currentIndex + relativeIndex + 1) % heroMovies.length;
-             const item = heroMovies[actualIndex];
-
-             return (
+        <div className="flex justify-end gap-4 overflow-visible perspective-[1000px]">
+          <AnimatePresence mode='popLayout'>
+            {visibleItems.map((item, i) => (
               <motion.button
+                layout
                 key={item.id}
-                onClick={() => setCurrentIndex(actualIndex)}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 * relativeIndex }}
-                whileHover={{ y: -5 }}
-                className="relative w-40 aspect-video rounded-lg overflow-hidden border border-white/20 shadow-2xl group transition-all hover:border-white/50"
+                onClick={() => setCurrentIndex((currentIndex + i + 1) % heroMovies.length)}
+                initial={{ opacity: 0, x: 20, scale: 0.9 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -20, scale: 0.9, transition: { duration: 0.3 } }}
+                transition={{ duration: 0.5, ease: "circOut" }}
+                whileHover={{ y: -5, scale: 1.05, transition: { duration: 0.2 } }}
+                className="relative w-40 aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl group transition-shadow hover:border-white/30 hover:shadow-primary/20"
               >
                 <img 
                   src={item.backdrop_path} 
                   alt={item.title} 
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" 
                 />
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
-                  <p className="text-[10px] text-white font-bold truncate">{item.title}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-3 text-left">
+                  <p className="text-[11px] text-gray-300 font-bold truncate group-hover:text-white transition-colors">
+                    {item.title}
+                  </p>
                 </div>
               </motion.button>
-             );
-          })}
+            ))}
+          </AnimatePresence>
         </div>
         
         {/* Progress Bar for Current Item */}
         {!isHovering && (
-           <motion.div 
-             layoutId="hero-progress"
-             className="h-1 bg-white/20 mt-6 rounded-full overflow-hidden w-full max-w-md ml-auto"
-           >
-              <motion.div 
-                initial={{ width: '0%' }}
-                animate={{ width: '100%' }}
-                transition={{ duration: 8, ease: "linear", repeat: 0 }}
-                className="h-full bg-primary origin-left"
-              />
-           </motion.div>
+           <div className="mt-8 flex items-center justify-end gap-3">
+             <span className="text-[10px] font-bold text-white/40 tracking-widest uppercase">{t('hero.nextUp')}</span>
+             <div className="h-1 bg-white/10 rounded-full overflow-hidden w-32">
+                <motion.div 
+                  key={currentIndex} // Restart animation on index change
+                  initial={{ width: '0%' }}
+                  animate={{ width: '100%' }}
+                  transition={{ duration: 8, ease: "linear" }}
+                  className="h-full bg-primary origin-left shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+                />
+             </div>
+           </div>
         )}
     </div>
   );
