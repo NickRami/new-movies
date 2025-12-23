@@ -1,19 +1,15 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useFavorites } from '../context/FavoritesContext';
 import { useAuth } from '../context/AuthContext';
-import { Film, LogIn, UserPlus, Search as SearchIcon, User, LogOut, ChevronDown, ChevronRight, Menu, X } from 'lucide-react';
+import { 
+  Film, LogIn, UserPlus, Search as SearchIcon, 
+  LogOut, Menu, X, Globe, ChevronDown, Heart 
+} from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from './ui/dropdown-menu';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from './ui/sheet';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import GenresHoverMenu from './GenresHoverMenu';
@@ -22,15 +18,27 @@ import { cn } from '../lib/utils';
 
 export default function NavbarAdaptive() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { favorites } = useFavorites();
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const [term, setTerm] = useState('');
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [genres, setGenres] = useState([]);
   const { t, i18n } = useTranslation();
+  
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // Mobile search toggle
+  const [term, setTerm] = useState('');
+  const [genres, setGenres] = useState([]);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Load genres
   useEffect(() => {
     async function loadGenres() {
       try {
@@ -50,297 +58,303 @@ export default function NavbarAdaptive() {
     e.preventDefault();
     if (!term.trim()) return;
     navigate(`/search?q=${encodeURIComponent(term.trim())}`);
-    setTerm('');
+    setIsSearchOpen(false); // Close mobile search if open
+    // Don't clear term immediately on desktop for better UX, maybe? Or clear it.
+    // Let's clear it to show fresh state.
+    // setTerm(''); 
+    // Actually, keeping the term is standard behavior until user clears it.
   };
-
+  
   const handleGenreClick = (genre) => {
     navigate(`/search?genre=${genre.id}&name=${encodeURIComponent(genre.name)}`);
-    setIsMobileMenuOpen(false);
   };
 
+  const navLinks = [
+    { name: t('nav.home'), path: '/' },
+    { name: t('nav.favorites'), path: '/favorites', badge: favorites.length > 0 ? favorites.length : null },
+  ];
+
   return (
-    <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/80 border-b border-white/10 shadow-2xl"
-    >
-      <div className="container mx-auto px-4 lg:px-6 xl:px-8">
-        <div className="flex items-center justify-between h-16">
-          
-          {/* Logo + Desktop Navigation */}
-          <div className="flex items-center gap-8 lg:gap-10">
-            {/* Logo */}
-            <Link 
-              to="/" 
-              className="flex items-center gap-2.5 text-xl font-bold group"
-            >
-              <motion.div
-                whileHover={{ rotate: 360, scale: 1.1 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-              >
-                <Film className="w-7 h-7 text-primary drop-shadow-glow" />
-              </motion.div>
-              <span className="hidden sm:inline bg-gradient-to-r from-primary via-purple-400 to-primary bg-clip-text text-transparent group-hover:from-purple-400 group-hover:via-primary group-hover:to-purple-400 transition-all duration-500">
-                CineScope
-              </span>
-            </Link>
-
-            {/* Desktop Navigation Links */}
-            <div className="hidden lg:flex items-center gap-8">
-              <Link
-                to="/"
-                className={cn(
-                  "text-sm font-medium transition-all duration-300 relative group",
-                  isActive('/') ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {t('nav.home') || 'Home'}
-                {isActive('/') && (
-                  <motion.div
-                    layoutId="navbar-indicator"
-                    className="absolute -bottom-[21px] left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                {!isActive('/') && (
-                  <span className="absolute -bottom-[21px] left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                )}
-              </Link>
-
-              {/* Genres Hover Menu - Desktop - PROFESSIONAL HOVER */}
-              <GenresHoverMenu 
-                genres={genres}
-                onGenreClick={handleGenreClick}
-              />
-
-
-              <Link
-                to="/favorites"
-                className={cn(
-                  "text-sm font-medium transition-all duration-300 flex items-center gap-2 relative group",
-                  isActive('/favorites') ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {t('nav.favorites') || 'Favorites'}
-                {favorites.length > 0 && (
-                  <motion.span 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    whileHover={{ scale: 1.1 }}
-                    className="bg-gradient-to-r from-primary to-purple-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg shadow-primary/50"
-                  >
-                    {favorites.length}
-                  </motion.span>
-                )}
-                {isActive('/favorites') && (
-                  <motion.div
-                    layoutId="navbar-indicator"
-                    className="absolute -bottom-[21px] left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                {!isActive('/favorites') && (
-                  <span className="absolute -bottom-[21px] left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                )}
-              </Link>
-            </div>
-          </div>
-
-          {/* Right Side: Search + Auth + Mobile Menu */}
-          <div className="flex items-center gap-3">
-            {/* Search Bar - Desktop/Tablet */}
-            <form
-              onSubmit={handleSubmit}
-              className="hidden md:flex items-center w-full max-w-xs lg:max-w-sm"
-            >
-              <div className="relative w-full group">
-                <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-all duration-300 group-focus-within:scale-110" />
-                <Input
-                  type="text"
-                  value={term}
-                  onChange={(e) => setTerm(e.target.value)}
-                  placeholder={t('search.placeholder') || 'Search movies...'}
-                  className="pl-10 pr-3 py-2 h-10 text-sm backdrop-blur-xl bg-white/5 border-white/10 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:border-primary/50 transition-all duration-300 rounded-full hover:bg-white/10 placeholder:text-muted-foreground/60"
-                />
-              </div>
-            </form>
-
-            {/* Language Switcher - Desktop */}
-            <div className="hidden md:flex">
-              <LanguageSwitcher />
-            </div>
-
-            {/* User Profile or Auth Buttons */}
-            {user ? (
-              <div className="relative">
-                <motion.button
-                  onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-full glass-dark border border-border/50 hover:border-primary/50 transition-colors"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-primary to-purple-500 flex items-center justify-center text-[10px] font-bold text-white">
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="text-sm font-medium hidden sm:block max-w-[80px] truncate">
-                    {user.name}
-                  </span>
-                  <ChevronDown className={`w-3 h-3 text-muted-foreground transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
-                </motion.button>
-
-                <AnimatePresence>
-                  {isProfileOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute right-0 top-full mt-2 w-48 py-1 rounded-xl glass-dark border border-border/50 shadow-xl overflow-hidden z-50 origin-top-right"
-                    >
-                      <div className="px-4 py-3 border-b border-border/50">
-                        <p className="text-sm font-medium text-foreground truncate">{user.name}</p>
-                        <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-                      </div>
-                      <div className="p-1">
-                        <button
-                          onClick={() => {
-                            setIsProfileOpen(false);
-                            navigate('/favorites');
-                          }}
-                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-lg transition-colors text-left"
-                        >
-                          <span className="text-red-500">♥</span> {t('nav.myFavorites')}
-                        </button>
-                        <button
-                          onClick={() => {
-                            logout();
-                            setIsProfileOpen(false);
-                          }}
-                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors text-left"
-                        >
-                          <LogOut className="w-3.5 h-3.5" /> {t('nav.logout')}
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <div className="hidden sm:flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-xs sm:text-sm px-3 py-1.5 hover:scale-105 transition-transform"
-                  type="button"
-                  onClick={() => navigate('/login')}
-                >
-                  <LogIn className="w-4 h-4 mr-1" />
-                  {t('nav.login')}
-                </Button>
-                <Button
-                  variant="gradient"
-                  size="sm"
-                  className="text-xs sm:text-sm px-3 py-1.5"
-                  type="button"
-                >
-                  <UserPlus className="w-4 h-4 mr-1" />
-                  {t('nav.register')}
-                </Button>
-              </div>
-            )}
-
-            {/* Mobile Menu Button */}
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="lg:hidden"
-                >
-                  <Menu className="w-5 h-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-80 glass-dark border-border/50">
-                <div className="flex flex-col h-full py-6">
-                  {/* Mobile Logo */}
-                  <div className="flex items-center gap-2 mb-8 px-2">
-                    <Film className="w-6 h-6 text-primary" />
-                    <h2 className="text-xl font-bold text-foreground">CineScope</h2>
-                  </div>
-
-                  {/* Mobile Search */}
-                  <form onSubmit={handleSubmit} className="mb-6 px-2">
-                    <div className="relative">
-                      <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <Input
-                        type="text"
-                        value={term}
-                        onChange={(e) => setTerm(e.target.value)}
-                        placeholder={t('search.placeholder') || 'Search movies...'}
-                        className="pl-9 glass border-border/50"
-                      />
-                    </div>
-                  </form>
-
-                  {/* Mobile Navigation */}
-                  <nav className="flex-1 overflow-y-auto space-y-2 px-2">
-                    <Link
-                      to="/"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors",
-                        isActive('/') ? "bg-primary text-primary-foreground" : "hover:bg-accent text-muted-foreground hover:text-foreground"
-                      )}
-                    >
-                      Home
-                    </Link>
-
-                    <Link
-                      to="/favorites"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        "flex items-center justify-between px-4 py-3 rounded-lg transition-colors",
-                        isActive('/favorites') ? "bg-primary text-primary-foreground" : "hover:bg-accent text-muted-foreground hover:text-foreground"
-                      )}
-                    >
-                      <span>Favorites</span>
-                      {favorites.length > 0 && (
-                        <span className="bg-primary text-primary-foreground text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                          {favorites.length}
-                        </span>
-                      )}
-                    </Link>
-
-                    {/* Mobile Genres */}
-                    <div className="pt-4 border-t border-border/50">
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-4 mb-3">
-                        Genres
-                      </p>
-                      <div className="space-y-1 max-h-64 overflow-y-auto">
-                        {genres.map((genre) => (
-                          <button
-                            key={genre.id}
-                            onClick={() => handleGenreClick(genre)}
-                            className="w-full text-left px-4 py-2 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                          >
-                            {genre.name}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </nav>
-
-                  {/* Mobile Language Switcher */}
-                  <div className="border-t border-border/50 pt-4 px-2">
-                    <LanguageSwitcher />
-                  </div>
+    <>
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
+          isScrolled 
+            ? "bg-background/80 backdrop-blur-xl border-white/5 py-3" 
+            : "bg-gradient-to-b from-background/90 to-transparent border-transparent py-5"
+        )}
+      >
+        <div className="container mx-auto px-4 md:px-8">
+          <div className="flex items-center justify-between">
+            
+            {/* --- LEFT SECTION: Logo & Desktop Links --- */}
+            <div className="flex items-center gap-10">
+              <Link to="/" className="flex items-center gap-2 group">
+                <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-violet-600 shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-all duration-300">
+                  <Film className="w-5 h-5 text-white" />
                 </div>
-              </SheetContent>
-            </Sheet>
+                <span className="text-xl font-heading font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70 tracking-tight">
+                  CineScope
+                </span>
+              </Link>
+
+              {/* Desktop Navigation */}
+              <div className="hidden lg:flex items-center gap-1">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={cn(
+                      "relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
+                      isActive(link.path) 
+                        ? "text-white bg-white/10" 
+                        : "text-muted-foreground hover:text-white hover:bg-white/5"
+                    )}
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                       {link.name}
+                       {link.badge && (
+                         <span className="bg-primary text-[10px] font-bold px-1.5 py-0.5 rounded-full text-white leading-none">
+                           {link.badge}
+                         </span>
+                       )}
+                    </span>
+                  </Link>
+                ))}
+                
+                {/* Genres Dropdown */}
+                <div className="px-2">
+                   <GenresHoverMenu genres={genres} onGenreClick={handleGenreClick} />
+                </div>
+              </div>
+            </div>
+
+            {/* --- RIGHT SECTION: Search & Auth --- */}
+            <div className="flex items-center gap-3 md:gap-4">
+              
+              {/* Desktop Search Bar */}
+              <form onSubmit={handleSubmit} className="hidden md:block relative group">
+                <div className="relative flex items-center">
+                  <SearchIcon className="absolute left-3 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <input
+                    type="text"
+                    value={term}
+                    onChange={(e) => setTerm(e.target.value)}
+                    placeholder={t('search.placeholder')}
+                    className="w-64 focus:w-80 bg-secondary/30 hover:bg-secondary/50 focus:bg-secondary/80 border border-transparent focus:border-primary/30 rounded-full py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-all duration-300"
+                  />
+                </div>
+              </form>
+
+              {/* Mobile Search Toggle */}
+              <button 
+                className="md:hidden p-2 text-muted-foreground hover:text-white transition-colors"
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+              >
+                {isSearchOpen ? <X className="w-5 h-5" /> : <SearchIcon className="w-5 h-5" />}
+              </button>
+              
+              <div className="h-6 w-px bg-white/10 hidden md:block" />
+
+              {/* Desktop Language Switcher */}
+              <div className="hidden md:block">
+                <LanguageSwitcher />
+              </div>
+
+              {/* Auth Buttons / Profile */}
+              {user ? (
+                 <div className="relative">
+                    <button 
+                      onClick={() => setIsProfileOpen(!isProfileOpen)}
+                      className="flex items-center gap-2 p-1 pl-2 md:pr-4 rounded-full border border-white/5 bg-secondary/30 hover:bg-secondary/50 transition-all"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-inner">
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      <span className="hidden md:block text-sm font-medium text-white max-w-[100px] truncate">
+                        {user.name}
+                      </span>
+                      <ChevronDown className="w-3 h-3 text-muted-foreground hidden md:block" />
+                    </button>
+
+                    <AnimatePresence>
+                      {isProfileOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.95 }}
+                          className="absolute right-0 top-full mt-2 w-56 rounded-xl bg-[#111] border border-white/10 shadow-2xl overflow-hidden py-1 z-50"
+                        >
+                          <div className="px-4 py-3 border-b border-white/5 bg-white/5">
+                            <p className="text-sm font-bold text-white">{user.name}</p>
+                            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                          </div>
+                          
+                          <Link 
+                            to="/favorites"
+                            onClick={() => setIsProfileOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors"
+                          >
+                             <Heart className="w-4 h-4 text-rose-500" />
+                             {t('nav.myFavorites')}
+                          </Link>
+                          
+                          <div className="h-px bg-white/5 my-1" />
+                          
+                          <button
+                            onClick={() => {
+                              logout();
+                              setIsProfileOpen(false);
+                            }}
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors text-left"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            {t('nav.logout')}
+                          </button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                 </div>
+              ) : (
+                <div className="hidden md:flex items-center gap-2">
+                  <Button variant="ghost" size="sm" onClick={() => navigate('/login')}>
+                    {t('nav.login')}
+                  </Button>
+                  <Button variant="gradient" size="sm" onClick={() => navigate('/register')}>
+                    {t('nav.register')}
+                  </Button>
+                </div>
+              )}
+
+              {/* Mobile Menu Toggle */}
+              <Sheet>
+                <SheetTrigger asChild>
+                  <button className="md:hidden p-2 text-white/80 hover:text-white">
+                    <Menu className="w-6 h-6" />
+                  </button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[300px] bg-[#0a0a0b] border-l border-white/10 p-0">
+                  <div className="flex flex-col h-full">
+                    {/* Drawer Header */}
+                    <div className="p-6 border-b border-white/10 bg-gradient-to-b from-primary/5 to-transparent">
+                       <Link to="/" className="flex items-center gap-2 mb-1">
+                          <Film className="w-5 h-5 text-primary" />
+                          <span className="text-lg font-bold text-white">CineScope</span>
+                       </Link>
+                       <p className="text-xs text-muted-foreground">Premium Entertainment</p>
+                    </div>
+
+                    {/* Drawer Links */}
+                    <div className="flex-1 overflow-y-auto py-4 px-4 space-y-1">
+                      <Link 
+                        to="/" 
+                        className={cn(
+                          "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all",
+                          isActive('/') ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-white/5 hover:text-white"
+                        )}
+                      >
+                         <Film className="w-4 h-4" />
+                         {t('nav.home')}
+                      </Link>
+                      
+                      <Link 
+                        to="/favorites" 
+                        className={cn(
+                          "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all",
+                          isActive('/favorites') ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-white/5 hover:text-white"
+                        )}
+                      >
+                         <Heart className="w-4 h-4" />
+                         {t('nav.favorites')}
+                         {favorites.length > 0 && <span className="ml-auto bg-white/20 text-white text-[10px] px-2 py-0.5 rounded-full">{favorites.length}</span>}
+                      </Link>
+
+                      <div className="py-2">
+                         <div className="px-4 py-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                           {t('nav.genres')}
+                         </div>
+                         <div className="space-y-0.5 pl-4">
+                           {genres.slice(0, 8).map(g => (
+                             <button
+                               key={g.id}
+                               onClick={() => handleGenreClick(g)}
+                               className="block w-full text-left px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                             >
+                               {g.name}
+                             </button>
+                           ))}
+                           <button onClick={() => navigate('/')} className="px-4 py-2 text-xs text-primary hover:underline">
+                             View all genres
+                           </button>
+                         </div>
+                      </div>
+                    </div>
+
+                    {/* Drawer Footer */}
+                    <div className="p-4 border-t border-white/10 bg-black/20">
+                      {user ? (
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3 px-2">
+                            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                              {user.name[0]}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                               <p className="text-sm font-medium text-white truncate">{user.name}</p>
+                               <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                            </div>
+                          </div>
+                          <Button variant="outline" size="sm" onClick={logout} className="w-full justify-start gap-2 border-white/10 bg-white/5 hover:bg-white/10">
+                            <LogOut className="w-4 h-4" />
+                            {t('nav.logout')}
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-2 gap-3">
+                           <Button variant="secondary" onClick={() => navigate('/login')}>{t('nav.login')}</Button>
+                           <Button variant="default" onClick={() => navigate('/register')}>{t('nav.register')}</Button>
+                        </div>
+                      )}
+                      <div className="mt-4 flex justify-center">
+                         <LanguageSwitcher />
+                      </div>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </div>
-      </div>
-    </motion.nav>
+
+        {/* Mobile Search Overlay */}
+        <AnimatePresence>
+          {isSearchOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="md:hidden border-t border-white/10 bg-background/95 backdrop-blur-xl overflow-hidden"
+            >
+              <form onSubmit={handleSubmit} className="p-4">
+                <div className="relative">
+                  <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
+                  <input
+                    autoFocus
+                    type="text"
+                    value={term}
+                    onChange={(e) => setTerm(e.target.value)}
+                    placeholder={t('search.placeholder')}
+                    className="w-full bg-secondary/50 border border-transparent focus:border-primary/50 rounded-lg py-3 pl-10 pr-4 text-base text-white placeholder:text-muted-foreground outline-none"
+                  />
+                </div>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
+      {/* Spacer to prevent content overlap */}
+      <div className="h-20 md:h-24" /> 
+    </>
   );
 }

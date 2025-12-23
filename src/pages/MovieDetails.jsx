@@ -301,20 +301,6 @@ export default function MovieDetails() {
                     ))}
                   </div>
                 </div>
-
-                <div>
-                  <span className="text-sm text-muted-foreground">{t('details.budget')}</span>
-                  <p className="font-medium text-white">
-                    {movie.budget > 0 ? `$${(movie.budget / 1000000).toFixed(1)}M` : 'N/A'}
-                  </p>
-                </div>
-
-                <div>
-                  <span className="text-sm text-muted-foreground">{t('details.revenue')}</span>
-                  <p className="font-medium text-white">
-                     {movie.revenue > 0 ? `$${(movie.revenue / 1000000).toFixed(1)}M` : 'N/A'}
-                  </p>
-                </div>
              </div>
           </div>
 
