@@ -10,6 +10,7 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import BackNavigation from '../components/BackNavigation';
 import { useTranslation } from 'react-i18next';
+import { getContainerClasses } from '../lib/layout-constants';
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -87,7 +88,7 @@ export default function MovieDetails() {
 
         {/* Hero Content */}
         <div className="absolute inset-0 flex items-end pb-12">
-          <div className="container mx-auto px-4 md:px-8">
+          <div className={getContainerClasses()}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
               
               {/* Poster - Floating Overlap */}
@@ -196,7 +197,7 @@ export default function MovieDetails() {
       </div>
 
       {/* --- CONTENT SECTION --- */}
-      <div className="container mx-auto px-4 md:px-8 py-12 lg:py-20 relative z-0">
+      <div className={cn(getContainerClasses(), "py-12 lg:py-20 relative z-0")}>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
           {/* Left Column (Details & Cast) */}

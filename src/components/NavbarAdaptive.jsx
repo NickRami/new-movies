@@ -15,6 +15,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import GenresHoverMenu from './GenresHoverMenu';
 import { fetchGenres } from '../services/tmdb';
 import { cn } from '../lib/utils';
+import { getContainerClasses } from '../lib/layout-constants';
 
 export default function NavbarAdaptive() {
   const location = useLocation();
@@ -86,7 +87,7 @@ export default function NavbarAdaptive() {
             : "bg-gradient-to-b from-background/90 to-transparent border-transparent py-5"
         )}
       >
-        <div className="container mx-auto px-4 md:px-8">
+        <div className={getContainerClasses()}>
           <div className="flex items-center justify-between">
             
             {/* --- LEFT SECTION: Logo & Desktop Links --- */}
