@@ -129,32 +129,32 @@ export default function MovieDetails() {
                   </div>
 
                   {/* Main Title */}
-                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-black text-white leading-[0.9] mb-4 tracking-tight drop-shadow-2xl">
+                  <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-black text-white leading-[0.95] mb-4 tracking-tight drop-shadow-2xl">
                     {movie.title}
                   </h1>
 
                   {movie.tagline && (
-                    <p className="text-xl text-gray-300 font-light italic mb-6 border-l-4 border-primary pl-4">
+                    <p className="text-lg sm:text-xl text-gray-300 font-light italic mb-6 border-l-4 border-primary pl-4">
                       "{movie.tagline}"
                     </p>
                   )}
 
                   {/* Quick Stats Row */}
-                  <div className="flex flex-wrap items-center gap-6 text-gray-200 mb-8">
+                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-gray-200 mb-8 text-sm sm:text-base">
                     <div className="flex items-center gap-2">
                       <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
                       <span className="text-xl font-bold text-white">{movie.vote_average?.toFixed(1)}</span>
                       <span className="text-sm text-gray-400">/ 10</span>
                     </div>
 
-                    <span className="w-1 h-1 bg-gray-500 rounded-full" />
+                    <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full" />
 
                     <div className="flex items-center gap-2">
                       <Clock className="w-5 h-5 text-gray-400" />
                       <span>{movie.runtime} {t('common.min')}</span>
                     </div>
 
-                    <span className="w-1 h-1 bg-gray-500 rounded-full" />
+                    <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full" />
 
                     <div className="flex items-center gap-2">
                       <Calendar className="w-5 h-5 text-gray-400" />
@@ -163,12 +163,12 @@ export default function MovieDetails() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex flex-wrap gap-4">
+                  <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                     {trailer && (
                       <Button
                         size="lg"
                         variant="gradient"
-                        className="rounded-full px-8 h-12 text-base font-semibold shadow-glow-primary hover:scale-105 transition-transform"
+                        className="w-full sm:w-auto rounded-xl sm:rounded-full px-8 h-12 text-base font-semibold shadow-glow-primary hover:scale-105 transition-transform justify-center"
                         onClick={() => document.getElementById('trailer-section')?.scrollIntoView({ behavior: 'smooth' })}
                       >
                         <Play className="w-5 h-5 mr-2 fill-current" />
@@ -180,7 +180,7 @@ export default function MovieDetails() {
                       size="lg"
                       variant={favorite ? "secondary" : "outline"}
                       className={cn(
-                        "rounded-full px-6 h-12 text-base backdrop-blur-md bg-white/5 border-white/20 hover:bg-white/10 text-white transition-all",
+                        "w-full sm:w-auto rounded-xl sm:rounded-full px-6 h-12 text-base backdrop-blur-md bg-white/5 border-white/20 hover:bg-white/10 text-white transition-all justify-center",
                         favorite && "bg-primary/20 border-primary text-primary hover:bg-primary/30"
                       )}
                       onClick={() => toggleFavorite(movie)}
@@ -202,6 +202,13 @@ export default function MovieDetails() {
 
           {/* Left Column (Details & Cast) */}
           <div className="lg:col-span-8 space-y-12">
+
+            {/* Mobile/Tablet Poster (Visible only on smaller screens - moved here for better flow) */}
+            <div className="lg:hidden w-3/4 mx-auto sm:w-1/2 md:w-1/3 mb-8">
+              <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+                <img src={movie.poster_path} alt={movie.title} className="w-full h-full object-cover" />
+              </div>
+            </div>
 
             {/* Overview */}
             <section>
@@ -271,12 +278,6 @@ export default function MovieDetails() {
 
           {/* Right Column (Sidebar Stats) */}
           <div className="lg:col-span-4 space-y-8">
-            {/* Mobile/Tablet Poster (Visible only on smaller screens) */}
-            <div className="lg:hidden w-1/2 mx-auto sm:w-1/3 mb-8">
-              <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl">
-                <img src={movie.poster_path} alt={movie.title} className="w-full h-full object-cover" />
-              </div>
-            </div>
 
             {/* Information Card */}
             <div className="bg-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 space-y-6 sticky top-24">
