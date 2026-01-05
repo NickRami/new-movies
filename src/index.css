@@ -5,32 +5,39 @@
 @layer base {
   :root {
     /* --- Professional Cinema Palette "Midnight Premiere" --- */
-    
+
     /* Base Backgrounds - Richer, deeper blacks */
-    --background: 240 10% 3.5%;         /* #08080a Deepest Charcoal/Black */
-    --foreground: 0 0% 95%;             /* #f2f2f2 Off-white for better readability than pure white */
+    --background: 240 10% 3.5%;
+    /* #08080a Deepest Charcoal/Black */
+    --foreground: 0 0% 95%;
+    /* #f2f2f2 Off-white for better readability than pure white */
 
     /* Surface/Cards - Subtle separation */
-    --card: 240 6% 10%;                 /* #18181b Zinc-900 */
+    --card: 240 6% 10%;
+    /* #18181b Zinc-900 */
     --card-foreground: 0 0% 95%;
 
     --popover: 240 6% 10%;
     --popover-foreground: 0 0% 95%;
 
     /* Primary Brand - Sophisticated Crimson/Rose (Instead of standard red) */
-    --primary: 346 87% 60%;             /* #f43f5e Rose-500 (Vibrant but elegant) */
+    --primary: 346 87% 60%;
+    /* #f43f5e Rose-500 (Vibrant but elegant) */
     --primary-foreground: 355 100% 97%;
 
     /* Secondary - Cool Grays */
-    --secondary: 240 4% 16%;            /* #27272a Zinc-800 */
+    --secondary: 240 4% 16%;
+    /* #27272a Zinc-800 */
     --secondary-foreground: 240 5% 96%;
 
     /* Muted Elements */
-    --muted: 240 4% 16%; 
-    --muted-foreground: 240 5% 65%;     /* #a1a1aa Zinc-400 */
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+    /* #a1a1aa Zinc-400 */
 
     /* Accent - Gold for Ratings/Awards */
-    --accent: 45 93% 47%;               /* #eab308 Yellow-500 */
+    --accent: 45 93% 47%;
+    /* #eab308 Yellow-500 */
     --accent-foreground: 240 10% 4%;
 
     /* Semantic */
@@ -41,7 +48,8 @@
     --input: 240 4% 16%;
     --ring: 346 87% 60%;
 
-    --radius: 0.5rem;                   /* 8px - Cleaner, more professional than 12px */
+    --radius: 0.5rem;
+    /* 8px - Cleaner, more professional than 12px */
 
     /* Fonts */
     --font-heading: 'Urbanist', sans-serif;
@@ -61,16 +69,42 @@ body {
   color: hsl(var(--foreground));
   overflow-x: hidden;
   /* Subtle ambient background gradient for depth */
-  background-image: 
+  background-image:
     radial-gradient(circle at 15% 50%, rgba(244, 63, 94, 0.08), transparent 25%),
     radial-gradient(circle at 85% 30%, rgba(124, 58, 237, 0.08), transparent 25%);
   background-attachment: fixed;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
-  letter-spacing: -0.02em; /* Tight, modern tracking */
+  letter-spacing: -0.02em;
+  /* Tight, modern tracking */
+  line-height: 1.1;
+  font-weight: 700;
 }
+
+h1 {
+  font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  /* Fluid scale */
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw + 1rem, 3.5rem);
+}
+
+h3 {
+  font-size: clamp(1.5rem, 3vw + 1rem, 2.5rem);
+}
+
+h4 {
+  font-size: clamp(1.25rem, 2vw + 1rem, 2rem);
+}
+
 
 #root {
   min-height: 100vh;
@@ -87,8 +121,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE y Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE y Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 
   /* Glassmorphism effects - Refined & Subtle */
@@ -180,6 +216,7 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -191,6 +228,7 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -202,6 +240,7 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
     transform: translateX(20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -213,6 +252,7 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -223,24 +263,31 @@ h1, h2, h3, h4, h5, h6 {
   0% {
     background-position: -1000px 0;
   }
+
   100% {
     background-position: 1000px 0;
   }
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -281,31 +328,40 @@ h1, h2, h3, h4, h5, h6 {
 .responsive-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem; /* 16px */
+  gap: 1rem;
+  /* 16px */
 }
 
-@media (min-width: 640px) { /* sm */
+@media (min-width: 640px) {
+
+  /* sm */
   .responsive-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 768px) { /* md */
+@media (min-width: 768px) {
+
+  /* md */
   .responsive-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.5rem; /* 24px */
+    gap: 1.5rem;
+    /* 24px */
   }
 }
 
-@media (min-width: 1024px) { /* lg */
+@media (min-width: 1024px) {
+
+  /* lg */
   .responsive-grid {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1280px) { /* xl */
+@media (min-width: 1280px) {
+
+  /* xl */
   .responsive-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }
-

@@ -2,14 +2,15 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Plus, Check, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useTrendingMovies } from '../hooks/useMovies';
+import { useUpcomingMovies } from '../hooks/useMovies';
 import { useFavorites } from '../context/FavoritesContext';
 import { cn } from '../lib/utils';
+import { Button } from './ui/button';
 import { useTranslation } from 'react-i18next';
 import { getContainerClasses, Z_INDEX } from '../lib/layout-constants';
 
 export default function SearchHero() {
-  const { movies, loading } = useTrendingMovies();
+  const { movies, loading } = useUpcomingMovies();
   const { isFavorite, toggleFavorite } = useFavorites();
   const [currentIndex, setCurrentIndex] = useState(0);
   const { t } = useTranslation();
@@ -160,33 +161,39 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t }) {
         </p>
       </div>
 
-      {/* Buttons Configuration */}
-      <div className="flex flex-wrap items-center gap-4">
-        <Link
-          to={`/movie/${currentMovie.id}`}
-          className="flex items-center gap-2 px-8 py-3.5 sm:py-4 bg-white text-black font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+      {/* Buttons Configuration - Optimal Mobile Grid */}
+      <div className="grid grid-cols-2 gap-3 w-full sm:flex sm:w-auto sm:gap-4">
+        <Button
+          asChild
+          size="lg"
+          className="w-full sm:w-auto min-w-0 bg-white text-black hover:bg-gray-200 hover:text-black shadow-[0_0_20px_rgba(255,255,255,0.15)] font-bold rounded-xl h-12 sm:h-14 text-sm sm:text-base px-2 sm:px-8"
         >
-          <Play className="w-5 h-5 fill-current" />
-          <span>{t('hero.viewDetails')}</span>
-        </Link>
-        <button
+          <Link to={`/movie/${currentMovie.id}`} className="flex items-center justify-center w-full truncate">
+            <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-current mr-2 flex-shrink-0" />
+            <span className="truncate">{t('hero.viewDetails')}</span>
+          </Link>
+        </Button>
+
+        <Button
           onClick={(e) => {
             e.stopPropagation();
             toggleFavorite(currentMovie);
           }}
+          size="lg"
+          variant="outline"
           className={cn(
-            "flex items-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl font-semibold transition-all border backdrop-blur-xl active:scale-95",
-            isFavorite(currentMovie.id)
-              ? "bg-primary/20 border-primary text-primary shadow-[0_0_20px_rgba(225,29,72,0.2)]"
-              : "bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/30"
+            "w-full sm:w-auto min-w-0 rounded-xl font-semibold backdrop-blur-xl border-white/10 text-white hover:bg-white/10 h-12 sm:h-14 text-sm sm:text-base px-2 sm:px-8",
+            isFavorite(currentMovie.id) && "bg-primary/20 border-primary text-primary shadow-[0_0_20px_rgba(225,29,72,0.2)] hover:bg-primary/30"
           )}
         >
-          {isFavorite(currentMovie.id) ? (
-            <><Check className="w-5 h-5" /> {t('hero.added')}</>
-          ) : (
-            <><Plus className="w-5 h-5" /> {t('hero.myList')}</>
-          )}
-        </button>
+          <div className="flex items-center justify-center w-full truncate">
+            {isFavorite(currentMovie.id) ? (
+              <><Check className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" /> <span className="truncate">{t('hero.added')}</span></>
+            ) : (
+              <><Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" /> <span className="truncate">{t('hero.myList')}</span></>
+            )}
+          </div>
+        </Button>
       </div>
     </motion.div>
   );

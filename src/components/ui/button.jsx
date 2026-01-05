@@ -19,9 +19,9 @@ const buttonVariants = cva(
         gradient: "bg-gradient-to-r from-primary via-primary/90 to-accent text-white shadow-lg hover:shadow-glow-primary hover:scale-105 active:scale-95",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        default: "h-12 px-6 py-3 text-base md:text-sm lg:text-base", // Taller, more clickable
+        sm: "h-9 rounded-md px-3 text-xs",
+        lg: "h-14 rounded-md px-8 text-lg",
         icon: "h-10 w-10",
       },
     },
