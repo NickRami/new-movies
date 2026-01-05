@@ -153,10 +153,12 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t }) {
         </span>
       </div>
 
-      {/* Overview - Clamped for mobile safety */}
-      <p className="text-base md:text-lg text-gray-300 line-clamp-3 md:line-clamp-4 max-w-2xl leading-relaxed mb-8 drop-shadow-md font-light">
-        {currentMovie.overview}
-      </p>
+      {/* Overview - Designer accent layout */}
+      <div className="relative pl-4 border-l-4 border-primary/40 mb-8 rounded-sm">
+        <p className="text-base md:text-lg text-gray-200/90 line-clamp-2 md:line-clamp-3 max-w-xl leading-relaxed font-medium drop-shadow-lg">
+          {currentMovie.overview}
+        </p>
+      </div>
 
       {/* Buttons Configuration */}
       <div className="flex flex-wrap items-center gap-4">
