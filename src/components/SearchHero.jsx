@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Plus, Check, Info } from 'lucide-react';
+import { Play, Plus, Check, Info, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useUpcomingMovies } from '../hooks/useMovies';
 import { useFavorites } from '../context/FavoritesContext';
@@ -8,15 +8,39 @@ import { cn } from '../lib/utils';
 import { Button } from './ui/button';
 import { useTranslation } from 'react-i18next';
 import { getContainerClasses, Z_INDEX } from '../lib/layout-constants';
+import { fetchGenres } from '../services/tmdb';
 
 export default function SearchHero() {
   const { movies, loading } = useUpcomingMovies();
   const { isFavorite, toggleFavorite } = useFavorites();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { t } = useTranslation();
+  const [allGenres, setAllGenres] = useState([]);
+  const { t, i18n } = useTranslation();
 
   const heroMovies = movies.filter(m => m.backdrop_path).slice(0, 6);
   const currentMovie = heroMovies[currentIndex];
+
+  useEffect(() => {
+    async function loadGenres() {
+      try {
+        const lang = i18n.language === 'es' ? 'es-ES' : 'en-US';
+        const genresData = await fetchGenres(lang);
+        setAllGenres(genresData);
+      } catch (e) {
+        console.error("Failed to load genres for hero", e);
+      }
+    }
+    loadGenres();
+  }, [i18n.language]);
+
+  // Helper to get genre names
+  const getHeroGenres = (ids) => {
+    if (!ids || !allGenres.length) return [];
+    return ids
+      .map(id => allGenres.find(g => g.id === id)?.name)
+      .filter(Boolean)
+      .slice(0, 2); // Show max 2 genres
+  };
 
   useEffect(() => {
     if (heroMovies.length > 0) {
@@ -63,6 +87,7 @@ export default function SearchHero() {
                 isFavorite={isFavorite}
                 toggleFavorite={toggleFavorite}
                 t={t}
+                genres={getHeroGenres(currentMovie.genre_ids)}
               />
             </div>
 
@@ -126,7 +151,7 @@ function HeroBackground({ currentMovie }) {
 }
 
 // Content Component
-function HeroContent({ currentMovie, isFavorite, toggleFavorite, t }) {
+function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
   return (
     <motion.div
       key={currentMovie.id}
@@ -140,16 +165,32 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t }) {
         {currentMovie.title}
       </h1>
 
-      {/* Meta Data Row */}
+      {/* Meta Data Row - OPTION 1 & 2 Combined */}
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm md:text-base font-medium text-white/90 mb-6">
-        <span className="text-green-400 font-bold">
-          {(currentMovie.vote_average * 10).toFixed(0)}% Match
-        </span>
-        <span className="flex items-center gap-2">
-          <span className="w-1 h-1 rounded-full bg-white/50" />
+
+        {/* Rating */}
+        <div className="flex items-center gap-1.5 text-yellow-500">
+          <Star className="w-5 h-5 fill-current" />
+          <span className="text-white font-bold text-base md:text-lg">
+            {currentMovie.vote_average?.toFixed(1) || "NR"}
+          </span>
+        </div>
+
+        {/* Genres */}
+        {genres.length > 0 && (
+          <div className="flex items-center gap-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+            <span className="text-gray-200 tracking-wide">
+              {genres.join(" • ")}
+            </span>
+          </div>
+        )}
+
+        <span className="flex items-center gap-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
           {new Date(currentMovie.release_date).getFullYear()}
         </span>
-        <span className="border border-white/30 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold uppercase tracking-wider backdrop-blur-md">
+        <span className="ml-2 border border-white/30 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold uppercase tracking-wider backdrop-blur-md">
           HD
         </span>
       </div>

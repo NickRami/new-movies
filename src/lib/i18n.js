@@ -17,7 +17,8 @@ const resources = {
         "similar": "Similar Movies",
         "previous": "Previous",
         "next": "Next",
-        "min": "min"
+        "min": "min",
+        "tagline": "Premium Entertainment"
       },
       "hero": {
         "featured": "Featured",
@@ -26,7 +27,8 @@ const resources = {
         "removeFromFavorites": "Remove from Favorites",
         "nextUp": "Next Up",
         "added": "Added",
-        "myList": "My List"
+        "myList": "My List",
+        "match": "Match"
       },
       "search": {
         "placeholder": "Search movies, genres or actors...",
@@ -46,7 +48,8 @@ const resources = {
         "login": "Login",
         "register": "Register",
         "logout": "Logout",
-        "myFavorites": "My Favorites"
+        "myFavorites": "My Favorites",
+        "viewAllGenres": "View all genres"
       },
       "details": {
         "loading": "Loading experience...",
@@ -95,6 +98,11 @@ const resources = {
         "title": "My Favorites",
         "empty": "No items yet"
       },
+      "footer": {
+        "description": "Movie exploration app built with modern frontend technologies.",
+        "poweredBy": "Powered by TMDB API",
+        "rights": "© 2025 CineScope. All rights reserved."
+      },
       "errors": {
         "general": "Something went wrong while loading movies.",
         "connection": "Please check your internet connection or try again later."
@@ -114,7 +122,8 @@ const resources = {
         "similar": "Películas Similares",
         "previous": "Anterior",
         "next": "Siguiente",
-        "min": "min"
+        "min": "min",
+        "tagline": "Entretenimiento Premium"
       },
       "hero": {
         "featured": "Destacado",
@@ -123,7 +132,8 @@ const resources = {
         "removeFromFavorites": "Quitar de Favoritos",
         "nextUp": "A continuación",
         "added": "Añadido",
-        "myList": "Mi Lista"
+        "myList": "Mi Lista",
+        "match": "Coincidencia"
       },
       "search": {
         "placeholder": "Buscar películas, géneros o actores...",
@@ -143,7 +153,8 @@ const resources = {
         "login": "Iniciar Sesión",
         "register": "Registrarse",
         "logout": "Cerrar sesión",
-        "myFavorites": "Mis Favoritos"
+        "myFavorites": "Mis Favoritos",
+        "viewAllGenres": "Ver todos los géneros"
       },
       "details": {
         "loading": "Cargando experiencia...",
@@ -191,6 +202,11 @@ const resources = {
       "favorites": {
         "title": "Mis Favoritos",
         "empty": "Aún no hay elementos"
+      },
+      "footer": {
+        "description": "Aplicación de exploración de películas construida con tecnologías modernas.",
+        "poweredBy": "Desarrollado con TMDB API",
+        "rights": "© 2025 CineScope. Todos los derechos reservados."
       },
       "errors": {
         "general": "Algo salió mal al cargar las películas.",

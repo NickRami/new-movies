@@ -226,7 +226,7 @@ export default function NavbarAdaptive() {
                         <Film className="w-5 h-5 text-primary" />
                         <span className="text-lg font-bold text-white">CineScope</span>
                       </Link>
-                      <p className="text-xs text-muted-foreground">Premium Entertainment</p>
+                      <p className="text-xs text-muted-foreground">{t('common.tagline')}</p>
                     </div>
 
                     {/* Drawer Links */}
@@ -269,7 +269,7 @@ export default function NavbarAdaptive() {
                             </button>
                           ))}
                           <button onClick={() => navigate('/')} className="px-4 py-2 text-xs text-primary hover:underline">
-                            View all genres
+                            {t('nav.viewAllGenres')}
                           </button>
                         </div>
                       </div>
