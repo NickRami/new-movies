@@ -168,7 +168,10 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t }) {
           <span>{t('hero.viewDetails')}</span>
         </Link>
         <button
-          onClick={() => toggleFavorite(currentMovie)}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite(currentMovie);
+          }}
           className={cn(
             "flex items-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl font-semibold transition-all border backdrop-blur-xl active:scale-95",
             isFavorite(currentMovie.id)

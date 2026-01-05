@@ -24,7 +24,9 @@ const resources = {
         "viewDetails": "View Details",
         "addToFavorites": "Add to Favorites",
         "removeFromFavorites": "Remove from Favorites",
-        "nextUp": "Next Up"
+        "nextUp": "Next Up",
+        "added": "Added",
+        "myList": "My List"
       },
       "search": {
         "placeholder": "Search movies, genres or actors...",
@@ -90,8 +92,8 @@ const resources = {
         "back": "Back"
       },
       "favorites": {
-          "title": "My Favorites",
-          "empty": "No items yet"
+        "title": "My Favorites",
+        "empty": "No items yet"
       },
       "errors": {
         "general": "Something went wrong while loading movies.",
@@ -119,7 +121,9 @@ const resources = {
         "viewDetails": "Ver Detalles",
         "addToFavorites": "Añadir a Favoritos",
         "removeFromFavorites": "Quitar de Favoritos",
-        "nextUp": "A continuación"
+        "nextUp": "A continuación",
+        "added": "Añadido",
+        "myList": "Mi Lista"
       },
       "search": {
         "placeholder": "Buscar películas, géneros o actores...",
@@ -185,8 +189,8 @@ const resources = {
         "back": "Atrás"
       },
       "favorites": {
-          "title": "Mis Favoritos",
-          "empty": "Aún no hay elementos"
+        "title": "Mis Favoritos",
+        "empty": "Aún no hay elementos"
       },
       "errors": {
         "general": "Algo salió mal al cargar las películas.",
