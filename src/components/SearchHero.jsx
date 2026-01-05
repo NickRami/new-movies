@@ -1,299 +1,243 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Calendar, Info, Heart, Play } from 'lucide-react';
+import { Play, Plus, Check, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTrendingMovies } from '../hooks/useMovies';
 import { useFavorites } from '../context/FavoritesContext';
 import { cn } from '../lib/utils';
 import { useTranslation } from 'react-i18next';
-import { getHeroHeightStyle, getContainerClasses, HERO, Z_INDEX } from '../lib/layout-constants';
+import { getContainerClasses, Z_INDEX } from '../lib/layout-constants';
 
 export default function SearchHero() {
   const { movies, loading } = useTrendingMovies();
   const { isFavorite, toggleFavorite } = useFavorites();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
   const { t } = useTranslation();
 
-  // Filter movies with backdrop images for the hero
-  const heroMovies = movies.filter(m => m.backdrop_path).slice(0, 8);
+  const heroMovies = movies.filter(m => m.backdrop_path).slice(0, 6);
   const currentMovie = heroMovies[currentIndex];
 
-  // Auto-rotation
   useEffect(() => {
-    // Only run if:
-    // 1. We have movies
-    // 2. User is NOT hovering the carousel controls (isHovering)
-    // 3. The tab/window is visible/focused
-    if (heroMovies.length > 0 && !isHovering) {
+    if (heroMovies.length > 0) {
       const interval = setInterval(() => {
         if (!document.hidden) {
-           setCurrentIndex((prev) => (prev + 1) % heroMovies.length);
+          setCurrentIndex((prev) => (prev + 1) % heroMovies.length);
         }
       }, 8000);
       return () => clearInterval(interval);
     }
-  }, [heroMovies, isHovering]);
+  }, [heroMovies]);
 
   if (loading || !currentMovie) return <HeroSkeleton />;
 
   return (
-    <section 
+    <section
       className="relative w-full overflow-hidden"
-      style={getHeroHeightStyle()}
     >
-      
-      {/* Background Layer */}
-      <HeroBackground currentMovie={currentMovie} />
+      {/* 
+        Responsive Height Strategy:
+        - Mobile: min-h-[600px] to ensure content fits without scrolling immediately
+        - Tablet: min-h-[70vh]
+        - Desktop: min-h-[85vh] for the cinematic feel
+      */}
+      <div className="relative w-full min-h-[600px] md:min-h-[75vh] lg:min-h-[85vh] flex flex-col justify-end group">
 
-      {/* Content Layer */}
-      <div 
-        className={cn(
-          "relative h-full flex items-end",
-          getContainerClasses(),
-          HERO.paddingTop.mobile,
-          HERO.paddingTop.tablet,
-          HERO.paddingTop.desktop,
-          HERO.paddingBottom.mobile,
-          HERO.paddingBottom.tablet,
-          HERO.paddingBottom.desktop
-        )}
-        style={{ zIndex: Z_INDEX.content }}
-      >
-        <HeroContent 
-          currentMovie={currentMovie}
-          isFavorite={isFavorite}
-          toggleFavorite={toggleFavorite}
-          t={t}
-        />
+        {/* Background Layer */}
+        <HeroBackground currentMovie={currentMovie} />
+
+        {/* Content Container */}
+        <div
+          className={cn(
+            "relative w-full pb-16 pt-32 md:pb-24 lg:pb-32",
+            getContainerClasses()
+          )}
+          style={{ zIndex: Z_INDEX.content }}
+        >
+          <div className="grid lg:grid-cols-12 gap-8 items-end">
+
+            {/* Left Side: Info & Actions */}
+            <div className="lg:col-span-8 xl:col-span-8 space-y-6 md:space-y-8">
+              <HeroContent
+                currentMovie={currentMovie}
+                isFavorite={isFavorite}
+                toggleFavorite={toggleFavorite}
+                t={t}
+              />
+            </div>
+
+            {/* Right Side: Desktop Indicators (Aligned to bottom right) */}
+            <div className="hidden lg:flex lg:col-span-4 xl:col-span-4 justify-end items-end pb-2">
+              <HeroIndicators
+                total={heroMovies.length}
+                current={currentIndex}
+                onChange={setCurrentIndex}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Indicators (Absolute bottom) */}
+        <div className="absolute bottom-6 left-0 right-0 z-30 lg:hidden flex justify-center pb-safe">
+          <div className="flex gap-2 p-2 rounded-full backdrop-blur-sm bg-black/10">
+            {heroMovies.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentIndex(i)}
+                className={cn(
+                  "h-1.5 rounded-full transition-all duration-300",
+                  i === currentIndex ? "w-6 bg-white" : "w-1.5 bg-white/40"
+                )}
+                aria-label={`Current slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-
-      {/* Carousel Strip */}
-      <HeroCarousel 
-        heroMovies={heroMovies}
-        currentIndex={currentIndex}
-        setCurrentIndex={setCurrentIndex}
-        setIsHovering={setIsHovering}
-        isHovering={isHovering}
-        t={t}
-      />
     </section>
   );
 }
 
-// Hero Background with Cinematic Vignette
+// Robust Background Component
 function HeroBackground({ currentMovie }) {
   return (
     <AnimatePresence mode="wait">
       <motion.div
         key={currentMovie.id}
-        initial={{ opacity: 0, scale: 1.1 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }} 
-        className="absolute inset-0"
-        style={{ zIndex: Z_INDEX.background }}
+        transition={{ duration: 1.2, ease: "easeInOut" }}
+        className="absolute inset-0 z-0 bg-background"
       >
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${currentMovie.backdrop_path})` }}
+        <div
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] ease-out scale-105 group-hover:scale-110"
+          style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${currentMovie.backdrop_path})` }}
         />
-        
-        {/* Cinematic Gradient Overlays */}
-        {/* 1. Base dimming */}
-        <div className="absolute inset-0 bg-black/10" />
-        {/* 2. Left-side Heavy Vignette for Text Readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent" />
-        {/* 3. Bottom fade for smooth carousel integration */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+
+        {/* Professional Gradient Stack */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/20 to-transparent" />
+        {/* Navbar gradient */}
+        <div className="absolute top-0 w-full h-40 bg-gradient-to-b from-black/80 to-transparent" />
       </motion.div>
     </AnimatePresence>
   );
 }
 
-// Content Component - Developer Design Edition
+// Content Component
 function HeroContent({ currentMovie, isFavorite, toggleFavorite, t }) {
   return (
-    <div className="w-full space-y-6 md:space-y-8 max-w-4xl relative z-10 font-sans">
-      
-      {/* 1. Ultra-Premium Glass Badge */}
-      <motion.div 
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        key={`badge-${currentMovie.id}`}
-        transition={{ delay: 0.2, duration: 0.5 }}
-      >
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl shadow-inner shadow-white/5">
-           <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse shadow-[0_0_8px_rgba(234,179,8,0.8)]"/>
-           <span className="text-[10px] md:text-xs font-bold text-white/90 tracking-[0.2em] uppercase">
-             {t('hero.featured')}
-           </span>
-        </div>
-      </motion.div>
-
-      {/* 2. Title - Metallic Gradient Finish */}
-      <motion.h1
-        key={`title-${currentMovie.id}`}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
-        className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 leading-[0.9] tracking-tighter drop-shadow-2xl"
-      >
+    <motion.div
+      key={currentMovie.id}
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.6, delay: 0.2 }}
+      className="max-w-5xl"
+    >
+      {/* Title */}
+      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-black tracking-tighter text-white leading-[0.95] drop-shadow-2xl mb-4 md:mb-6">
         {currentMovie.title}
-      </motion.h1>
+      </h1>
 
-      {/* 3. Metadata - Clean & Monospaced Numbers */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        key={`meta-${currentMovie.id}`}
-        transition={{ delay: 0.35, duration: 0.5 }}
-        className="flex items-center gap-6 text-sm md:text-base font-medium text-gray-300"
-      >
-        <span className="text-white font-mono">{new Date(currentMovie.release_date).getFullYear()}</span>
-        <span className="flex items-center gap-1.5 text-accent">
-           <Star className="w-4 h-4 fill-current" />
-           <span className="font-mono text-white">{currentMovie.vote_average.toFixed(1)}</span>
+      {/* Meta Data Row */}
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm md:text-base font-medium text-white/90 mb-6">
+        <span className="text-green-400 font-bold">
+          {(currentMovie.vote_average * 10).toFixed(0)}% Match
         </span>
-        <span className="px-2 py-0.5 rounded border border-white/20 text-[10px] font-bold tracking-widest uppercase text-white/80">HD</span>
-        <span className="px-2 py-0.5 rounded border border-white/20 text-[10px] font-bold tracking-widest uppercase text-white/80">5.1</span>
-      </motion.div>
+        <span className="flex items-center gap-2">
+          <span className="w-1 h-1 rounded-full bg-white/50" />
+          {new Date(currentMovie.release_date).getFullYear()}
+        </span>
+        <span className="border border-white/30 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold uppercase tracking-wider backdrop-blur-md">
+          HD
+        </span>
+      </div>
 
-      {/* 4. Description */}
-      <motion.p
-        key={`desc-${currentMovie.id}`}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.6 }}
-        className="text-base sm:text-lg text-gray-400 line-clamp-3 md:line-clamp-3 max-w-2xl font-body leading-relaxed max-h-24"
-      >
+      {/* Overview - Clamped for mobile safety */}
+      <p className="text-base md:text-lg text-gray-300 line-clamp-3 md:line-clamp-4 max-w-2xl leading-relaxed mb-8 drop-shadow-md font-light">
         {currentMovie.overview}
-      </motion.p>
+      </p>
 
-      {/* 5. Actions - Button Shine Effect */}
-      <motion.div
-        key={`actions-${currentMovie.id}`}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.6 }}
-        className="flex flex-wrap items-center gap-4 pt-4"
-      >
-        <Link 
+      {/* Buttons Configuration */}
+      <div className="flex flex-wrap items-center gap-4">
+        <Link
           to={`/movie/${currentMovie.id}`}
-          className="group relative h-12 px-8 bg-white text-black font-bold rounded-lg overflow-hidden flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-300 active:scale-95"
+          className="flex items-center gap-2 px-8 py-3.5 sm:py-4 bg-white text-black font-bold rounded-xl transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.15)]"
         >
-          {/* Shine Effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/80 to-transparent w-full -translate-x-full group-hover:animate-shine z-0" />
-          
-          <span className="relative z-10 flex items-center gap-2">
-            <Play className="w-4 h-4 fill-current group-hover:scale-110 transition-transform" />
-            {t('hero.viewDetails')}
-          </span>
+          <Play className="w-5 h-5 fill-current" />
+          <span>{t('hero.viewDetails')}</span>
         </Link>
-        
-        <button 
+        <button
           onClick={() => toggleFavorite(currentMovie)}
           className={cn(
-            "h-12 w-12 rounded-lg border flex items-center justify-center transition-all duration-300 active:scale-95 backdrop-blur-md",
-            isFavorite(currentMovie.id) 
-              ? "bg-primary/20 border-primary text-primary shadow-[0_0_15px_rgba(124,58,237,0.3)]" 
+            "flex items-center gap-2 px-8 py-3.5 sm:py-4 rounded-xl font-semibold transition-all border backdrop-blur-xl active:scale-95",
+            isFavorite(currentMovie.id)
+              ? "bg-primary/20 border-primary text-primary shadow-[0_0_20px_rgba(225,29,72,0.2)]"
               : "bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/30"
           )}
-          title={isFavorite(currentMovie.id) ? t('hero.removeFromFavorites') : t('hero.addToFavorites')}
         >
-          <Heart className={cn("w-5 h-5 transition-transform", isFavorite(currentMovie.id) ? "fill-current scale-110" : "group-hover:scale-110")} />
+          {isFavorite(currentMovie.id) ? (
+            <><Check className="w-5 h-5" /> {t('hero.added')}</>
+          ) : (
+            <><Plus className="w-5 h-5" /> {t('hero.myList')}</>
+          )}
         </button>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 }
 
-// Carousel Component - Sleek & Modern
-function HeroCarousel({ heroMovies, currentIndex, setCurrentIndex, setIsHovering, isHovering, t }) {
-  // Calculate the visible items (Next 3)
-  const visibleItems = [];
-  for (let i = 0; i < 3; i++) {
-    const index = (currentIndex + i + 1) % heroMovies.length;
-    visibleItems.push(heroMovies[index]);
-  }
-
+// Desktop Indicators
+function HeroIndicators({ total, current, onChange }) {
   return (
-    <div 
-      className="absolute bottom-0 right-0 z-20 hidden lg:block w-1/2 p-12 pr-16 xl:pr-32"
-      style={{ zIndex: Z_INDEX.carousel }}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
-        <div className="flex justify-end gap-4 overflow-visible perspective-[1000px]">
-          <AnimatePresence mode='popLayout'>
-            {visibleItems.map((item, i) => (
-              <motion.button
-                layout
-                key={item.id}
-                onClick={() => setCurrentIndex((currentIndex + i + 1) % heroMovies.length)}
-                initial={{ opacity: 0, x: 20, scale: 0.9 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -20, scale: 0.9, transition: { duration: 0.3 } }}
-                transition={{ duration: 0.5, ease: "circOut" }}
-                whileHover={{ y: -5, scale: 1.05, transition: { duration: 0.2 } }}
-                className="relative w-40 aspect-video rounded-xl overflow-hidden border border-white/10 shadow-2xl group transition-shadow hover:border-white/30 hover:shadow-primary/20"
-              >
-                <img 
-                  src={item.backdrop_path} 
-                  alt={item.title} 
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 text-left">
-                  <p className="text-[11px] text-gray-300 font-bold truncate group-hover:text-white transition-colors">
-                    {item.title}
-                  </p>
-                </div>
-              </motion.button>
-            ))}
-          </AnimatePresence>
-        </div>
-        
-        {/* Progress Bar for Current Item */}
-        {!isHovering && (
-           <div className="mt-8 flex items-center justify-end gap-3">
-             <span className="text-[10px] font-bold text-white/40 tracking-widest uppercase">{t('hero.nextUp')}</span>
-             <div className="h-1 bg-white/10 rounded-full overflow-hidden w-32">
-                <motion.div 
-                  key={currentIndex} // Restart animation on index change
-                  initial={{ width: '0%' }}
-                  animate={{ width: '100%' }}
-                  transition={{ duration: 8, ease: "linear" }}
-                  className="h-full bg-primary origin-left shadow-[0_0_10px_rgba(255,255,255,0.5)]"
-                />
-             </div>
-           </div>
-        )}
+    <div className="flex gap-3 bg-black/20 backdrop-blur-md p-3 rounded-2xl border border-white/5">
+      {Array.from({ length: total }).map((_, i) => (
+        <button
+          key={i}
+          onClick={() => onChange(i)}
+          className={cn(
+            "relative h-1.5 rounded-full transition-all duration-500 overflow-hidden",
+            i === current ? "w-10 bg-white shadow-glow" : "w-2 bg-white/20 hover:w-6 hover:bg-white/40"
+          )}
+          aria-label={`Go to slide ${i + 1}`}
+        >
+          {i === current && (
+            <motion.div
+              layoutId="active-hero-indicator"
+              className="absolute inset-0 bg-primary opacity-80"
+            />
+          )}
+        </button>
+      ))}
     </div>
   );
 }
 
-// Skeleton Component
+// Robust Skeleton
 function HeroSkeleton() {
   return (
-    <div 
-      className="w-full bg-background animate-pulse relative"
-      style={getHeroHeightStyle()}
-    >
+    <div className="relative w-full min-h-[600px] md:min-h-[75vh] lg:min-h-[85vh] bg-[#0a0a0b] flex flex-col justify-end overflow-hidden">
+      <div className="absolute inset-0 bg-zinc-900 animate-pulse" />
       <div className={cn(
-        "absolute bottom-0 left-0 w-full mb-24 md:mb-32",
+        "relative w-full pb-16 pt-32 md:pb-24 lg:pb-32",
         getContainerClasses()
       )}>
-         <div className="max-w-3xl space-y-6">
-            <div className="h-4 w-24 bg-white/10 rounded" />
-            <div className="h-12 md:h-16 w-3/4 bg-white/10 rounded-lg" />
-            <div className="h-4 w-full bg-white/10 rounded" />
-            <div className="h-4 w-2/3 bg-white/10 rounded" />
-            <div className="flex gap-4 pt-4">
-               <div className="h-12 w-32 bg-white/10 rounded-lg" />
-               <div className="h-12 w-32 bg-white/10 rounded-lg" />
-            </div>
-         </div>
+        <div className="max-w-3xl space-y-6">
+          <div className="h-4 w-24 bg-white/5 rounded" />
+          <div className="h-16 md:h-24 w-3/4 bg-white/5 rounded-xl" />
+          <div className="flex gap-4">
+            <div className="h-5 w-20 bg-white/5 rounded" />
+            <div className="h-5 w-20 bg-white/5 rounded" />
+          </div>
+          <div className="space-y-3">
+            <div className="h-4 w-full bg-white/5 rounded" />
+            <div className="h-4 w-2/3 bg-white/5 rounded" />
+          </div>
+          <div className="flex gap-4 pt-4">
+            <div className="h-14 w-40 bg-white/5 rounded-xl" />
+            <div className="h-14 w-40 bg-white/5 rounded-xl" />
+          </div>
+        </div>
       </div>
     </div>
   );

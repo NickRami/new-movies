@@ -277,3 +277,35 @@ h1, h2, h3, h4, h5, h6 {
   animation: float 3s ease-in-out infinite;
 }
 
+/* Standard Responsive Grid for Cards */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem; /* 16px */
+}
+
+@media (min-width: 640px) { /* sm */
+  .responsive-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) { /* md */
+  .responsive-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem; /* 24px */
+  }
+}
+
+@media (min-width: 1024px) { /* lg */
+  .responsive-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) { /* xl */
+  .responsive-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+

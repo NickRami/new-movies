@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function MovieList({ movies, loading, error }) {
   const { t } = useTranslation();
-  
+
   if (loading) {
     return (
       <motion.div
@@ -44,7 +44,7 @@ export default function MovieList({ movies, loading, error }) {
         className="text-center py-20 max-w-2xl mx-auto"
       >
         <Card className="glass-dark border-destructive/30 p-6 shadow-xl">
-          <motion.div 
+          <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
@@ -53,7 +53,7 @@ export default function MovieList({ movies, loading, error }) {
             <AlertCircle className="w-6 h-6 text-destructive" />
             <p className="text-destructive text-xl font-semibold">{t('common.error')}</p>
           </motion.div>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
@@ -61,7 +61,7 @@ export default function MovieList({ movies, loading, error }) {
           >
             {t('errors.general')}
           </motion.p>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -92,7 +92,7 @@ export default function MovieList({ movies, loading, error }) {
         >
           <span className="text-3xl">🎬</span>
         </motion.div>
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -100,7 +100,7 @@ export default function MovieList({ movies, loading, error }) {
         >
           {t('search.noResults')}
         </motion.p>
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
@@ -117,7 +117,7 @@ export default function MovieList({ movies, loading, error }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
+      className="responsive-grid"
     >
       {movies.map((movie, index) => (
         <MovieCard key={movie.id} movie={movie} index={index} />
