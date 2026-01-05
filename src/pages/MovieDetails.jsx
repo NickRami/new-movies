@@ -304,23 +304,6 @@ export default function MovieDetails() {
                 </div>
               </div>
 
-              {movie.budget > 0 && (
-                <div>
-                  <span className="text-sm text-muted-foreground">{t('details.budget')}</span>
-                  <p className="font-medium text-white">
-                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(movie.budget)}
-                  </p>
-                </div>
-              )}
-
-              {movie.revenue > 0 && (
-                <div>
-                  <span className="text-sm text-muted-foreground">{t('details.revenue')}</span>
-                  <p className="font-medium text-white">
-                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(movie.revenue)}
-                  </p>
-                </div>
-              )}
             </div>
           </div>
 
