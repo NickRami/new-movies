@@ -74,7 +74,7 @@ export default function MovieCard({ movie, index = 0 }) {
           </button>
 
           {/* Hover Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-90 md:opacity-0 md:group-hover:opacity-100" />
 
           {/* Center Icon (Play or Eye) - Mobile hidden, Desktop show on hover */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
@@ -83,23 +83,23 @@ export default function MovieCard({ movie, index = 0 }) {
             </div>
           </div>
 
-        </div>
+          {/* Bottom Info Content */}
+          <div className="absolute bottom-0 left-0 w-full p-4 transform translate-y-2 opacity-100 transition-all duration-300 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 z-10">
+            <h3 className="text-white font-bold text-lg leading-tight line-clamp-2 drop-shadow-md mb-2 font-heading tracking-tight">
+              {movie.title}
+            </h3>
 
-        <div className="pt-3 space-y-1">
-          <h3 className="font-semibold text-base leading-tight text-foreground/90 group-hover:text-primary transition-colors duration-200 line-clamp-1">
-            {movie.title}
-          </h3>
-
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <div className="flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5" />
-              <span>{movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</span>
+            <div className="flex items-center justify-between text-xs text-gray-300">
+              <div className="flex items-center gap-1.5">
+                <Calendar className="w-3 h-3" />
+                <span>{movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</span>
+              </div>
+              {movie.original_language && (
+                <span className="uppercase border border-white/20 px-1.5 py-0.5 rounded text-[10px]">
+                  {movie.original_language}
+                </span>
+              )}
             </div>
-            {movie.original_language && (
-              <span className="uppercase text-[10px] font-medium opacity-70">
-                {movie.original_language}
-              </span>
-            )}
           </div>
         </div>
       </Link>
