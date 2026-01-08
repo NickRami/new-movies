@@ -83,23 +83,24 @@ export default function MovieCard({ movie, index = 0 }) {
             </div>
           </div>
 
-          {/* Bottom Info Content */}
-          <div className="absolute bottom-0 left-0 w-full p-4 transform translate-y-2 opacity-100 transition-all duration-300 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 z-10">
-            <h3 className="text-white font-bold text-lg leading-tight line-clamp-2 drop-shadow-md mb-2 font-heading tracking-tight">
-              {movie.title}
-            </h3>
+        </div>
 
-            <div className="flex items-center justify-between text-xs text-gray-300">
-              <div className="flex items-center gap-1.5">
-                <Calendar className="w-3 h-3" />
-                <span>{movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</span>
-              </div>
-              {movie.original_language && (
-                <span className="uppercase border border-white/20 px-1.5 py-0.5 rounded text-[10px]">
-                  {movie.original_language}
-                </span>
-              )}
+        {/* Title and Info Below Card */}
+        <div className="pt-2 sm:pt-3 space-y-1.5 sm:space-y-2">
+          <h3 className="font-semibold text-sm sm:text-base leading-tight text-foreground group-hover:text-primary transition-colors duration-200 line-clamp-2">
+            {movie.title}
+          </h3>
+
+          <div className="flex items-center justify-between text-[11px] sm:text-xs text-muted-foreground">
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              <span>{movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</span>
             </div>
+            {movie.original_language && (
+              <span className="uppercase text-[9px] sm:text-[10px] font-medium opacity-70">
+                {movie.original_language}
+              </span>
+            )}
           </div>
         </div>
       </Link>
