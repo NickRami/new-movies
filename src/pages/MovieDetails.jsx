@@ -64,249 +64,244 @@ export default function MovieDetails() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen bg-background text-foreground font-body"
+      exit={{ opacity: 0 }}
+      className="min-h-screen bg-[#050505] text-foreground font-body relative overflow-x-hidden"
     >
-      {/* --- IMMERSIVE HERO SECTION --- */}
-      <div className="relative w-full h-[70vh] lg:h-[85vh] overflow-hidden">
-        {/* Backdrop Image */}
+      {/* Futursitic Backdrop 2026 */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
         {movie.backdrop_path ? (
           <motion.div
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 10, ease: "linear" }}
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 0.4 }}
+            transition={{ duration: 2, ease: "easeOut" }}
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${movie.backdrop_path})` }}
           />
         ) : (
-          <div className="absolute inset-0 bg-secondary" />
+          <div className="absolute inset-0 bg-indigo-900/20" />
         )}
+        {/* Intense gradient masking for cinematic depth */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/80 to-[#050505] z-0" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/90 via-transparent to-[#050505]/90 z-0" />
 
-        {/* Gradient Overlays for Readability & Mood */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/40 to-transparent" />
-        <div className="absolute inset-0 bg-black/20" /> {/* General dim */}
-
-        {/* Hero Content */}
-        <div className="absolute inset-0 flex items-end pb-12">
-          <div className={getContainerClasses()}>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-
-              {/* Poster - Floating Overlap */}
-              <div className="hidden lg:block lg:col-span-3 xl:col-span-3 relative z-10 translate-y-12">
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="rounded-xl overflow-hidden shadow-2xl border-4 border-background/20 ring-1 ring-white/10"
-                >
-                  <img
-                    src={movie.poster_path}
-                    alt={movie.title}
-                    className="w-full h-auto object-cover aspect-[2/3]"
-                  />
-                </motion.div>
-              </div>
-
-              {/* Title & Key Info */}
-              <div className="col-span-1 lg:col-span-9 xl:col-span-9 mb-4 lg:mb-12">
-                <motion.div
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <BackNavigation />
-
-                  {/* Genres */}
-                  <div className="flex flex-wrap gap-2 mb-4 mt-4">
-                    {movie.genres?.map((genre) => (
-                      <span
-                        key={genre.id}
-                        className="px-3 py-1 bg-white/10 backdrop-blur-md text-white text-xs font-semibold uppercase tracking-wider rounded-full border border-white/10"
-                      >
-                        {genre.name}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Main Title */}
-                  <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-black text-white leading-[0.95] mb-4 tracking-tight drop-shadow-2xl">
-                    {movie.title}
-                  </h1>
-
-                  {movie.tagline && (
-                    <p className="text-lg sm:text-xl text-gray-300 font-light italic mb-6 border-l-4 border-primary pl-4">
-                      "{movie.tagline}"
-                    </p>
-                  )}
-
-                  {/* Quick Stats Row */}
-                  <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-gray-200 mb-8 text-sm sm:text-base">
-                    <div className="flex items-center gap-2">
-                      <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
-                      <span className="text-xl font-bold text-white">{movie.vote_average?.toFixed(1)}</span>
-                      <span className="text-sm text-gray-400">/ 10</span>
-                    </div>
-
-                    <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full" />
-
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-gray-400" />
-                      <span>{movie.runtime} {t('common.min')}</span>
-                    </div>
-
-                    <span className="hidden sm:inline-block w-1 h-1 bg-gray-500 rounded-full" />
-
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-5 h-5 text-gray-400" />
-                      <span>{new Date(movie.release_date).getFullYear()}</span>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                    {trailer && (
-                      <Button
-                        size="lg"
-                        variant="gradient"
-                        className="w-full sm:w-auto rounded-xl sm:rounded-full px-8 h-12 text-base font-semibold shadow-glow-primary hover:scale-105 transition-transform justify-center"
-                        onClick={() => document.getElementById('trailer-section')?.scrollIntoView({ behavior: 'smooth' })}
-                      >
-                        <Play className="w-5 h-5 mr-2 fill-current" />
-                        {t('details.watchTrailer')}
-                      </Button>
-                    )}
-
-                    <Button
-                      size="lg"
-                      variant={favorite ? "secondary" : "outline"}
-                      className={cn(
-                        "w-full sm:w-auto rounded-xl sm:rounded-full px-6 h-12 text-base backdrop-blur-md bg-white/5 border-white/20 hover:bg-white/10 text-white transition-all justify-center",
-                        favorite && "bg-primary/20 border-primary text-primary hover:bg-primary/30"
-                      )}
-                      onClick={() => toggleFavorite(movie)}
-                    >
-                      <Heart className={cn("w-5 h-5 mr-2", favorite && "fill-current")} />
-                      {favorite ? t('details.saved') : t('details.addToList')}
-                    </Button>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Ambient Lighting Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[150px] mix-blend-screen" />
       </div>
 
-      {/* --- CONTENT SECTION --- */}
-      <div className={cn(getContainerClasses(), "py-12 lg:py-20 relative z-0")}>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      {/* --- MAIN CONTENT OVERLAY --- */}
+      <div className="relative z-10 pt-24 pb-32">
+        <div className={cn(getContainerClasses(), "max-w-7xl mx-auto")}>
 
-          {/* Left Column (Details & Cast) */}
-          <div className="lg:col-span-8 space-y-12">
-
-            {/* Mobile/Tablet Poster (Visible only on smaller screens - moved here for better flow) */}
-            <div className="lg:hidden w-3/4 mx-auto sm:w-1/2 md:w-1/3 mb-8">
-              <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
-                <img src={movie.poster_path} alt={movie.title} className="w-full h-full object-cover" />
-              </div>
-            </div>
-
-            {/* Overview */}
-            <section>
-              <h2 className="text-2xl font-heading font-bold mb-4 flex items-center gap-2">
-                {t('details.storyline')}
-              </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                {movie.overview}
-              </p>
-            </section>
-
-            {/* Top Cast Grid */}
-            {movie.credits?.cast?.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-heading font-bold mb-6">{t('details.topCast')}</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  {movie.credits.cast.slice(0, 8).map((actor) => (
-                    <div key={actor.id} className="group flex items-center gap-3 bg-card/50 p-3 rounded-xl border border-border/50 hover:bg-card hover:border-primary/30 transition-all">
-                      <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-muted">
-                        {actor.profile_path ? (
-                          <img src={actor.profile_path} alt={actor.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <span className="w-full h-full flex items-center justify-center text-[10px]">?</span>
-                        )}
-                      </div>
-                      <div className="overflow-hidden">
-                        <p className="font-bold text-sm truncate text-white group-hover:text-primary transition-colors">{actor.name}</p>
-                        <p className="text-xs text-muted-foreground truncate">{actor.character}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Trailer Embed */}
-            {trailer && (
-              <section id="trailer-section" className="scroll-mt-24">
-                <h2 className="text-2xl font-heading font-bold mb-6">{t('details.trailer')}</h2>
-                <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-black">
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    src={`https://www.youtube.com/embed/${trailer.key}`}
-                    title={trailer.name}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
-                </div>
-              </section>
-            )}
-
-            {/* Similar Movies */}
-            {movie.similar?.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-heading font-bold mb-6">{t('common.similar')}</h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  {movie.similar.slice(0, 4).map((m, idx) => (
-                    <MovieCard key={m.id} movie={m} index={idx} />
-                  ))}
-                </div>
-              </section>
-            )}
+          {/* Top Navigation */}
+          <div className="mb-12">
+            <BackNavigation />
           </div>
 
-          {/* Right Column (Sidebar Stats) */}
-          <div className="lg:col-span-4 space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
 
-            {/* Information Card */}
-            <div className="bg-card/30 backdrop-blur-sm border border-border/50 rounded-2xl p-6 space-y-6 sticky top-24">
-              <h3 className="text-xl font-heading font-bold text-white border-b border-white/10 pb-4">{t('details.movieInfo')}</h3>
+            {/* Left Column: Glass Poster & Actions */}
+            <div className="lg:col-span-4 flex flex-col items-center lg:items-start space-y-8 lg:sticky lg:top-32 relative z-20">
+              <motion.div
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
+                className="w-3/4 sm:w-1/2 lg:w-full aspect-[2/3] rounded-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] ring-1 ring-white/10 group relative"
+              >
+                <img
+                  src={movie.poster_path}
+                  alt={movie.title}
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
+                {/* Inner glass reflection */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </motion.div>
 
-              <div>
-                <span className="text-sm text-muted-foreground">{t('details.originalTitle')}</span>
-                <p className="font-medium text-white">{movie.original_title}</p>
-              </div>
+              {/* 2026 Action Panel */}
+              <motion.div
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+                className="w-full sm:w-1/2 lg:w-full flex flex-col gap-4 p-4 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-2xl shadow-xl"
+              >
+                {trailer && (
+                  <Button
+                    size="lg"
+                    className="w-full rounded-2xl h-14 bg-white text-black hover:bg-gray-200 font-bold text-base transition-transform hover:scale-[1.02] shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                    onClick={() => document.getElementById('trailer-section')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
+                    <Play className="w-5 h-5 mr-3 fill-current" />
+                    {t('details.watchTrailer')}
+                  </Button>
+                )}
+                <Button
+                  size="lg"
+                  variant={favorite ? "secondary" : "outline"}
+                  className={cn(
+                    "w-full rounded-2xl h-14 text-base font-semibold border-white/10 bg-transparent text-white hover:bg-white/5 transition-all",
+                    favorite && "bg-primary/20 border-primary/50 text-white shadow-[0_0_20px_rgba(244,63,94,0.2)] hover:bg-primary/30",
+                    !trailer && "bg-white/10"
+                  )}
+                  onClick={() => toggleFavorite(movie)}
+                >
+                  <Heart className={cn("w-5 h-5 mr-3", favorite && "fill-primary text-primary border-none")} />
+                  {favorite ? t('details.saved') : t('details.addToList')}
+                </Button>
+              </motion.div>
+            </div>
 
-              <div>
-                <span className="text-sm text-muted-foreground">{t('details.status')}</span>
-                <p className="font-medium text-white">{movie.status}</p>
-              </div>
+            {/* Right Column: Information Flow */}
+            <div className="lg:col-span-8 space-y-16">
 
-              <div>
-                <span className="text-sm text-muted-foreground">{t('details.productionCompanies')}</span>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {movie.production_companies?.slice(0, 3).map((co) => (
-                    <span key={co.id} className="text-xs border border-white/10 px-2 py-1 rounded bg-black/20 text-gray-300">
-                      {co.name}
+              {/* Title Section */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {movie.genres?.map((genre) => (
+                    <span
+                      key={genre.id}
+                      className="px-4 py-1.5 bg-white/5 backdrop-blur-xl text-gray-300 text-xs font-bold uppercase tracking-widest rounded-lg border border-white/5"
+                    >
+                      {genre.name}
                     </span>
                   ))}
                 </div>
-              </div>
+
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 tracking-tighter leading-[1.1] mb-4">
+                  {movie.title}
+                </h1>
+
+                {movie.tagline && (
+                  <p className="text-lg sm:text-xl lg:text-2xl text-primary font-medium tracking-tight mb-8 drop-shadow-md">
+                    {movie.tagline}
+                  </p>
+                )}
+
+                {/* Minimalist Stats Board */}
+                <div className="flex flex-row flex-wrap items-center gap-4 sm:gap-6 p-4 sm:p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-3xl w-full">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center">
+                      <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">Rating</p>
+                      <p className="text-lg font-bold text-white">{movie.vote_average?.toFixed(1)} <span className="text-xs text-gray-500 font-normal">/10</span></p>
+                    </div>
+                  </div>
+                  <div className="w-px h-10 bg-white/10 hidden sm:block" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
+                      <Clock className="w-5 h-5 text-blue-400" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">Duration</p>
+                      <p className="text-lg font-bold text-white">{movie.runtime} {t('common.min')}</p>
+                    </div>
+                  </div>
+                  <div className="w-px h-10 bg-white/10 hidden sm:block" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+                      <Calendar className="w-5 h-5 text-emerald-400" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500 font-medium">Release</p>
+                      <p className="text-lg font-bold text-white">{new Date(movie.release_date).getFullYear()}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Synopsis */}
+              <motion.section
+                initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+              >
+                <h2 className="text-2xl font-bold mb-6 text-white/90">
+                  {t('details.storyline')}
+                </h2>
+                <p className="text-xl text-gray-400 leading-relaxed font-light">
+                  {movie.overview}
+                </p>
+
+                {/* Micro Info Row */}
+                <div className="mt-8 flex gap-8 text-sm border-t border-white/5 pt-6">
+                  <div>
+                    <span className="block text-gray-500 mb-1">{t('details.originalTitle')}</span>
+                    <span className="text-gray-300 font-medium">{movie.original_title}</span>
+                  </div>
+                  <div>
+                    <span className="block text-gray-500 mb-1">{t('details.status')}</span>
+                    <span className="text-emerald-400 font-medium">{movie.status}</span>
+                  </div>
+                </div>
+              </motion.section>
+
+              {/* 2026 Cast Cards */}
+              {movie.credits?.cast?.length > 0 && (
+                <motion.section
+                  initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+                >
+                  <h2 className="text-2xl font-bold mb-6 text-white/90">{t('details.topCast')}</h2>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    {movie.credits.cast.slice(0, 8).map((actor) => (
+                      <div key={actor.id} className="group p-4 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] transition-all cursor-pointer">
+                        <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white/10 mb-4 shadow-lg group-hover:scale-105 transition-transform">
+                          {actor.profile_path ? (
+                            <img src={actor.profile_path} alt={actor.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="w-full h-full flex items-center justify-center text-gray-600">?</span>
+                          )}
+                        </div>
+                        <p className="font-bold text-white text-sm mb-1 line-clamp-1">{actor.name}</p>
+                        <p className="text-xs text-primary font-medium line-clamp-1">{actor.character}</p>
+                      </div>
+                    ))}
+                  </div>
+                </motion.section>
+              )}
+
+              {/* Minimalist Trailer Player */}
+              {trailer && (
+                <motion.section
+                  id="trailer-section" className="scroll-mt-32"
+                  initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+                >
+                  <h2 className="text-2xl font-bold mb-6 text-white/90">{t('details.trailer')}</h2>
+                  <div className="aspect-video w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black/50 p-2 backdrop-blur-xl">
+                    <div className="w-full h-full rounded-2xl overflow-hidden bg-black">
+                      <iframe
+                        width="100%"
+                        height="100%"
+                        src={`https://www.youtube.com/embed/${trailer.key}?color=white&rel=0`}
+                        title={trailer.name}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      />
+                    </div>
+                  </div>
+                </motion.section>
+              )}
+
+              {/* Similar Movies - Floating Layout */}
+              {movie.similar?.length > 0 && (
+                <motion.section
+                  initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+                >
+                  <h2 className="text-2xl font-bold mb-6 text-white/90 border-b border-white/5 pb-4">{t('common.similar')}</h2>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    {movie.similar.slice(0, 4).map((m, idx) => (
+                      <div key={m.id} className="transform hover:-translate-y-2 transition-transform duration-300">
+                        <MovieCard movie={m} index={idx} />
+                      </div>
+                    ))}
+                  </div>
+                </motion.section>
+              )}
 
             </div>
           </div>
-
         </div>
       </div>
     </motion.div>
