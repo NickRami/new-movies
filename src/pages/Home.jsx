@@ -5,6 +5,7 @@ import SearchHero from '../components/SearchHero';
 import MovieList from '../components/MovieList';
 import MovieCard from '../components/MovieCard';
 import GenreSection from '../components/GenreSection';
+import AIRecommendations from '../components/AIRecommendations';
 import { useTranslation } from 'react-i18next';
 import { getContainerClasses, SPACING } from '../lib/layout-constants';
 import { cn } from '../lib/utils';
@@ -22,6 +23,9 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <SearchHero />
+
+      {/* AI Recommendations 2026 */}
+      <AIRecommendations />
 
       {/* Trending Movies Section */}
       <motion.section
@@ -58,13 +62,13 @@ export default function Home() {
               {t('home.trendingSubtitle')}
             </p>
           </motion.div>
-          
+
           <MovieList movies={movies} loading={loading} error={error} />
         </div>
       </motion.section>
 
       {/* Genre Sections - NO PAGINATION HERE */}
-      <section 
+      <section
         className={cn(
           "pb-16 md:pb-24",
           SPACING.sectionGap.mobile,
@@ -74,10 +78,10 @@ export default function Home() {
         <div className={cn(getContainerClasses(), "space-y-12 md:space-y-16")}>
           {!loadingGenres && !errorGenres && genreSections.length > 0 && (
             genreSections.map((section, sectionIndex) => (
-              <GenreSection 
-                key={section.genre.id} 
-                section={section} 
-                sectionIndex={sectionIndex} 
+              <GenreSection
+                key={section.genre.id}
+                section={section}
+                sectionIndex={sectionIndex}
               />
             ))
           )}

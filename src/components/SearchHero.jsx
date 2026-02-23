@@ -145,6 +145,8 @@ function HeroBackground({ currentMovie }) {
         <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/20 to-transparent" />
         {/* Navbar gradient */}
         <div className="absolute top-0 w-full h-40 bg-gradient-to-b from-black/80 to-transparent" />
+        {/* Unique glowing bottom border to distinctly separate Hero from other sections */}
+        <div className="absolute bottom-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-80 shadow-[0_-5px_20px_rgba(244,63,94,0.6)]" />
       </motion.div>
     </AnimatePresence>
   );

@@ -35,6 +35,8 @@ export default function MovieList({ movies, loading, error }) {
     );
   }
 
+
+
   if (error) {
     return (
       <motion.div
