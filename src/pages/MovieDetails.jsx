@@ -108,11 +108,18 @@ export default function MovieDetails() {
                 transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
                 className="w-3/4 sm:w-1/2 lg:w-full aspect-[2/3] rounded-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] ring-1 ring-white/10 group relative"
               >
-                <img
-                  src={movie.poster_path}
-                  alt={movie.title}
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                />
+                {movie.poster_path ? (
+                  <img
+                    src={movie.poster_path}
+                    alt={movie.title}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-secondary/50">
+                    <span className="text-4xl mb-2">🎬</span>
+                    <span className="text-muted-foreground text-sm text-center">N/A</span>
+                  </div>
+                )}
                 {/* Inner glass reflection */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </motion.div>
@@ -206,7 +213,7 @@ export default function MovieDetails() {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 font-medium">{t('details.release')}</p>
-                      <p className="text-lg font-bold text-white">{new Date(movie.release_date).getFullYear()}</p>
+                      <p className="text-lg font-bold text-white">{movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</p>
                     </div>
                   </div>
                 </div>
