@@ -27,11 +27,11 @@ export default function Series() {
                             <Tv className="w-7 h-7 text-white" />
                         </div>
                         <h1 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70 tracking-tighter">
-                            Series Destacadas
+                            {t('series.title')}
                         </h1>
                     </div>
                     <p className="text-muted-foreground text-lg max-w-2xl font-medium">
-                        Explora las series de televisión más aclamadas y vistas de la semana. Sumérgete en maratones inolvidables.
+                        {t('series.subtitle')}
                     </p>
                 </motion.div>
 

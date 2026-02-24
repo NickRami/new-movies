@@ -4,36 +4,38 @@ import { getContainerClasses } from '../lib/layout-constants';
 import { cn } from '../lib/utils';
 import { Button } from '../components/ui/button';
 import { useNavigate } from 'react-router-dom';
-
-const CollectionCards = [
-    {
-        icon: <Infinity className="w-8 h-8 md:w-12 md:h-12 text-blue-400 group-hover:scale-110 transition-transform" />,
-        title: "Universo Marvel",
-        desc: "Todo el MCU ordenado cronológicamente para que no pierdas ningún cameo o post-crédito.",
-        bg: "from-blue-600/20 to-cyan-500/10",
-        border: "border-blue-500/30",
-        shadow: "group-hover:shadow-[0_0_40px_rgba(59,130,246,0.3)]",
-    },
-    {
-        icon: <Zap className="w-8 h-8 md:w-12 md:h-12 text-yellow-500 group-hover:scale-110 transition-transform" />,
-        title: "Sagas Épicas",
-        desc: "Harry Potter, El Señor de los Anillos, Matrix. Listos para tus maratones del fin de semana.",
-        bg: "from-yellow-600/20 to-orange-500/10",
-        border: "border-yellow-500/30",
-        shadow: "group-hover:shadow-[0_0_40px_rgba(234,179,8,0.3)]",
-    },
-    {
-        icon: <Ticket className="w-8 h-8 md:w-12 md:h-12 text-rose-500 group-hover:scale-110 transition-transform" />,
-        title: "Obras Maestras",
-        desc: "Directores de culto compilados en un solo lugar: Nolan, Spielberg, Tarantino y más.",
-        bg: "from-rose-600/20 to-pink-500/10",
-        border: "border-rose-500/30",
-        shadow: "group-hover:shadow-[0_0_40px_rgba(244,63,94,0.3)]",
-    }
-];
+import { useTranslation } from 'react-i18next';
 
 export default function Collections() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
+    const CollectionCards = [
+        {
+            icon: <Infinity className="w-8 h-8 md:w-12 md:h-12 text-blue-400 group-hover:scale-110 transition-transform" />,
+            title: t('collections.marvelTitle'),
+            desc: t('collections.marvelDesc'),
+            bg: "from-blue-600/20 to-cyan-500/10",
+            border: "border-blue-500/30",
+            shadow: "group-hover:shadow-[0_0_40px_rgba(59,130,246,0.3)]",
+        },
+        {
+            icon: <Zap className="w-8 h-8 md:w-12 md:h-12 text-yellow-500 group-hover:scale-110 transition-transform" />,
+            title: t('collections.epicTitle'),
+            desc: t('collections.epicDesc'),
+            bg: "from-yellow-600/20 to-orange-500/10",
+            border: "border-yellow-500/30",
+            shadow: "group-hover:shadow-[0_0_40px_rgba(234,179,8,0.3)]",
+        },
+        {
+            icon: <Ticket className="w-8 h-8 md:w-12 md:h-12 text-rose-500 group-hover:scale-110 transition-transform" />,
+            title: t('collections.mastersTitle'),
+            desc: t('collections.mastersDesc'),
+            bg: "from-rose-600/20 to-pink-500/10",
+            border: "border-rose-500/30",
+            shadow: "group-hover:shadow-[0_0_40px_rgba(244,63,94,0.3)]",
+        }
+    ];
 
     return (
         <div className="min-h-screen pt-32 pb-24 bg-background relative overflow-hidden flex flex-col items-center">
@@ -53,10 +55,10 @@ export default function Collections() {
                         <Layers className="w-10 h-10 text-white" />
                     </div>
                     <h1 className="text-5xl md:text-7xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 tracking-tighter drop-shadow-md mb-6">
-                        Colecciones
+                        {t('collections.title')}
                     </h1>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
-                        Estamos curando listas inmersivas por directores, franquicias y mundos extendidos para tu próxima gran aventura (Update V2).
+                        {t('collections.subtitle')}
                     </p>
                 </motion.div>
 
@@ -77,7 +79,7 @@ export default function Collections() {
                             <p className="text-gray-300 font-medium leading-relaxed drop-shadow-sm">{card.desc}</p>
 
                             <div className="mt-8 flex items-center justify-between">
-                                <span className="text-xs font-bold uppercase tracking-widest text-white/50 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md">Próximamente</span>
+                                <span className="text-xs font-bold uppercase tracking-widest text-white/50 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md">{t('collections.comingSoon')}</span>
                             </div>
 
                             <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors" />
@@ -91,7 +93,7 @@ export default function Collections() {
                         variant="outline"
                         className="rounded-full border-white/10 px-8 h-14 bg-black/40 hover:bg-white/10 text-white backdrop-blur-md"
                     >
-                        Volver a Explorar
+                        {t('collections.explore')}
                     </Button>
                 </div>
             </div>

@@ -37,41 +37,41 @@ export default function Footer() {
           <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 pt-2">
             {/* Platform Links */}
             <div className="flex flex-col space-y-4">
-              <h4 className="text-white font-bold tracking-widest text-sm uppercase mb-2 opacity-80">Plataforma</h4>
+              <h4 className="text-white font-bold tracking-widest text-sm uppercase mb-2 opacity-80">{t('footer.platform')}</h4>
               <Link to="/" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
-                <span className="group-hover:translate-x-1 transition-transform">Películas</span>
+                <span className="group-hover:translate-x-1 transition-transform">{t('footer.movies')}</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
               <Link to="/series" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
-                <span className="group-hover:translate-x-1 transition-transform">Series</span>
+                <span className="group-hover:translate-x-1 transition-transform">{t('nav.series')}</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
               <Link to="/colecciones" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
-                <span className="group-hover:translate-x-1 transition-transform">Colecciones</span>
+                <span className="group-hover:translate-x-1 transition-transform">{t('footer.collections')}</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
             </div>
 
             {/* Support Links */}
             <div className="flex flex-col space-y-4">
-              <h4 className="text-white font-bold tracking-widest text-sm uppercase mb-2 opacity-80">Soporte</h4>
+              <h4 className="text-white font-bold tracking-widest text-sm uppercase mb-2 opacity-80">{t('footer.support')}</h4>
               <Link to="/faq" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
-                <span className="group-hover:translate-x-1 transition-transform">FAQ</span>
+                <span className="group-hover:translate-x-1 transition-transform">{t('footer.faq')}</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
               <Link to="/contacto" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
-                <span className="group-hover:translate-x-1 transition-transform">Contacto</span>
+                <span className="group-hover:translate-x-1 transition-transform">{t('footer.contact')}</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
               <Link to="/privacidad" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
-                <span className="group-hover:translate-x-1 transition-transform">Privacidad</span>
+                <span className="group-hover:translate-x-1 transition-transform">{t('footer.privacy')}</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
             </div>
 
             {/* Social Connect */}
             <div className="flex flex-col space-y-6 col-span-2 sm:col-span-1 mt-4 sm:mt-0">
-              <h4 className="text-white font-bold tracking-widest text-sm uppercase mb-2 opacity-80">Conecta</h4>
+              <h4 className="text-white font-bold tracking-widest text-sm uppercase mb-2 opacity-80">{t('footer.connect')}</h4>
               <div className="flex items-center gap-4">
                 <a href="https://twitter.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary/20 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(225,29,72,0.4)] hover:-translate-y-1 transition-all">
                   <Twitter className="w-4 h-4" />

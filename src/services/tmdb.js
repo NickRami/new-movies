@@ -82,6 +82,7 @@ export async function fetchTrendingTV(page = 1, language = 'es-ES') {
     release_date: tv.first_air_date,
     poster_path: tv.poster_path ? `${IMAGE_BASE_URL}${tv.poster_path}` : null,
     backdrop_path: tv.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${tv.backdrop_path}` : null,
+    media_type: 'tv',
   }));
   return { results, total_pages: data.total_pages };
 }
@@ -102,22 +103,24 @@ export async function fetchUpcoming(language = 'es-ES') {
 }
 
 /**
- * Busca películas por query
- */
-/**
- * Busca películas por query
+ * Busca contenido de forma global (Películas y Series)
  */
 export async function searchMovies(query, page = 1, language = 'es-ES') {
   if (!query || query.trim() === '') {
     return { results: [], total_pages: 0 };
   }
 
-  const data = await fetchFromTMDB(`/search/movie?query=${encodeURIComponent(query)}&page=${page}`, language);
-  const results = data.results.map(movie => ({
-    ...movie,
-    poster_path: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : null,
-    backdrop_path: movie.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${movie.backdrop_path}` : null,
-  }));
+  const data = await fetchFromTMDB(`/search/multi?query=${encodeURIComponent(query)}&page=${page}`, language);
+  const results = data.results
+    .filter(item => item.media_type === 'movie' || item.media_type === 'tv')
+    .map(item => ({
+      ...item,
+      title: item.title || item.name,
+      original_title: item.original_title || item.original_name,
+      release_date: item.release_date || item.first_air_date,
+      poster_path: item.poster_path ? `${IMAGE_BASE_URL}${item.poster_path}` : null,
+      backdrop_path: item.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${item.backdrop_path}` : null,
+    }));
   return { results, total_pages: data.total_pages };
 }
 
@@ -147,6 +150,45 @@ export async function getMovieDetails(id, language = 'es-ES') {
     similar: similar.results.slice(0, 6).map(movie => ({
       ...movie,
       poster_path: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : null,
+      media_type: 'movie',
+    })),
+  };
+}
+
+/**
+ * Obtiene los detalles completos de una Serie (TV Show)
+ */
+export async function getTvDetails(id, language = 'es-ES') {
+  const [tvShow, credits, videos, similar] = await Promise.all([
+    fetchFromTMDB(`/tv/${id}`, language),
+    fetchFromTMDB(`/tv/${id}/credits`, language),
+    fetchFromTMDB(`/tv/${id}/videos`, language),
+    fetchFromTMDB(`/tv/${id}/similar`, language),
+  ]);
+
+  return {
+    ...tvShow,
+    title: tvShow.name, // Adapto el esquema
+    original_title: tvShow.original_name,
+    release_date: tvShow.first_air_date,
+    runtime: tvShow.episode_run_time?.[0] || 'N/A', // Mapeo de duración
+    poster_path: tvShow.poster_path ? `${IMAGE_BASE_URL}${tvShow.poster_path}` : null,
+    backdrop_path: tvShow.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${tvShow.backdrop_path}` : null,
+    credits: {
+      cast: credits.cast.slice(0, 10).map(actor => ({
+        ...actor,
+        profile_path: actor.profile_path ? `${IMAGE_BASE_URL}${actor.profile_path}` : null,
+      })),
+      crew: credits.crew.filter(person => person.job === 'Executive Producer' || person.job === 'Creator').slice(0, 5),
+    },
+    videos: videos.results.filter(video => video.site === 'YouTube' && video.type === 'Trailer').slice(0, 3),
+    similar: similar.results.slice(0, 6).map(tv => ({
+      ...tv,
+      title: tv.name,
+      original_title: tv.original_name,
+      release_date: tv.first_air_date,
+      poster_path: tv.poster_path ? `${IMAGE_BASE_URL}${tv.poster_path}` : null,
+      media_type: 'tv',
     })),
   };
 }

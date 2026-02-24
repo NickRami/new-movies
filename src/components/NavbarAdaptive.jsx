@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 import GenresHoverMenu from './GenresHoverMenu';
 import { fetchGenres } from '../services/tmdb';
+import { useSearchMovies } from '../hooks/useMovies';
 import { cn } from '../lib/utils';
 import { getContainerClasses } from '../lib/layout-constants';
 
@@ -26,8 +27,11 @@ export default function NavbarAdaptive() {
 
   const [isSearchOpen, setIsSearchOpen] = useState(false); // Mobile search toggle
   const [term, setTerm] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [genres, setGenres] = useState([]);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  const { movies: searchSuggestions, loading: searchLoading } = useSearchMovies(term, null, 1);
 
   // Load genres
   useEffect(() => {
@@ -58,7 +62,7 @@ export default function NavbarAdaptive() {
 
   const navLinks = [
     { name: t('nav.home'), path: '/' },
-    { name: 'Series', path: '/series' }, // TODO: Add translation block if strictly needed, otherwise simple string label
+    { name: t('nav.series'), path: '/series' },
     { name: t('nav.favorites'), path: '/favorites', badge: favorites.length > 0 ? favorites.length : null },
   ];
 
@@ -126,10 +130,61 @@ export default function NavbarAdaptive() {
                     type="text"
                     value={term}
                     onChange={(e) => setTerm(e.target.value)}
+                    onFocus={() => setIsSearchFocused(true)}
+                    onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
                     placeholder={t('search.placeholder')}
-                    className="w-64 focus:w-80 bg-secondary/30 hover:bg-secondary/50 focus:bg-secondary/80 border border-transparent focus:border-primary/30 rounded-full py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-all duration-300"
+                    className="w-64 lg:w-72 xl:w-80 focus:w-[400px] bg-secondary/30 hover:bg-secondary/50 focus:bg-secondary/80 border border-transparent focus:border-primary/30 rounded-full py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-all duration-300"
                   />
                 </div>
+
+                <AnimatePresence>
+                  {term.trim() && isSearchFocused && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute top-full left-0 mt-3 w-full sm:w-[400px] bg-[#0a0a0b]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50 flex flex-col p-2"
+                    >
+                      {searchLoading ? (
+                        <div className="p-4 text-center text-sm text-gray-400">{t('search.searching')}</div>
+                      ) : searchSuggestions.length > 0 ? (
+                        <>
+                          {searchSuggestions.slice(0, 5).map(movie => (
+                            <Link
+                              key={movie.id}
+                              to={movie.media_type === 'tv' ? `/tv/${movie.id}` : `/movie/${movie.id}`}
+                              onClick={() => { setTerm(''); setIsSearchFocused(false); }}
+                              className="flex items-center gap-3 p-2 hover:bg-white/10 rounded-xl transition-colors group"
+                            >
+                              <div className="w-10 h-14 rounded-md overflow-hidden bg-white/5 flex-shrink-0">
+                                {movie.poster_path ? (
+                                  <img src={movie.poster_path} alt={movie.title} className="w-full h-full object-cover" />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center bg-zinc-900 border border-white/5">
+                                    <Film className="w-4 h-4 text-white/30" />
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <h4 className="text-sm font-bold text-white truncate group-hover:text-primary transition-colors">{movie.title}</h4>
+                                <p className="text-xs text-gray-400 truncate">{new Date(movie.release_date || Date.now()).getFullYear() || 'N/A'}</p>
+                              </div>
+                            </Link>
+                          ))}
+                          <button
+                            type="button"
+                            onClick={handleSubmit}
+                            className="w-full mt-2 py-2.5 text-xs font-bold text-white hover:text-white bg-primary/20 hover:bg-primary/40 rounded-lg transition-colors border border-primary/30"
+                          >
+                            {t('search.viewAllResults')}
+                          </button>
+                        </>
+                      ) : (
+                        <div className="p-4 text-center text-sm text-gray-400">{t('search.noResults')}</div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </form>
 
               {/* Mobile Search Toggle */}
@@ -251,7 +306,7 @@ export default function NavbarAdaptive() {
                         )}
                       >
                         <Film className="w-4 h-4" />
-                        Series
+                        {t('nav.series')}
                       </Link>
 
                       <Link
@@ -331,7 +386,7 @@ export default function NavbarAdaptive() {
               exit={{ height: 0, opacity: 0 }}
               className="md:hidden border-t border-white/10 bg-background/95 backdrop-blur-xl overflow-hidden"
             >
-              <form onSubmit={handleSubmit} className="p-4">
+              <form onSubmit={handleSubmit} className="p-4 border-b border-white/5">
                 <div className="relative">
                   <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary" />
                   <input
@@ -344,6 +399,56 @@ export default function NavbarAdaptive() {
                   />
                 </div>
               </form>
+
+              {/* Mobile Real-time Results */}
+              <AnimatePresence>
+                {term.trim() && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex flex-col max-h-[60vh] overflow-y-auto px-2 pb-4 pt-2"
+                  >
+                    {searchLoading ? (
+                      <div className="p-4 text-center text-sm text-gray-400">{t('search.searching')}</div>
+                    ) : searchSuggestions.length > 0 ? (
+                      <>
+                        {searchSuggestions.slice(0, 5).map(movie => (
+                          <Link
+                            key={movie.id}
+                            to={movie.media_type === 'tv' ? `/tv/${movie.id}` : `/movie/${movie.id}`}
+                            onClick={() => { setTerm(''); setIsSearchOpen(false); }}
+                            className="flex items-center gap-3 p-3 hover:bg-white/5 rounded-xl transition-colors group"
+                          >
+                            <div className="w-12 h-16 rounded-md overflow-hidden bg-white/5 flex-shrink-0">
+                              {movie.poster_path ? (
+                                <img src={movie.poster_path} alt={movie.title} className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-zinc-900 border border-white/5">
+                                  <Film className="w-5 h-5 text-white/30" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-sm font-bold text-white truncate group-hover:text-primary transition-colors">{movie.title}</h4>
+                              <p className="text-xs text-gray-400 truncate">{new Date(movie.release_date || Date.now()).getFullYear() || 'N/A'}</p>
+                            </div>
+                          </Link>
+                        ))}
+                        <button
+                          type="button"
+                          onClick={() => { handleSubmit({ preventDefault: () => { } }); setIsSearchOpen(false); }}
+                          className="mx-2 mt-3 py-3 text-sm font-bold text-white bg-primary/20 hover:bg-primary/30 rounded-xl transition-colors border border-primary/30"
+                        >
+                          {t('search.viewAllResults')}
+                        </button>
+                      </>
+                    ) : (
+                      <div className="p-6 text-center text-sm text-gray-400">{t('search.noResultsFor')} "{term}".</div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           )}
         </AnimatePresence>

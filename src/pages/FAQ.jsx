@@ -5,28 +5,28 @@ import { getContainerClasses } from '../lib/layout-constants';
 import { cn } from '../lib/utils';
 import { useTranslation } from 'react-i18next';
 
-const FAQs = [
-    {
-        q: "¿Qué es CineScope?",
-        a: "CineScope es una plataforma premium de recomendaciones y descubrimiento de películas y series que utiliza algoritmos de vanguardia para acercarte contenido basado estrictamente en tus gustos personales y métricas de popularidad global."
-    },
-    {
-        q: "¿Tienen todas las películas y series del mundo?",
-        a: "No almacenamos contenido pirateado. Proporcionamos toda la metadata, trailers y dónde ver (Providers) gracias a The Movie Database (TMDB). Funciona como tu centro neurálgico para decidir qué plataforma de streaming debes abrir hoy."
-    },
-    {
-        q: "¿Es gratuito utilizar esta plataforma?",
-        a: "Las funcionalidades de IA de recomendación, listados y creación de cuentas para guardar Favoritos son 100% gratuitas. Nuestro objetivo es dominar el concepto de \"Descubrimiento de Contenido\" sin pedirte tarjeta de crédito."
-    },
-    {
-        q: "¿Cómo calculan las sugerencias de la IA?",
-        a: "Nuestro motor analiza las variables de géneros, interacciones de usuarios similares y tendencias de taquilla mundial. En el futuro planeamos incorporar modelos fundacionales directos para que chatees con las recomendaciones."
-    }
-];
-
 export default function FAQ() {
-    const [openIndex, setOpenIndex] = useState(null);
     const { t } = useTranslation();
+    const [openIndex, setOpenIndex] = useState(null);
+
+    const FAQs = [
+        {
+            q: t('faq.q1'),
+            a: t('faq.a1')
+        },
+        {
+            q: t('faq.q2'),
+            a: t('faq.a2')
+        },
+        {
+            q: t('faq.q3'),
+            a: t('faq.a3')
+        },
+        {
+            q: t('faq.q4'),
+            a: t('faq.a4')
+        }
+    ];
 
     const toggleAccordion = (index) => {
         setOpenIndex(openIndex === index ? null : index);
@@ -50,10 +50,10 @@ export default function FAQ() {
                         <HelpCircle className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-4xl md:text-6xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 tracking-tighter drop-shadow-md mb-6 pt-2">
-                        Preguntas Frecuentes
+                        {t('faq.title')}
                     </h1>
                     <p className="text-lg text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
-                        Todo lo que necesitas saber sobre el producto y la facturación, respondido de forma ágil y transparente por nuestra base de conocimiento.
+                        {t('faq.subtitle')}
                     </p>
                 </motion.div>
 

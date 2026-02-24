@@ -5,8 +5,10 @@ import { getContainerClasses } from '../lib/layout-constants';
 import { cn } from '../lib/utils';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { useTranslation } from 'react-i18next';
 
 export default function Contact() {
+    const { t } = useTranslation();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
 
@@ -38,10 +40,10 @@ export default function Contact() {
                         <MessageSquare className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-4xl md:text-6xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 tracking-tighter drop-shadow-md mb-6 pt-2">
-                        Hablemos
+                        {t('contact.title')}
                     </h1>
                     <p className="text-lg text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
-                        Nuestros canales de comunicación están abiertos. Envíanos tu consulta técnica, feedback o propuesta comercial.
+                        {t('contact.subtitle')}
                     </p>
                 </motion.div>
 
@@ -56,46 +58,46 @@ export default function Contact() {
                             <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center text-primary mb-4">
                                 <Send className="w-8 h-8" />
                             </div>
-                            <h3 className="text-2xl font-bold text-white mb-2">Mensaje Enviado</h3>
-                            <p className="text-gray-400">Gracias por contactarte. Nuestro equipo te responderá en breve.</p>
+                            <h3 className="text-2xl font-bold text-white mb-2">{t('contact.sentTitle')}</h3>
+                            <p className="text-gray-400">{t('contact.sentMessage')}</p>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium text-gray-300 ml-1">Nombre</label>
+                                    <label className="text-sm font-medium text-gray-300 ml-1">{t('contact.name')}</label>
                                     <Input
                                         required
-                                        placeholder="Tu nombre"
+                                        placeholder={t('contact.namePlaceholder')}
                                         className="bg-black/40 border-white/10 text-white placeholder:text-gray-600 h-12 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary shadow-inner"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium text-gray-300 ml-1">Correo Electrónico</label>
+                                    <label className="text-sm font-medium text-gray-300 ml-1">{t('contact.email')}</label>
                                     <Input
                                         required
                                         type="email"
-                                        placeholder="tu@email.com"
+                                        placeholder={t('contact.emailPlaceholder')}
                                         className="bg-black/40 border-white/10 text-white placeholder:text-gray-600 h-12 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary shadow-inner"
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-gray-300 ml-1">Asunto</label>
+                                <label className="text-sm font-medium text-gray-300 ml-1">{t('contact.subject')}</label>
                                 <Input
                                     required
-                                    placeholder="¿En qué te podemos ayudar?"
+                                    placeholder={t('contact.subjectPlaceholder')}
                                     className="bg-black/40 border-white/10 text-white placeholder:text-gray-600 h-12 rounded-xl focus:border-primary focus:ring-1 focus:ring-primary shadow-inner"
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-medium text-gray-300 ml-1">Mensaje</label>
+                                <label className="text-sm font-medium text-gray-300 ml-1">{t('contact.message')}</label>
                                 <textarea
                                     required
                                     rows={5}
-                                    placeholder="Escribe tu mensaje aquí..."
+                                    placeholder={t('contact.messagePlaceholder')}
                                     className="w-full bg-black/40 border border-white/10 text-white placeholder:text-gray-600 rounded-xl p-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-inner resize-none"
                                 ></textarea>
                             </div>
@@ -105,7 +107,7 @@ export default function Contact() {
                                 disabled={isSubmitting}
                                 className="w-full h-14 rounded-xl text-base font-bold bg-white text-black hover:bg-gray-200 transition-colors mt-4"
                             >
-                                {isSubmitting ? 'Procesando...' : 'Enviar Mensaje'}
+                                {isSubmitting ? t('contact.processing') : t('contact.submit')}
                                 {!isSubmitting && <Send className="w-5 h-5 ml-2" />}
                             </Button>
                         </form>

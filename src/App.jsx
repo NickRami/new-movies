@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import MovieDetails from './pages/MovieDetails';
+import TvDetails from './pages/TvDetails';
 import Favorites from './pages/Favorites';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/series" element={<Series />} />
                 <Route path="/colecciones" element={<Collections />} />
                 <Route path="/movie/:id" element={<MovieDetails />} />
+                <Route path="/tv/:id" element={<TvDetails />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />

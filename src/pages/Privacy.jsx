@@ -26,10 +26,10 @@ export default function Privacy() {
                         <ShieldCheck className="w-8 h-8 text-white" />
                     </div>
                     <h1 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 tracking-tighter drop-shadow-md mb-6 pt-2">
-                        Privacidad & Legal
+                        {t('privacy.title')}
                     </h1>
                     <p className="text-lg text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
-                        Tus datos blindados por nuestra política de transparencia y seguridad. <br />Actualizado en {currentYear}.
+                        {t('privacy.subtitle')} <br />{t('privacy.updated')} {currentYear}.
                     </p>
                 </motion.div>
 
@@ -41,33 +41,33 @@ export default function Privacy() {
                 >
                     <div className="prose prose-invert prose-lg max-w-none text-gray-300">
                         <h3 className="flex items-center gap-3 text-2xl md:text-3xl font-bold text-white mb-6 border-b border-white/10 pb-4">
-                            <FileText className="w-6 h-6 text-primary" /> Recopilación de Datos
+                            <FileText className="w-6 h-6 text-primary" /> {t('privacy.dataCollectionTitle')}
                         </h3>
                         <p className="mb-8 leading-relaxed">
-                            En CineScope recopilamos información estadística general relacionada con las búsquedas e interacciones en la web, de forma enteramente anónima. Utilizando los endpoints de The Movie Database (TMDB), la información consultada se procesa exclusivamente para entrenar y mejorar tu flujo de recomendaciones en sesiones futuras. No guardamos correos en texto plano ni vendemos perfiles de usuario.
+                            {t('privacy.dataCollectionText')}
                         </p>
 
                         <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 border-b border-white/10 pb-4">
-                            Uso de Cookies y Almacenamiento Local
+                            {t('privacy.cookiesTitle')}
                         </h3>
                         <p className="mb-8 leading-relaxed">
-                            Hacemos uso exclusivo del <strong>Local Storage</strong> o cookies técnicas estrictamente necesarias para el correcto funcionamiento de tu cuenta, autenticación (login/registro) y persistencia del contexto global (películas que agregas a tus Favoritos).
+                            {t('privacy.cookiesText')}
                         </p>
 
                         <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 border-b border-white/10 pb-4">
-                            Terceros y Plataformas
+                            {t('privacy.thirdPartiesTitle')}
                         </h3>
                         <p className="mb-8 leading-relaxed bg-white/5 p-6 rounded-2xl border border-white/10">
-                            Toda carátula de película, logo u obra audiovisual exhibida es propiedad intelectual y copyright de sus correspondientes autores, productoras y conglomerados (TMDB). CineScope es un explorador visual (front-end) que se nutre del catálogo documental global bajo fines investigativos, educativos y de descubrimiento de contenido.
+                            {t('privacy.thirdPartiesText')}
                         </p>
 
                         <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 border-b border-white/10 pb-4">
-                            Derechos del Usuario
+                            {t('privacy.userRightsTitle')}
                         </h3>
                         <ul className="space-y-4 mb-4 list-disc pl-6">
-                            <li>Derecho a rectificar tus datos registrados.</li>
-                            <li>Derecho al borrado instantáneo y permanente de tu historial de favoritos (cuenta).</li>
-                            <li>Derecho a la exclusión de campañas de mailing o promoción.</li>
+                            <li>{t('privacy.right1')}</li>
+                            <li>{t('privacy.right2')}</li>
+                            <li>{t('privacy.right3')}</li>
                         </ul>
                     </div>
                 </motion.div>

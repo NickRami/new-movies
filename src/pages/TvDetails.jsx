@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, Calendar, Clock, ArrowLeft, Play, Heart } from 'lucide-react';
-import { useMovieDetails } from '../hooks/useMovies';
+import { useTvDetails } from '../hooks/useMovies';
 import { useFavorites } from '../context/FavoritesContext';
 import MovieCard from '../components/MovieCard';
 import { Button } from '../components/ui/button';
@@ -12,10 +12,10 @@ import BackNavigation from '../components/BackNavigation';
 import { useTranslation } from 'react-i18next';
 import { getContainerClasses } from '../lib/layout-constants';
 
-export default function MovieDetails() {
+export default function TvDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { movie, loading, error } = useMovieDetails(id);
+  const { movie, loading, error } = useTvDetails(id);
   const { isFavorite, toggleFavorite } = useFavorites();
   const { t } = useTranslation();
 

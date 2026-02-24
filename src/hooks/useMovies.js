@@ -4,6 +4,7 @@ import {
   fetchTrending,
   searchMovies,
   getMovieDetails,
+  getTvDetails,
   fetchProviders,
   fetchGenres,
   fetchMoviesByGenre,
@@ -162,6 +163,35 @@ export function useMovieDetails(id) {
         setError(null);
         const language = getTMDBLanguage(i18n.language);
         const data = await getMovieDetails(id, language);
+        setMovie(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDetails();
+  }, [id, i18n.language]);
+
+  return { movie, loading, error };
+}
+
+export function useTvDetails(id) {
+  const { i18n } = useTranslation();
+  const [movie, setMovie] = useState(null); // Usamos 'movie' de nombre de variable para no romper TvDetails al copiar
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function loadDetails() {
+      if (!id) return;
+
+      try {
+        setLoading(true);
+        setError(null);
+        const language = getTMDBLanguage(i18n.language);
+        const data = await getTvDetails(id, language);
         setMovie(data);
       } catch (err) {
         setError(err.message);

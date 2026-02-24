@@ -25,7 +25,7 @@ export default function MovieCard({ movie, index = 0 }) {
       className="h-full w-full"
     >
       <Link
-        to={`/movie/${movie.id}`}
+        to={movie.media_type === 'tv' ? `/tv/${movie.id}` : `/movie/${movie.id}`}
         className="block h-full w-full group relative"
       >
         <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-card border border-white/5 hover-card-premium group">
