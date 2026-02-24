@@ -21,13 +21,13 @@ function validateApiKey() {
 async function fetchFromTMDB(endpoint, language = 'es-ES') {
   try {
     validateApiKey();
-    
+
     const separator = endpoint.includes('?') ? '&' : '?';
     const url = `${BASE_URL}${endpoint}${separator}api_key=${API_KEY}&language=${language}`;
-    
+
     const response = await fetch(url);
     const data = await response.json();
-    
+
     // Verificar si hay errores en la respuesta (incluso si response.ok es true)
     if (data.status_code) {
       // TMDB devuelve errores con status_code
@@ -41,7 +41,7 @@ async function fetchFromTMDB(endpoint, language = 'es-ES') {
         throw new Error(`Error de TMDB: ${data.status_message}`);
       }
     }
-    
+
     if (!response.ok) {
       // Manejar errores HTTP
       if (data.status_message) {
@@ -49,7 +49,7 @@ async function fetchFromTMDB(endpoint, language = 'es-ES') {
       }
       throw new Error(`Error en la petición: ${response.status} - ${data.status_message || 'Error desconocido'}`);
     }
-    
+
     return data;
   } catch (error) {
     console.error('Error al obtener datos de TMDB:', error);
@@ -66,6 +66,22 @@ export async function fetchTrending(page = 1, language = 'es-ES') {
     ...movie,
     poster_path: movie.poster_path ? `${IMAGE_BASE_URL}${movie.poster_path}` : null,
     backdrop_path: movie.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${movie.backdrop_path}` : null,
+  }));
+  return { results, total_pages: data.total_pages };
+}
+
+/**
+ * Obtiene las series (TV) trending de la semana
+ */
+export async function fetchTrendingTV(page = 1, language = 'es-ES') {
+  const data = await fetchFromTMDB(`/trending/tv/week?page=${page}`, language);
+  const results = data.results.map(tv => ({
+    ...tv,
+    title: tv.name, // Map name to title for MovieList compatibility
+    original_title: tv.original_name,
+    release_date: tv.first_air_date,
+    poster_path: tv.poster_path ? `${IMAGE_BASE_URL}${tv.poster_path}` : null,
+    backdrop_path: tv.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${tv.backdrop_path}` : null,
   }));
   return { results, total_pages: data.total_pages };
 }
@@ -95,7 +111,7 @@ export async function searchMovies(query, page = 1, language = 'es-ES') {
   if (!query || query.trim() === '') {
     return { results: [], total_pages: 0 };
   }
-  
+
   const data = await fetchFromTMDB(`/search/movie?query=${encodeURIComponent(query)}&page=${page}`, language);
   const results = data.results.map(movie => ({
     ...movie,

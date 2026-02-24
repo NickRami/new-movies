@@ -58,6 +58,7 @@ export default function NavbarAdaptive() {
 
   const navLinks = [
     { name: t('nav.home'), path: '/' },
+    { name: 'Series', path: '/series' }, // TODO: Add translation block if strictly needed, otherwise simple string label
     { name: t('nav.favorites'), path: '/favorites', badge: favorites.length > 0 ? favorites.length : null },
   ];
 
@@ -240,6 +241,17 @@ export default function NavbarAdaptive() {
                       >
                         <Film className="w-4 h-4" />
                         {t('nav.home')}
+                      </Link>
+
+                      <Link
+                        to="/series"
+                        className={cn(
+                          "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all",
+                          isActive('/series') ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-white/5 hover:text-white"
+                        )}
+                      >
+                        <Film className="w-4 h-4" />
+                        Series
                       </Link>
 
                       <Link

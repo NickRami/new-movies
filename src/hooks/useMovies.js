@@ -8,6 +8,7 @@ import {
   fetchGenres,
   fetchMoviesByGenre,
   fetchUpcoming,
+  fetchTrendingTV,
 } from '../services/tmdb';
 
 // Helper to get TMDB language code from i18next language
@@ -42,6 +43,35 @@ export function useTrendingMovies(page = 1) {
   }, [page, i18n.language]);
 
   return { movies, totalPages, loading, error };
+}
+
+export function useTrendingTV(page = 1) {
+  const { i18n } = useTranslation();
+  const [series, setSeries] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function loadSeries() {
+      try {
+        setLoading(true);
+        setError(null);
+        const language = getTMDBLanguage(i18n.language);
+        const data = await fetchTrendingTV(page, language);
+        setSeries(data.results);
+        setTotalPages(data.total_pages);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadSeries();
+  }, [page, i18n.language]);
+
+  return { series, totalPages, loading, error };
 }
 
 export function useUpcomingMovies() {
@@ -198,10 +228,10 @@ export function useGenreSections() {
         }
 
         // Seleccionamos algunos géneros populares para mostrar
-        const desiredGenreNames = i18n.language === 'es' 
+        const desiredGenreNames = i18n.language === 'es'
           ? ['Acción', 'Comedia', 'Drama', 'Terror', 'Animación']
           : ['Action', 'Comedy', 'Drama', 'Horror', 'Animation'];
-        
+
         const selectedGenres = genres.filter((genre) =>
           desiredGenreNames.includes(genre.name)
         );

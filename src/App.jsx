@@ -9,6 +9,11 @@ import MovieDetails from './pages/MovieDetails';
 import Favorites from './pages/Favorites';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Series from './pages/Series';
+import Collections from './pages/Collections';
+import FAQ from './pages/FAQ';
+import Contact from './pages/Contact';
+import Privacy from './pages/Privacy';
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -23,10 +28,15 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/series" element={<Series />} />
+                <Route path="/colecciones" element={<Collections />} />
                 <Route path="/movie/:id" element={<MovieDetails />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/contacto" element={<Contact />} />
+                <Route path="/privacidad" element={<Privacy />} />
               </Routes>
             </main>
             <Footer />

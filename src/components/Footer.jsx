@@ -42,11 +42,11 @@ export default function Footer() {
                 <span className="group-hover:translate-x-1 transition-transform">Películas</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
-              <Link to="/" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
+              <Link to="/series" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
                 <span className="group-hover:translate-x-1 transition-transform">Series</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
-              <Link to="/" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
+              <Link to="/colecciones" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
                 <span className="group-hover:translate-x-1 transition-transform">Colecciones</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
@@ -55,15 +55,15 @@ export default function Footer() {
             {/* Support Links */}
             <div className="flex flex-col space-y-4">
               <h4 className="text-white font-bold tracking-widest text-sm uppercase mb-2 opacity-80">Soporte</h4>
-              <Link to="/" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
+              <Link to="/faq" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
                 <span className="group-hover:translate-x-1 transition-transform">FAQ</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
-              <Link to="/" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
+              <Link to="/contacto" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
                 <span className="group-hover:translate-x-1 transition-transform">Contacto</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
-              <Link to="/" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
+              <Link to="/privacidad" className="text-gray-400 hover:text-primary transition-colors duration-300 flex items-center justify-between w-fit gap-2 group">
                 <span className="group-hover:translate-x-1 transition-transform">Privacidad</span>
                 <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
               </Link>
