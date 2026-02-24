@@ -7,7 +7,7 @@ import { useFavorites } from '../context/FavoritesContext';
 import { cn } from '../lib/utils';
 import { Button } from './ui/button';
 import { useTranslation } from 'react-i18next';
-import { getContainerClasses, Z_INDEX } from '../lib/layout-constants';
+import { getContainerClasses, Z_INDEX, HERO, getHeroHeightStyle } from '../lib/layout-constants';
 import { fetchGenres } from '../services/tmdb';
 
 export default function SearchHero() {
@@ -61,11 +61,12 @@ export default function SearchHero() {
     >
       {/* 
         Responsive Height Strategy:
-        - Mobile: min-h-[600px] to ensure content fits without scrolling immediately
-        - Tablet: min-h-[70vh]
-        - Desktop: min-h-[85vh] for the cinematic feel
+        - Managed by global design system
       */}
-      <div className="relative w-full min-h-[600px] md:min-h-[75vh] lg:min-h-[85vh] flex flex-col justify-end group">
+      <div
+        className="relative w-full flex flex-col justify-end group"
+        style={getHeroHeightStyle()}
+      >
 
         {/* Background Layer */}
         <HeroBackground currentMovie={currentMovie} />
@@ -73,7 +74,9 @@ export default function SearchHero() {
         {/* Content Container */}
         <div
           className={cn(
-            "relative w-full pb-16 pt-32 md:pb-24 lg:pb-32",
+            "relative w-full",
+            HERO.paddingTop.mobile, HERO.paddingTop.tablet, HERO.paddingTop.desktop,
+            HERO.paddingBottom.mobile, HERO.paddingBottom.tablet, HERO.paddingBottom.desktop,
             getContainerClasses()
           )}
           style={{ zIndex: Z_INDEX.content }}
@@ -163,7 +166,7 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
       className="max-w-5xl"
     >
       {/* Title */}
-      <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-heading font-black tracking-tighter text-white leading-[0.95] drop-shadow-2xl mb-4 md:mb-6">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-black tracking-tighter text-white leading-tight md:leading-[1] drop-shadow-2xl mb-3 md:mb-5 line-clamp-2 w-full lg:max-w-4xl">
         {currentMovie.title}
       </h1>
 
@@ -204,16 +207,16 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
         </p>
       </div>
 
-      {/* Buttons Configuration - Optimal Mobile Grid */}
-      <div className="grid grid-cols-2 gap-3 w-full sm:flex sm:w-auto sm:gap-4">
+      {/* Buttons Configuration - Optimal Mobile Stacking */}
+      <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto sm:gap-4 mt-2">
         <Button
           asChild
           size="lg"
-          className="w-full sm:w-auto min-w-0 bg-white text-black hover:bg-gray-200 hover:text-black shadow-[0_0_20px_rgba(255,255,255,0.15)] font-bold rounded-xl h-12 sm:h-14 text-sm sm:text-base px-2 sm:px-8"
+          className="w-full sm:w-auto min-w-0 bg-white text-black hover:bg-gray-200 hover:text-black shadow-[0_0_20px_rgba(255,255,255,0.15)] font-bold rounded-xl h-12 md:h-14 text-sm md:text-base px-4 md:px-8"
         >
-          <Link to={`/movie/${currentMovie.id}`} className="flex items-center justify-center w-full truncate">
-            <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-current mr-2 flex-shrink-0" />
-            <span className="truncate">{t('hero.viewDetails')}</span>
+          <Link to={`/movie/${currentMovie.id}`} className="flex items-center justify-center w-full">
+            <Play className="w-5 h-5 fill-current mr-2 flex-shrink-0" />
+            <span>{t('hero.viewDetails')}</span>
           </Link>
         </Button>
 
@@ -225,15 +228,15 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
           size="lg"
           variant="outline"
           className={cn(
-            "w-full sm:w-auto min-w-0 rounded-xl font-semibold backdrop-blur-xl border-white/10 text-white hover:bg-white/10 h-12 sm:h-14 text-sm sm:text-base px-2 sm:px-8",
+            "w-full sm:w-auto min-w-0 rounded-xl font-semibold backdrop-blur-xl border-white/10 text-white hover:bg-white/10 h-12 md:h-14 text-sm md:text-base px-4 md:px-8",
             isFavorite(currentMovie.id) && "bg-primary/20 border-primary text-primary shadow-[0_0_20px_rgba(225,29,72,0.2)] hover:bg-primary/30"
           )}
         >
-          <div className="flex items-center justify-center w-full truncate">
+          <div className="flex items-center justify-center w-full">
             {isFavorite(currentMovie.id) ? (
-              <><Check className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" /> <span className="truncate">{t('hero.added')}</span></>
+              <><Check className="w-5 h-5 mr-2 flex-shrink-0" /> <span>{t('hero.added')}</span></>
             ) : (
-              <><Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" /> <span className="truncate">{t('hero.myList')}</span></>
+              <><Plus className="w-5 h-5 mr-2 flex-shrink-0" /> <span>{t('hero.myList')}</span></>
             )}
           </div>
         </Button>
@@ -271,10 +274,15 @@ function HeroIndicators({ total, current, onChange }) {
 // Robust Skeleton
 function HeroSkeleton() {
   return (
-    <div className="relative w-full min-h-[600px] md:min-h-[75vh] lg:min-h-[85vh] bg-[#0a0a0b] flex flex-col justify-end overflow-hidden">
+    <div
+      className="relative w-full flex flex-col justify-end overflow-hidden bg-[#0a0a0b]"
+      style={getHeroHeightStyle()}
+    >
       <div className="absolute inset-0 bg-zinc-900 animate-pulse" />
       <div className={cn(
-        "relative w-full pb-16 pt-32 md:pb-24 lg:pb-32",
+        "relative w-full",
+        HERO.paddingTop.mobile, HERO.paddingTop.tablet, HERO.paddingTop.desktop,
+        HERO.paddingBottom.mobile, HERO.paddingBottom.tablet, HERO.paddingBottom.desktop,
         getContainerClasses()
       )}>
         <div className="max-w-3xl space-y-6">

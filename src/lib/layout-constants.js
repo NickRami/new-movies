@@ -33,7 +33,7 @@ export const SPACING = {
     tablet: 'md:py-16',     // 64px
     desktop: 'lg:py-20',    // 80px
   },
-  
+
   // Content spacing
   contentGap: {
     tight: 'space-y-4',     // 16px
@@ -41,7 +41,7 @@ export const SPACING = {
     loose: 'space-y-8',     // 32px
     xl: 'space-y-10',       // 40px
   },
-  
+
   // Margins
   marginTop: {
     sm: 'mt-4',             // 16px
@@ -56,8 +56,8 @@ export const SPACING = {
 export const HERO = {
   // Height calculation accounting for navbar
   minHeight: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
-  minHeightFallback: '650px', // Minimum for content readability
-  
+  minHeightFallback: '500px', // Minimum for content readability on small devices
+
   // Content max-widths for readability
   contentMaxWidth: {
     metadata: 'max-w-4xl',
@@ -65,19 +65,19 @@ export const HERO = {
     description: 'max-w-2xl lg:max-w-3xl',
     actions: 'max-w-4xl',
   },
-  
+
   // Padding compensation for navbar
   paddingTop: {
-    mobile: 'pt-32',        // Increased space below navbar
-    tablet: 'md:pt-40',
-    desktop: 'lg:pt-48',
+    mobile: 'pt-24',        // Reduced space below navbar for mobile
+    tablet: 'md:pt-32',
+    desktop: 'lg:pt-40',
   },
-  
+
   // Bottom padding for carousel
   paddingBottom: {
-    mobile: 'pb-24',
-    tablet: 'md:pb-32',
-    desktop: 'lg:pb-40',
+    mobile: 'pb-16',        // Reduced bottom padding for mobile
+    tablet: 'md:pb-24',
+    desktop: 'lg:pb-32',
   },
 };
 
