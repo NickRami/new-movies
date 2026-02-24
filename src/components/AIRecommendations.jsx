@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { getContainerClasses } from '../lib/layout-constants';
 import { cn } from '../lib/utils';
 import { useTrendingMovies } from '../hooks/useMovies';
 
 export default function AIRecommendations() {
     const { movies, loading, error } = useTrendingMovies();
+    const navigate = useNavigate();
     const recommendations = movies ? movies.slice(0, 3) : [];
 
     if (loading || error || recommendations.length === 0) return null;
@@ -45,6 +47,7 @@ export default function AIRecommendations() {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
                     {/* Tarjeta Principal (Destacada) */}
                     <motion.div
+                        onClick={() => navigate(`/movie/${recommendations[0].id}`)}
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -77,6 +80,7 @@ export default function AIRecommendations() {
                         {recommendations.slice(1, 3).map((movie, idx) => (
                             <motion.div
                                 key={movie.id}
+                                onClick={() => navigate(`/movie/${movie.id}`)}
                                 initial={{ opacity: 0, x: 30 }}
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
