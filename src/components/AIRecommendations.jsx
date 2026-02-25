@@ -16,9 +16,9 @@ export default function AIRecommendations() {
         <section className={cn("py-20 md:py-32 relative overflow-hidden bg-background")}>
             {/* Vínculo con el cyberpunk / 2026 aesthetics */}
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[100px] mix-blend-screen" />
-                <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-rose-600/10 rounded-full blur-[100px] mix-blend-screen" />
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+                <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[100px] dark:mix-blend-screen mix-blend-plus-lighter opacity-60" />
+                <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[100px] dark:mix-blend-screen mix-blend-plus-lighter opacity-40" />
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.15] brightness-100 contrast-150 dark:mix-blend-overlay mix-blend-multiply"></div>
             </div>
 
             <div className={cn(getContainerClasses(), "relative z-10")}>
@@ -27,18 +27,18 @@ export default function AIRecommendations() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-white/10 pb-8"
+                    className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-border/50 pb-8"
                 >
                     <div className="max-w-2xl">
                         <div className="flex items-center gap-3 mb-4">
                             <span className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-[0_0_30px_rgba(99,102,241,0.5)]">
                                 <Sparkles className="w-6 h-6 text-white" />
                             </span>
-                            <h2 className="text-4xl md:text-5xl font-black tracking-tight text-white drop-shadow-md">
+                            <h2 className="text-4xl md:text-5xl font-black tracking-tight text-foreground drop-shadow-md">
                                 Selección Especial para ti
                             </h2>
                         </div>
-                        <p className="text-lg text-indigo-200/80 font-medium">
+                        <p className="text-lg text-muted-foreground font-medium">
                             Basado en lo que disfrutas, hemos preparado este catálogo exclusivo con películas que seguramente te encantarán hoy.
                         </p>
                     </div>
@@ -52,7 +52,7 @@ export default function AIRecommendations() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.7 }}
-                        className="lg:col-span-8 relative rounded-3xl overflow-hidden group border border-white/5 cursor-pointer shadow-2xl"
+                        className="lg:col-span-8 relative rounded-3xl overflow-hidden group border border-border/50 cursor-pointer shadow-2xl"
                     >
                         <div className="absolute inset-0 bg-black/40 z-10 group-hover:bg-black/20 transition-colors duration-500" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
@@ -85,7 +85,7 @@ export default function AIRecommendations() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.2, duration: 0.7 }}
-                                className="relative flex-1 rounded-3xl overflow-hidden group border border-white/5 cursor-pointer shadow-xl h-[300px] lg:h-auto"
+                                className="relative flex-1 rounded-3xl overflow-hidden group border border-border/50 cursor-pointer shadow-xl h-[300px] lg:h-auto"
                             >
                                 <div className="absolute inset-0 bg-black/50 z-10 group-hover:bg-black/30 transition-colors duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />

@@ -40,8 +40,8 @@ export default function Collections() {
     return (
         <div className="min-h-screen pt-32 pb-24 bg-background relative overflow-hidden flex flex-col items-center">
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] mix-blend-screen" />
-                <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[120px] mix-blend-screen" />
+                <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] dark:mix-blend-screen mix-blend-multiply" />
+                <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[120px] dark:mix-blend-screen mix-blend-multiply" />
             </div>
 
             <div className={cn(getContainerClasses(), "relative z-10 w-full")}>
@@ -51,13 +51,13 @@ export default function Collections() {
                     transition={{ duration: 0.6 }}
                     className="relative z-10 flex flex-col items-center justify-center text-center mb-16"
                 >
-                    <div className="flex items-center justify-center w-20 h-20 rounded-3xl bg-white/5 border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)] mb-8">
-                        <Layers className="w-10 h-10 text-white" />
+                    <div className="flex items-center justify-center w-20 h-20 rounded-3xl bg-secondary/30 border border-border/50 shadow-glow mb-8">
+                        <Layers className="w-10 h-10 text-primary" />
                     </div>
-                    <h1 className="text-5xl md:text-7xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 tracking-tighter drop-shadow-md mb-6">
+                    <h1 className="text-5xl md:text-7xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/60 tracking-tighter drop-shadow-md mb-6">
                         {t('collections.title')}
                     </h1>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
                         {t('collections.subtitle')}
                     </p>
                 </motion.div>
@@ -70,19 +70,27 @@ export default function Collections() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 + idx * 0.1, duration: 0.5 }}
                             className={cn(
-                                "relative rounded-3xl p-8 lg:p-10 border bg-gradient-to-br backdrop-blur-xl group overflow-hidden cursor-pointer transition-all duration-500",
-                                card.bg, card.border, card.shadow
+                                "relative rounded-[2.5rem] p-8 lg:p-10 border glass group overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.02]",
+                                card.shadow
                             )}
                         >
-                            <div className="mb-6 opacity-80">{card.icon}</div>
-                            <h3 className="text-3xl font-black text-white mb-4 tracking-tight drop-shadow-sm">{card.title}</h3>
-                            <p className="text-gray-300 font-medium leading-relaxed drop-shadow-sm">{card.desc}</p>
+                            {/* Accent Background */}
+                            <div className={cn("absolute inset-0 bg-gradient-to-br opacity-[0.03] dark:opacity-[0.07] transition-opacity group-hover:opacity-[0.12]", card.bg)} />
 
-                            <div className="mt-8 flex items-center justify-between">
-                                <span className="text-xs font-bold uppercase tracking-widest text-white/50 border border-white/10 px-3 py-1 rounded-full backdrop-blur-md">{t('collections.comingSoon')}</span>
+                            <div className="relative z-10">
+                                <div className="mb-6 opacity-80 group-hover:opacity-100 transition-opacity">{card.icon}</div>
+                                <h3 className="text-3xl font-black text-foreground mb-4 tracking-tight">{card.title}</h3>
+                                <p className="text-muted-foreground font-medium leading-relaxed">{card.desc}</p>
+
+                                <div className="mt-8 flex items-center justify-between">
+                                    <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground/60 border border-border/50 px-4 py-1.5 rounded-full backdrop-blur-md bg-secondary/20">
+                                        {t('collections.comingSoon')}
+                                    </span>
+                                </div>
                             </div>
 
-                            <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors" />
+                            {/* Decorative element */}
+                            <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/20 transition-all duration-700" />
                         </motion.div>
                     ))}
                 </div>
@@ -91,7 +99,8 @@ export default function Collections() {
                     <Button
                         onClick={() => navigate('/')}
                         variant="outline"
-                        className="rounded-full border-white/10 px-8 h-14 bg-black/40 hover:bg-white/10 text-white backdrop-blur-md"
+                        size="lg"
+                        className="rounded-full px-10 h-16 text-lg font-bold glass hover:bg-primary hover:text-white transition-all duration-500 shadow-xl"
                     >
                         {t('collections.explore')}
                     </Button>

@@ -35,8 +35,8 @@ export default function FAQ() {
     return (
         <div className="min-h-screen pt-32 pb-24 bg-background relative overflow-hidden">
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] mix-blend-screen" />
-                <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-[120px] mix-blend-screen" />
+                <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] dark:mix-blend-screen mix-blend-multiply" />
+                <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-indigo-600/5 rounded-full blur-[120px] dark:mix-blend-screen mix-blend-multiply" />
             </div>
 
             <div className={cn(getContainerClasses(), "relative z-10")}>
@@ -46,13 +46,13 @@ export default function FAQ() {
                     transition={{ duration: 0.6 }}
                     className="mb-16 text-center text-balance flex flex-col items-center"
                 >
-                    <div className="flex items-center justify-center w-16 h-16 rounded-3xl bg-white/5 border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)] mb-6 mx-auto">
-                        <HelpCircle className="w-8 h-8 text-white" />
+                    <div className="flex items-center justify-center w-16 h-16 rounded-3xl bg-secondary/30 border border-border/50 shadow-glow mb-6 mx-auto">
+                        <HelpCircle className="w-8 h-8 text-primary" />
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 tracking-tighter drop-shadow-md mb-6 pt-2">
+                    <h1 className="text-4xl md:text-6xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/60 tracking-tighter drop-shadow-md mb-6 pt-2">
                         {t('faq.title')}
                     </h1>
-                    <p className="text-lg text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
                         {t('faq.subtitle')}
                     </p>
                 </motion.div>
@@ -66,19 +66,19 @@ export default function FAQ() {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="rounded-2xl border border-white/5 bg-white/5 overflow-hidden backdrop-blur-sm"
+                                className="rounded-2xl border border-border/50 glass overflow-hidden relative"
                             >
                                 <button
                                     onClick={() => toggleAccordion(index)}
-                                    className="w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-white/5 transition-colors group"
+                                    className="w-full text-left px-6 py-5 flex items-center justify-between gap-4 hover:bg-secondary/20 transition-colors group"
                                 >
-                                    <span className="font-bold text-lg text-gray-200 group-hover:text-white transition-colors">
+                                    <span className="font-bold text-lg text-foreground group-hover:text-primary transition-colors">
                                         {faq.q}
                                     </span>
                                     <ChevronDown
                                         className={cn(
-                                            "w-5 h-5 text-gray-500 transition-transform duration-300 flex-shrink-0",
-                                            isOpen ? "rotate-180 text-primary" : "group-hover:text-white"
+                                            "w-5 h-5 text-muted-foreground transition-transform duration-300 flex-shrink-0",
+                                            isOpen ? "rotate-180 text-primary" : "group-hover:text-foreground"
                                         )}
                                     />
                                 </button>
@@ -90,7 +90,7 @@ export default function FAQ() {
                                             exit={{ height: 0, opacity: 0 }}
                                             transition={{ duration: 0.3, ease: "easeInOut" }}
                                         >
-                                            <div className="px-6 pb-6 pt-2 text-gray-400 leading-relaxed border-t border-white/5 mx-6">
+                                            <div className="px-6 pb-6 pt-2 text-muted-foreground leading-relaxed border-t border-border/30 mx-6">
                                                 {faq.a}
                                             </div>
                                         </motion.div>

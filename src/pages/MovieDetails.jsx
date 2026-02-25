@@ -65,28 +65,34 @@ export default function MovieDetails() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-[#050505] text-foreground font-body relative overflow-x-hidden"
+      className="min-h-screen bg-background text-foreground font-body relative overflow-x-hidden"
     >
-      {/* Futursitic Backdrop 2026 */}
+      {/* Futuristic Backdrop 2026 */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         {movie.backdrop_path ? (
           <motion.div
             initial={{ scale: 1.1, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.4 }}
+            animate={{ scale: 1, opacity: 0.5 }}
             transition={{ duration: 2, ease: "easeOut" }}
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${movie.backdrop_path})` }}
           />
         ) : (
-          <div className="absolute inset-0 bg-indigo-900/20" />
+          <div className="absolute inset-0 bg-primary/10" />
         )}
-        {/* Intense gradient masking for cinematic depth */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/80 to-[#050505] z-0" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/90 via-transparent to-[#050505]/90 z-0" />
 
-        {/* Ambient Lighting Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] mix-blend-screen" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[150px] mix-blend-screen" />
+        {/* --- THEME ADAPTIVE MASKING --- */}
+        {/* Dark Mode Gradients */}
+        <div className="hidden dark:block absolute inset-0 bg-gradient-to-b from-background/40 via-background/90 to-background z-0" />
+        <div className="hidden dark:block absolute inset-0 bg-gradient-to-r from-background/95 via-transparent to-background/95 z-0" />
+
+        {/* Light Mode Gradients - More aggressive to keep text readable on images */}
+        <div className="dark:hidden absolute inset-0 bg-gradient-to-b from-white/30 via-white/95 to-white z-0" />
+        <div className="dark:hidden absolute inset-0 bg-gradient-to-r from-white/95 via-white/40 to-white/95 z-0" />
+
+        {/* Ambient Lighting Orbs - Theme Aware */}
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/15 rounded-full blur-[120px] dark:mix-blend-screen mix-blend-plus-lighter opacity-60" />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[150px] dark:mix-blend-screen mix-blend-plus-lighter opacity-40" />
       </div>
 
       {/* --- MAIN CONTENT OVERLAY --- */}
@@ -127,12 +133,12 @@ export default function MovieDetails() {
               {/* 2026 Action Panel */}
               <motion.div
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-                className="w-full sm:w-1/2 lg:w-full flex flex-col gap-4 p-4 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-2xl shadow-xl"
+                className="w-full sm:w-1/2 lg:w-full flex flex-col gap-4 p-4 rounded-3xl bg-secondary/10 border border-border/50 backdrop-blur-2xl shadow-xl"
               >
                 {trailer && (
                   <Button
                     size="lg"
-                    className="w-full rounded-2xl h-14 bg-white text-black hover:bg-gray-200 font-bold text-base transition-transform hover:scale-[1.02] shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+                    className="w-full rounded-2xl h-14 bg-foreground text-background hover:bg-foreground/80 font-bold text-base transition-transform hover:scale-[1.02] shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:shadow-[0_0_20px_rgba(255,255,255,0.15)]"
                     onClick={() => document.getElementById('trailer-section')?.scrollIntoView({ behavior: 'smooth' })}
                   >
                     <Play className="w-5 h-5 mr-3 fill-current" />
@@ -143,9 +149,9 @@ export default function MovieDetails() {
                   size="lg"
                   variant={favorite ? "secondary" : "outline"}
                   className={cn(
-                    "w-full rounded-2xl h-14 text-base font-semibold border-white/10 bg-transparent text-white hover:bg-white/5 transition-all",
-                    favorite && "bg-primary/20 border-primary/50 text-white shadow-[0_0_20px_rgba(244,63,94,0.2)] hover:bg-primary/30",
-                    !trailer && "bg-white/10"
+                    "w-full rounded-2xl h-14 text-base font-semibold border-border bg-transparent text-foreground hover:bg-secondary transition-all",
+                    favorite && "bg-primary/20 border-primary/50 text-primary shadow-[0_0_20px_rgba(244,63,94,0.2)] hover:bg-primary/30",
+                    !trailer && "bg-secondary/50"
                   )}
                   onClick={() => toggleFavorite(movie)}
                 >
@@ -168,52 +174,52 @@ export default function MovieDetails() {
                   {movie.genres?.map((genre) => (
                     <span
                       key={genre.id}
-                      className="px-4 py-1.5 bg-white/5 backdrop-blur-xl text-gray-300 text-xs font-bold uppercase tracking-widest rounded-lg border border-white/5"
+                      className="px-4 py-1.5 bg-secondary/30 backdrop-blur-xl text-foreground/80 text-xs font-bold uppercase tracking-widest rounded-lg border border-border/50"
                     >
                       {genre.name}
                     </span>
                   ))}
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 tracking-tighter leading-[1.1] mb-4">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/70 tracking-tighter leading-[1.1] mb-4">
                   {movie.title}
                 </h1>
 
                 {movie.tagline && (
-                  <p className="text-lg sm:text-xl lg:text-2xl text-primary font-medium tracking-tight mb-8 drop-shadow-md">
+                  <p className="text-lg sm:text-xl lg:text-2xl text-primary font-medium tracking-tight mb-8 drop-shadow-sm dark:drop-shadow-md">
                     {movie.tagline}
                   </p>
                 )}
 
                 {/* Minimalist Stats Board */}
-                <div className="flex flex-row flex-wrap items-center gap-4 sm:gap-6 p-4 sm:p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-3xl w-full">
+                <div className="flex flex-row flex-wrap items-center gap-4 sm:gap-6 p-4 sm:p-6 rounded-[2rem] bg-secondary/10 border border-border/50 backdrop-blur-3xl w-full">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-yellow-500/10 flex items-center justify-center">
                       <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 font-medium">{t('details.rating')}</p>
-                      <p className="text-lg font-bold text-white">{movie.vote_average?.toFixed(1)} <span className="text-xs text-gray-500 font-normal">/10</span></p>
+                      <p className="text-sm text-muted-foreground font-medium">{t('details.rating')}</p>
+                      <p className="text-lg font-bold text-foreground">{movie.vote_average?.toFixed(1)} <span className="text-xs text-muted-foreground font-normal">/10</span></p>
                     </div>
                   </div>
-                  <div className="w-px h-10 bg-white/10 hidden sm:block" />
+                  <div className="w-px h-10 bg-border/50 hidden sm:block" />
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
                       <Clock className="w-5 h-5 text-blue-400" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 font-medium">{t('details.duration')}</p>
-                      <p className="text-lg font-bold text-white">{movie.runtime} {t('common.min')}</p>
+                      <p className="text-sm text-muted-foreground font-medium">{t('details.duration')}</p>
+                      <p className="text-lg font-bold text-foreground">{movie.runtime} {t('common.min')}</p>
                     </div>
                   </div>
-                  <div className="w-px h-10 bg-white/10 hidden sm:block" />
+                  <div className="w-px h-10 bg-border/50 hidden sm:block" />
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
                       <Calendar className="w-5 h-5 text-emerald-400" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500 font-medium">{t('details.release')}</p>
-                      <p className="text-lg font-bold text-white">{movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</p>
+                      <p className="text-sm text-muted-foreground font-medium">{t('details.release')}</p>
+                      <p className="text-lg font-bold text-foreground">{movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</p>
                     </div>
                   </div>
                 </div>
@@ -223,22 +229,22 @@ export default function MovieDetails() {
               <motion.section
                 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
               >
-                <h2 className="text-2xl font-bold mb-6 text-white/90">
+                <h2 className="text-2xl font-bold mb-6 text-foreground/90">
                   {t('details.storyline')}
                 </h2>
-                <p className="text-xl text-gray-400 leading-relaxed font-light">
+                <p className="text-xl text-muted-foreground leading-relaxed font-light">
                   {movie.overview}
                 </p>
 
                 {/* Micro Info Row */}
-                <div className="mt-8 flex gap-8 text-sm border-t border-white/5 pt-6">
+                <div className="mt-8 flex gap-8 text-sm border-t border-border/50 pt-6">
                   <div>
-                    <span className="block text-gray-500 mb-1">{t('details.originalTitle')}</span>
-                    <span className="text-gray-300 font-medium">{movie.original_title}</span>
+                    <span className="block text-muted-foreground mb-1">{t('details.originalTitle')}</span>
+                    <span className="text-foreground/80 font-medium">{movie.original_title}</span>
                   </div>
                   <div>
-                    <span className="block text-gray-500 mb-1">{t('details.status')}</span>
-                    <span className="text-emerald-400 font-medium">{movie.status}</span>
+                    <span className="block text-muted-foreground mb-1">{t('details.status')}</span>
+                    <span className="text-emerald-500 font-medium">{movie.status}</span>
                   </div>
                 </div>
               </motion.section>
@@ -248,18 +254,18 @@ export default function MovieDetails() {
                 <motion.section
                   initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
                 >
-                  <h2 className="text-2xl font-bold mb-6 text-white/90">{t('details.topCast')}</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-foreground/90">{t('details.topCast')}</h2>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {movie.credits.cast.slice(0, 8).map((actor) => (
-                      <div key={actor.id} className="group p-4 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] transition-all cursor-pointer">
-                        <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white/10 mb-4 shadow-lg group-hover:scale-105 transition-transform">
+                      <div key={actor.id} className="group p-4 rounded-3xl bg-secondary/10 border border-border/50 hover:bg-secondary/30 transition-all cursor-pointer">
+                        <div className="w-16 h-16 rounded-2xl overflow-hidden bg-secondary mb-4 shadow-lg group-hover:scale-105 transition-transform">
                           {actor.profile_path ? (
                             <img src={actor.profile_path} alt={actor.name} className="w-full h-full object-cover" />
                           ) : (
-                            <span className="w-full h-full flex items-center justify-center text-gray-600">?</span>
+                            <span className="w-full h-full flex items-center justify-center text-muted-foreground">?</span>
                           )}
                         </div>
-                        <p className="font-bold text-white text-sm mb-1 line-clamp-1">{actor.name}</p>
+                        <p className="font-bold text-foreground text-sm mb-1 line-clamp-1">{actor.name}</p>
                         <p className="text-xs text-primary font-medium line-clamp-1">{actor.character}</p>
                       </div>
                     ))}
@@ -273,8 +279,8 @@ export default function MovieDetails() {
                   id="trailer-section" className="scroll-mt-32"
                   initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
                 >
-                  <h2 className="text-2xl font-bold mb-6 text-white/90">{t('details.trailer')}</h2>
-                  <div className="aspect-video w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-black/50 p-2 backdrop-blur-xl">
+                  <h2 className="text-2xl font-bold mb-6 text-foreground/90">{t('details.trailer')}</h2>
+                  <div className="aspect-video w-full rounded-3xl overflow-hidden shadow-2xl border border-border/50 bg-secondary/50 p-2 backdrop-blur-xl">
                     <div className="w-full h-full rounded-2xl overflow-hidden bg-black">
                       <iframe
                         width="100%"
@@ -296,7 +302,7 @@ export default function MovieDetails() {
                 <motion.section
                   initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
                 >
-                  <h2 className="text-2xl font-bold mb-6 text-white/90 border-b border-white/5 pb-4">{t('common.similar')}</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-foreground/90 border-b border-border/50 pb-4">{t('common.similar')}</h2>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {movie.similar.slice(0, 4).map((m, idx) => (
                       <div key={m.id} className="transform hover:-translate-y-2 transition-transform duration-300">

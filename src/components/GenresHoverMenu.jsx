@@ -35,7 +35,7 @@ export default function GenresHoverMenu({ genres, onGenreClick }) {
   return (
     // Wrapper: Contains both trigger and menu
     // This is the hover boundary - mouse leaving this closes the menu
-    <div 
+    <div
       className="relative hidden lg:block"
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
@@ -53,11 +53,11 @@ export default function GenresHoverMenu({ genres, onGenreClick }) {
         )}
       >
         <span>{t('nav.genres')}</span>
-        <ChevronDown 
+        <ChevronDown
           className={cn(
             "w-4 h-4 transition-transform duration-300",
             isOpen && "rotate-180"
-          )} 
+          )}
         />
       </button>
 
@@ -70,39 +70,30 @@ export default function GenresHoverMenu({ genres, onGenreClick }) {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             className={cn(
-              // Positioning - NO GAP to prevent flickering
               "absolute left-0 top-full",
-              // NO mt-2 here! We use padding-top inside instead
-              
-              // Dimensions
-              "w-[480px]",
-              
-              // Visual
-              "backdrop-blur-2xl bg-background/95",
-              "border border-white/10",
-              "rounded-xl shadow-2xl",
-              
-              // Z-index
-              "z-50"
+              "w-[540px]",
+              "glass border border-border/50",
+              "rounded-3xl shadow-2xl",
+              "z-50 overflow-hidden"
             )}
           >
             {/* Invisible bridge - creates visual gap without breaking hover */}
-            <div className="h-2" /> 
-            
+            <div className="h-2" />
+
             {/* Actual content with padding */}
-            <div className="p-4">
+            <div className="p-6">
               {/* Header */}
-              <div className="mb-4 pb-3 border-b border-white/10">
-                <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider">
+              <div className="mb-6 pb-4 border-b border-border/30">
+                <h3 className="text-sm font-black text-foreground uppercase tracking-[0.2em]">
                   {t('nav.genresMenuTitle')}
                 </h3>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-1 font-medium">
                   {t('nav.genresMenuSubtitle')}
                 </p>
               </div>
 
               {/* Genres Grid - 3 columns for easy scanning */}
-              <div className="grid grid-cols-3 gap-1 max-h-[400px] overflow-y-auto">
+              <div className="grid grid-cols-3 gap-2 max-h-[440px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
                 {genres.map((genre, index) => (
                   <motion.div
                     key={genre.id}

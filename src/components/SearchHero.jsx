@@ -136,20 +136,31 @@ function HeroBackground({ currentMovie }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 1.2, ease: "easeInOut" }}
-        className="absolute inset-0 z-0 bg-background"
+        className="absolute inset-0 z-0"
       >
+        {/* Backdrop image */}
         <div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] ease-out scale-105 group-hover:scale-110"
           style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${currentMovie.backdrop_path})` }}
         />
 
-        {/* Professional Gradient Stack */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/20 to-transparent" />
-        {/* Navbar gradient */}
-        <div className="absolute top-0 w-full h-40 bg-gradient-to-b from-black/80 to-transparent" />
-        {/* Unique glowing bottom border to distinctly separate Hero from other sections */}
-        <div className="absolute bottom-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-80 shadow-[0_-5px_20px_rgba(244,63,94,0.6)]" />
+        {/* ── DARK MODE gradient stack (uses bg-background token) ── */}
+        <div className="hidden dark:block absolute inset-0 bg-gradient-to-t from-background via-background/65 to-transparent" />
+        <div className="hidden dark:block absolute inset-0 bg-gradient-to-r from-background/98 via-background/45 to-transparent" />
+        <div className="hidden dark:block absolute top-0 w-full h-48 bg-gradient-to-b from-background/85 to-transparent" />
+
+        {/* ── LIGHT MODE gradient stack (uses deep rgba so image stays visible) ── */}
+        {/* Bottom: dark vignette for text legibility */}
+        <div className="dark:hidden absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-black/5" />
+        {/* Left push: content side darker */}
+        <div className="dark:hidden absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-transparent" />
+        {/* Top nav frost */}
+        <div className="dark:hidden absolute top-0 w-full h-40 bg-gradient-to-b from-black/50 to-transparent" />
+        {/* Light scrim over the whole image so it doesn't look washed out */}
+        <div className="dark:hidden absolute inset-0 bg-black/20" />
+
+        {/* Primary accent separator line — both modes */}
+        <div className="absolute bottom-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
       </motion.div>
     </AnimatePresence>
   );
@@ -165,16 +176,16 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
       transition={{ duration: 0.6, delay: 0.2 }}
       className="max-w-5xl"
     >
-      {/* Title */}
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-black tracking-tighter text-white leading-tight md:leading-[1] drop-shadow-2xl mb-3 md:mb-5 line-clamp-2 w-full lg:max-w-4xl">
+      {/* Title — always white, image overlay guarantees contrast */}
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-black tracking-tighter text-white leading-tight md:leading-[1] drop-shadow-[0_2px_20px_rgba(0,0,0,0.8)] mb-3 md:mb-5 line-clamp-2 w-full lg:max-w-4xl">
         {currentMovie.title}
       </h1>
 
-      {/* Meta Data Row - OPTION 1 & 2 Combined */}
+      {/* Meta Data Row */}
       <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm md:text-base font-medium text-white/90 mb-6">
 
         {/* Rating */}
-        <div className="flex items-center gap-1.5 text-yellow-500">
+        <div className="flex items-center gap-1.5 text-yellow-400">
           <Star className="w-5 h-5 fill-current" />
           <span className="text-white font-bold text-base md:text-lg">
             {currentMovie.vote_average?.toFixed(1) || "NR"}
@@ -184,35 +195,36 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
         {/* Genres */}
         {genres.length > 0 && (
           <div className="flex items-center gap-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
-            <span className="text-gray-200 tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+            <span className="text-white/80 tracking-wide">
               {genres.join(" • ")}
             </span>
           </div>
         )}
 
         <span className="flex items-center gap-3">
-          <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+          <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
           {new Date(currentMovie.release_date).getFullYear()}
         </span>
-        <span className="ml-2 border border-white/30 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold uppercase tracking-wider backdrop-blur-md">
+        <span className="ml-2 border border-white/40 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold uppercase tracking-wider backdrop-blur-md text-white/80">
           HD
         </span>
       </div>
 
-      {/* Overview - Designer accent layout */}
-      <div className="relative pl-4 border-l-4 border-primary/40 mb-8 rounded-sm">
-        <p className="text-base md:text-lg text-gray-200/90 line-clamp-2 md:line-clamp-3 max-w-xl leading-relaxed font-medium drop-shadow-lg">
+      {/* Overview */}
+      <div className="relative pl-4 border-l-4 border-primary/60 mb-8 rounded-sm">
+        <p className="text-base md:text-lg text-white/85 line-clamp-2 md:line-clamp-3 max-w-xl leading-relaxed font-medium drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]">
           {currentMovie.overview}
         </p>
       </div>
 
       {/* Buttons Configuration - Optimal Mobile Stacking */}
       <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto sm:gap-4 mt-2">
+        {/* Primary CTA — solid white, always readable on dark overlay */}
         <Button
           asChild
           size="lg"
-          className="w-full sm:w-auto min-w-0 bg-white text-black hover:bg-gray-200 hover:text-black shadow-[0_0_20px_rgba(255,255,255,0.15)] font-bold rounded-xl h-12 md:h-14 text-sm md:text-base px-4 md:px-8"
+          className="w-full sm:w-auto min-w-0 bg-white text-gray-900 hover:bg-white/90 shadow-[0_4px_24px_rgba(0,0,0,0.4)] font-bold rounded-xl h-12 md:h-14 text-sm md:text-base px-4 md:px-8 transition-all duration-300 hover:shadow-[0_4px_32px_rgba(0,0,0,0.5)]"
         >
           <Link to={`/movie/${currentMovie.id}`} className="flex items-center justify-center w-full">
             <Play className="w-5 h-5 fill-current mr-2 flex-shrink-0" />
@@ -220,6 +232,7 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
           </Link>
         </Button>
 
+        {/* Secondary CTA — glass style */}
         <Button
           onClick={(e) => {
             e.stopPropagation();
@@ -228,8 +241,8 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
           size="lg"
           variant="outline"
           className={cn(
-            "w-full sm:w-auto min-w-0 rounded-xl font-semibold backdrop-blur-xl border-white/10 text-white hover:bg-white/10 h-12 md:h-14 text-sm md:text-base px-4 md:px-8",
-            isFavorite(currentMovie.id) && "bg-primary/20 border-primary text-primary shadow-[0_0_20px_rgba(225,29,72,0.2)] hover:bg-primary/30"
+            "w-full sm:w-auto min-w-0 rounded-xl font-semibold backdrop-blur-xl bg-white/10 border-white/30 text-white hover:bg-white/20 h-12 md:h-14 text-sm md:text-base px-4 md:px-8 transition-all duration-300",
+            isFavorite(currentMovie.id) && "bg-primary/30 border-primary/70 text-white shadow-[0_0_20px_rgba(225,29,72,0.3)] hover:bg-primary/40"
           )}
         >
           <div className="flex items-center justify-center w-full">
@@ -248,14 +261,14 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
 // Desktop Indicators
 function HeroIndicators({ total, current, onChange }) {
   return (
-    <div className="flex gap-3 bg-black/20 backdrop-blur-md p-3 rounded-2xl border border-white/5">
+    <div className="flex gap-3 bg-secondary/20 backdrop-blur-md p-3 rounded-2xl border border-border/50">
       {Array.from({ length: total }).map((_, i) => (
         <button
           key={i}
           onClick={() => onChange(i)}
           className={cn(
             "relative h-1.5 rounded-full transition-all duration-500 overflow-hidden",
-            i === current ? "w-10 bg-white shadow-glow" : "w-2 bg-white/20 hover:w-6 hover:bg-white/40"
+            i === current ? "w-10 bg-foreground shadow-glow" : "w-2 bg-foreground/30 hover:w-6 hover:bg-foreground/50"
           )}
           aria-label={`Go to slide ${i + 1}`}
         >
@@ -275,10 +288,10 @@ function HeroIndicators({ total, current, onChange }) {
 function HeroSkeleton() {
   return (
     <div
-      className="relative w-full flex flex-col justify-end overflow-hidden bg-[#0a0a0b]"
+      className="relative w-full flex flex-col justify-end overflow-hidden bg-background"
       style={getHeroHeightStyle()}
     >
-      <div className="absolute inset-0 bg-zinc-900 animate-pulse" />
+      <div className="absolute inset-0 bg-secondary/50 animate-pulse" />
       <div className={cn(
         "relative w-full",
         HERO.paddingTop.mobile, HERO.paddingTop.tablet, HERO.paddingTop.desktop,
@@ -286,19 +299,19 @@ function HeroSkeleton() {
         getContainerClasses()
       )}>
         <div className="max-w-3xl space-y-6">
-          <div className="h-4 w-24 bg-white/5 rounded" />
-          <div className="h-16 md:h-24 w-3/4 bg-white/5 rounded-xl" />
+          <div className="h-4 w-24 bg-border/50 rounded" />
+          <div className="h-16 md:h-24 w-3/4 bg-border/50 rounded-xl" />
           <div className="flex gap-4">
-            <div className="h-5 w-20 bg-white/5 rounded" />
-            <div className="h-5 w-20 bg-white/5 rounded" />
+            <div className="h-5 w-20 bg-border/50 rounded" />
+            <div className="h-5 w-20 bg-border/50 rounded" />
           </div>
           <div className="space-y-3">
-            <div className="h-4 w-full bg-white/5 rounded" />
-            <div className="h-4 w-2/3 bg-white/5 rounded" />
+            <div className="h-4 w-full bg-border/50 rounded" />
+            <div className="h-4 w-2/3 bg-border/50 rounded" />
           </div>
           <div className="flex gap-4 pt-4">
-            <div className="h-14 w-40 bg-white/5 rounded-xl" />
-            <div className="h-14 w-40 bg-white/5 rounded-xl" />
+            <div className="h-14 w-40 bg-border/50 rounded-xl" />
+            <div className="h-14 w-40 bg-border/50 rounded-xl" />
           </div>
         </div>
       </div>

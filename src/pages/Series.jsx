@@ -12,7 +12,7 @@ export default function Series() {
     return (
         <div className="min-h-screen pt-32 pb-16 bg-background relative overflow-hidden">
             <div className="absolute inset-0 z-0 pointer-events-none">
-                <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] mix-blend-screen" />
+                <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] dark:mix-blend-screen mix-blend-multiply" />
             </div>
 
             <div className={getContainerClasses()}>
@@ -23,10 +23,10 @@ export default function Series() {
                     className="mb-12 relative z-10"
                 >
                     <div className="flex items-center gap-4 mb-4">
-                        <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-primary to-violet-600 shadow-[0_0_30px_rgba(225,29,72,0.3)]">
-                            <Tv className="w-7 h-7 text-white" />
+                        <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-secondary/30 border border-border/50 shadow-glow">
+                            <Tv className="w-7 h-7 text-primary" />
                         </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70 tracking-tighter">
+                        <h1 className="text-4xl md:text-5xl lg:text-7xl font-heading font-black text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/70 tracking-tighter">
                             {t('series.title')}
                         </h1>
                     </div>

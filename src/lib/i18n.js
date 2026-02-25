@@ -36,7 +36,11 @@ const resources = {
         "noResultsFor": "No results found for",
         "adjustSearch": "Try adjusting your search or category",
         "searching": "Searching...",
-        "viewAllResults": "View all results"
+        "viewAllResults": "View all results",
+        "resultsLabel": "Search Results",
+        "genreLabel": "Genre Explorer",
+        "discoverTitle": "Discover Movies",
+        "discoverDesc": "Enter a movie title or select a genre to explore our entire collection."
       },
       "home": {
         "trendingTitle": "Trending Movies",
@@ -107,7 +111,11 @@ const resources = {
       },
       "favorites": {
         "title": "My Favorites",
-        "empty": "No items yet"
+        "empty": "No movies here yet",
+        "emptySubtitle": "Start adding movies by clicking the heart icon on any poster.",
+        "count": "You have {{count}}",
+        "movie": "favorite movie",
+        "movies": "favorite movies"
       },
       "footer": {
         "description": "Movie exploration app built with modern frontend technologies.",
@@ -179,7 +187,11 @@ const resources = {
       },
       "errors": {
         "general": "Something went wrong while loading movies.",
-        "connection": "Please check your internet connection or try again later."
+        "connection": "Please check your internet connection or try again later.",
+        "pageNotFound": "Page Not Found",
+        "pageNotFoundDesc": "Sorry, the page you are looking for doesn't exist or has been moved to another dimension.",
+        "goHome": "Go Home",
+        "goBack": "Go Back"
       }
     }
   },
@@ -215,7 +227,11 @@ const resources = {
         "noResultsFor": "No se encontraron resultados para",
         "adjustSearch": "Intenta ajustar tu búsqueda o categoría",
         "searching": "Buscando...",
-        "viewAllResults": "Ver todos los resultados"
+        "viewAllResults": "Ver todos los resultados",
+        "resultsLabel": "Resultados de Búsqueda",
+        "genreLabel": "Explorador de Géneros",
+        "discoverTitle": "Descubre Películas",
+        "discoverDesc": "Ingresa el título de una película o selecciona un género para explorar nuestra colección completa."
       },
       "home": {
         "trendingTitle": "Películas en Tendencia",
@@ -286,7 +302,11 @@ const resources = {
       },
       "favorites": {
         "title": "Mis Favoritos",
-        "empty": "Aún no hay elementos"
+        "empty": "No hay películas aquí todavía",
+        "emptySubtitle": "Comienza a agregar películas haciendo clic en el icono del corazón en cualquier póster.",
+        "count": "Tienes {{count}}",
+        "movie": "película favorita",
+        "movies": "películas favoritas"
       },
       "footer": {
         "description": "Aplicación de exploración de películas construida con tecnologías modernas.",
@@ -355,6 +375,14 @@ const resources = {
         "right1": "Derecho a rectificar tus datos registrados.",
         "right2": "Derecho al borrado instantáneo y permanente de tu historial de favoritos (cuenta).",
         "right3": "Derecho a la exclusión de campañas de mailing o promoción."
+      },
+      "errors": {
+        "general": "Algo salió mal al cargar las películas.",
+        "connection": "Por favor revisa tu conexión a internet o intenta más tarde.",
+        "pageNotFound": "Página no Encontrada",
+        "pageNotFoundDesc": "Lo sentimos, la página que buscas no existe o ha sido movida a otra dimensión.",
+        "goHome": "Ir al Inicio",
+        "goBack": "Volver Atrás"
       }
     }
   }

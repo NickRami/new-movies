@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Search as SearchIcon } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
@@ -32,6 +33,8 @@ export default function Search() {
     window.scrollTo({ top: NAVBAR_HEIGHT, behavior: 'smooth' });
   };
 
+  const { t } = useTranslation();
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -47,7 +50,7 @@ export default function Search() {
         <div className="mb-8">
           <BackNavigation />
         </div>
-        
+
         {/* Page Title */}
         {(showQueryLabel || showGenreLabel) && (
           <motion.div
@@ -57,16 +60,16 @@ export default function Search() {
           >
             {showQueryLabel && (
               <div className="space-y-2">
-                <p className="text-muted-foreground uppercase text-sm font-semibold tracking-wider">Search Results</p>
-                <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+                <p className="text-primary uppercase text-sm font-bold tracking-[0.2em]">{t('search.resultsLabel')}</p>
+                <h1 className="text-4xl md:text-5xl font-black text-foreground font-heading tracking-tight">
                   {query}
                 </h1>
               </div>
             )}
             {showGenreLabel && (
               <div className="space-y-2">
-                <p className="text-muted-foreground uppercase text-sm font-semibold tracking-wider">Genre Explorer</p>
-                <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+                <p className="text-primary uppercase text-sm font-bold tracking-[0.2em]">{t('search.genreLabel')}</p>
+                <h1 className="text-4xl md:text-5xl font-black text-foreground font-heading tracking-tight">
                   {genreName}
                 </h1>
               </div>
@@ -77,45 +80,48 @@ export default function Search() {
         {/* Idle State */}
         {isIdleState ? (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="mt-10 flex flex-col items-center justify-center text-center gap-4 py-20"
+            className="mt-10 flex flex-col items-center justify-center text-center gap-6 py-24 glass rounded-[3rem] border border-border/50 shadow-2xl overflow-hidden relative"
           >
-            <motion.div 
+            {/* Ambient Background for idle card */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 pointer-events-none" />
+
+            <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="h-20 w-20 rounded-full glass-dark border border-border/50 flex items-center justify-center mb-2 shadow-glow-primary"
+              className="h-24 w-24 rounded-3xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-2 shadow-glow relative z-10"
             >
-              <SearchIcon className="w-8 h-8 text-primary" />
+              <SearchIcon className="w-10 h-10 text-primary" />
             </motion.div>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
-              className="text-foreground text-2xl font-bold"
+              className="text-foreground text-3xl font-black font-heading relative z-10"
             >
-              Discover Movies
+              {t('search.discoverTitle')}
             </motion.h2>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="text-muted-foreground text-base max-w-md"
+              className="text-muted-foreground text-lg max-w-md font-medium relative z-10"
             >
-              Enter a movie title or select a genre from the sidebar to explore our collection.
+              {t('search.discoverDesc')}
             </motion.p>
           </motion.div>
         ) : (
           <>
             {/* Movie Grid */}
             <MovieList movies={movies} loading={loading} error={error} />
-            
+
             {/* Pagination - ONLY in Search/Genre views */}
             {!loading && !error && movies.length > 0 && totalPages > 1 && (
               <div className={cn(SPACING.marginTop['2xl'], "mb-8")}>
-                <Pagination 
+                <Pagination
                   currentPage={page}
                   totalPages={totalPages > 500 ? 500 : totalPages}
                   onPageChange={handlePageChange}

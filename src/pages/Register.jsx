@@ -88,17 +88,17 @@ export default function Register() {
           transition={{ duration: 0.5 }}
           className="mx-auto w-full max-w-md"
         >
-          <div className="glass-dark border border-border/50 rounded-2xl shadow-2xl p-6 md:p-8 backdrop-blur-xl">
+          <div className="glass border border-border/50 rounded-2xl shadow-2xl p-6 md:p-8 relative overflow-hidden">
             <div className="text-center mb-8">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                className="mx-auto bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 border border-primary/20"
+                className="mx-auto bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 border border-primary/20 shadow-glow"
               >
                 <Film className="w-8 h-8 text-primary" />
               </motion.div>
-              <h1 className="text-2xl font-heading font-bold tracking-tight mb-2">{t('auth.createAccount')}</h1>
+              <h1 className="text-2xl font-heading font-bold tracking-tight mb-2 text-foreground">{t('auth.createAccount')}</h1>
               <p className="text-muted-foreground text-sm">{t('auth.joinCommunity')}</p>
             </div>
 
@@ -176,7 +176,7 @@ export default function Register() {
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
-                    <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                    <span className="w-4 h-4 border-2 border-current/20 border-t-current rounded-full animate-spin" />
                     {t('auth.signingUp')}
                   </span>
                 ) : (
