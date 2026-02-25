@@ -35,23 +35,23 @@ export default function Register() {
     // Regex validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setErrorMsg(t('auth.invalidEmail', 'Format de email inválido'));
+      setErrorMsg(t('auth.invalidEmail'));
       return;
     }
 
     const nicknameRegex = /^[a-zA-Z0-9_]{3,20}$/;
     if (!nicknameRegex.test(formData.nickname)) {
-      setErrorMsg(t('auth.invalidNickname', 'El apodo debe tener entre 3 y 20 caracteres sin espacios.'));
+      setErrorMsg(t('auth.invalidNickname'));
       return;
     }
 
     if (formData.password.length < 6) {
-      setErrorMsg(t('auth.passwordTooShort', 'La contraseña debe tener al menos 6 caracteres'));
+      setErrorMsg(t('auth.passwordTooShort'));
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-      setErrorMsg(t('auth.passwordsNotMatch', 'Las contraseñas no coinciden'));
+      setErrorMsg(t('auth.passwordsNotMatch'));
       return;
     }
 
@@ -62,7 +62,7 @@ export default function Register() {
       navigate('/');
     } catch (error) {
       console.error('Registration error:', error);
-      setErrorMsg(error.message || t('auth.registerError', 'Error creating account'));
+      setErrorMsg(error.message || t('auth.registerError'));
     } finally {
       setLoading(false);
     }

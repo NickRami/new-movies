@@ -171,7 +171,7 @@ export async function getTvDetails(id, language = 'es-ES') {
     title: tvShow.name, // Adapto el esquema
     original_title: tvShow.original_name,
     release_date: tvShow.first_air_date,
-    runtime: tvShow.episode_run_time?.[0] || 'N/A', // Mapeo de duración
+    runtime: tvShow.episode_run_time?.[0] || null, // Mapeo de duración
     poster_path: tvShow.poster_path ? `${IMAGE_BASE_URL}${tvShow.poster_path}` : null,
     backdrop_path: tvShow.backdrop_path ? `${IMAGE_BACKDROP_BASE_URL}${tvShow.backdrop_path}` : null,
     credits: {

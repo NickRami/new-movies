@@ -51,7 +51,7 @@ export default function MovieCard({ movie, index = 0 }) {
             <div className="flex items-center gap-1 bg-black/65 dark:bg-black/75 backdrop-blur-md border border-white/15 px-2 py-1 rounded-md shadow-sm">
               <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
               <span className="text-xs font-bold text-white">
-                {movie.vote_average?.toFixed(1) || 'N/A'}
+                {movie.vote_average?.toFixed(1) || t('common.notAvailable')}
               </span>
             </div>
           </div>
@@ -95,7 +95,7 @@ export default function MovieCard({ movie, index = 0 }) {
           <div className="flex items-center justify-between text-[11px] sm:text-xs text-muted-foreground">
             <div className="flex items-center gap-1 sm:gap-1.5">
               <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              <span>{movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</span>
+              <span>{movie.release_date ? new Date(movie.release_date).getFullYear() : t('common.notAvailable')}</span>
             </div>
             {movie.original_language && (
               <span className="uppercase text-[9px] sm:text-[10px] font-medium opacity-70">

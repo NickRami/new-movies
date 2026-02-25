@@ -188,7 +188,7 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
         <div className="flex items-center gap-1.5 text-yellow-400">
           <Star className="w-5 h-5 fill-current" />
           <span className="text-white font-bold text-base md:text-lg">
-            {currentMovie.vote_average?.toFixed(1) || "NR"}
+            {currentMovie.vote_average?.toFixed(1) || t('common.notAvailable')}
           </span>
         </div>
 

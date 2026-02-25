@@ -123,7 +123,7 @@ export default function TvDetails() {
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-secondary/50">
                     <span className="text-4xl mb-2">🎬</span>
-                    <span className="text-muted-foreground text-sm text-center">N/A</span>
+                    <span className="text-muted-foreground text-sm text-center">{t('common.notAvailable')}</span>
                   </div>
                 )}
                 {/* Inner glass reflection */}
@@ -209,7 +209,9 @@ export default function TvDetails() {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground font-medium">{t('details.duration')}</p>
-                      <p className="text-lg font-bold text-foreground">{movie.runtime} {t('common.min')}</p>
+                      <p className="text-lg font-bold text-foreground">
+                        {movie.runtime ? `${movie.runtime} ${t('common.min')}` : t('common.notAvailable')}
+                      </p>
                     </div>
                   </div>
                   <div className="w-px h-10 bg-border/50 hidden sm:block" />
@@ -219,7 +221,7 @@ export default function TvDetails() {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground font-medium">{t('details.release')}</p>
-                      <p className="text-lg font-bold text-foreground">{movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A'}</p>
+                      <p className="text-lg font-bold text-foreground">{movie.release_date ? new Date(movie.release_date).getFullYear() : t('common.notAvailable')}</p>
                     </div>
                   </div>
                 </div>

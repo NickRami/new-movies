@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { getContainerClasses } from '../lib/layout-constants';
 import { cn } from '../lib/utils';
 import { useTrendingMovies } from '../hooks/useMovies';
+import { useTranslation } from 'react-i18next';
 
 export default function AIRecommendations() {
     const { movies, loading, error } = useTrendingMovies();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const recommendations = movies ? movies.slice(0, 3) : [];
 
     if (loading || error || recommendations.length === 0) return null;
@@ -35,11 +37,11 @@ export default function AIRecommendations() {
                                 <Sparkles className="w-6 h-6 text-white" />
                             </span>
                             <h2 className="text-4xl md:text-5xl font-black tracking-tight text-foreground drop-shadow-md">
-                                Selección Especial para ti
+                                {t('recommendations.title')}
                             </h2>
                         </div>
                         <p className="text-lg text-muted-foreground font-medium">
-                            Basado en lo que disfrutas, hemos preparado este catálogo exclusivo con películas que seguramente te encantarán hoy.
+                            {t('recommendations.subtitle')}
                         </p>
                     </div>
                 </motion.div>
@@ -64,7 +66,7 @@ export default function AIRecommendations() {
                         <div className="absolute bottom-0 left-0 w-full p-8 lg:p-12 z-20">
                             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/20 text-indigo-300 text-sm font-bold backdrop-blur-md border border-indigo-500/30 mb-4 transform group-hover:-translate-y-1 transition-transform">
                                 <Sparkles className="w-4 h-4" />
-                                Muy Recomendada
+                                {t('recommendations.highlyRecommended')}
                             </div>
                             <h3 className="text-3xl lg:text-5xl font-black mb-4 text-white group-hover:text-indigo-300 transition-colors">
                                 {recommendations[0].title}
@@ -98,7 +100,7 @@ export default function AIRecommendations() {
                                     <div className="flex items-center gap-2 mb-2 opacity-80 group-hover:opacity-100 transition-opacity">
                                         <div className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,1)]" />
                                         <span className="text-rose-200 text-xs font-bold tracking-wider uppercase">
-                                            Elegida para ti
+                                            {t('recommendations.chosenForYou')}
                                         </span>
                                     </div>
                                     <h3 className="text-xl font-bold mb-2 text-white group-hover:text-rose-300 transition-colors">

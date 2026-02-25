@@ -18,7 +18,8 @@ const resources = {
         "previous": "Previous",
         "next": "Next",
         "min": "min",
-        "tagline": "Premium Entertainment"
+        "tagline": "Premium Entertainment",
+        "notAvailable": "N/A"
       },
       "hero": {
         "featured": "Featured",
@@ -107,7 +108,15 @@ const resources = {
         "signingUp": "Signing up...",
         "noAccount": "Don't have an account?",
         "hasAccount": "Already have an account?",
-        "back": "Back"
+        "back": "Back",
+        "invalidEmail": "Invalid email format",
+        "invalidNickname": "Nickname must be between 3 and 20 characters without spaces.",
+        "passwordTooShort": "Password must be at least 6 characters",
+        "passwordsNotMatch": "Passwords do not match",
+        "loginError": "Failed to login",
+        "registerError": "Error creating account",
+        "selectLanguage": "Select Language",
+        "changeLanguage": "Change language"
       },
       "favorites": {
         "title": "My Favorites",
@@ -144,7 +153,7 @@ const resources = {
       },
       "faq": {
         "title": "Frequently Asked Questions",
-        "subtitle": "Everything you need to know about the product and billing, answered quickly and transparently by our knowledge base.",
+        "subtitle": "Everything you need to know about the platform, answered quickly and transparently by our knowledge base.",
         "q1": "What is CineScope?",
         "a1": "CineScope is a premium movie and series recommendation platform that uses cutting-edge algorithms to bring you content strictly based on your personal taste and global popularity metrics.",
         "q2": "Do you have every movie and series in the world?",
@@ -185,6 +194,12 @@ const resources = {
         "right2": "Right to instantaneous and permanent deletion of your favorites history (account).",
         "right3": "Right to opt-out of mailing or promotional campaigns."
       },
+      "recommendations": {
+        "title": "Special Selection for you",
+        "subtitle": "Based on what you enjoy, we've prepared this exclusive catalog with movies you'll surely love today.",
+        "highlyRecommended": "Highly Recommended",
+        "chosenForYou": "Chosen for you"
+      },
       "errors": {
         "general": "Something went wrong while loading movies.",
         "connection": "Please check your internet connection or try again later.",
@@ -209,7 +224,8 @@ const resources = {
         "previous": "Anterior",
         "next": "Siguiente",
         "min": "min",
-        "tagline": "Entretenimiento Premium"
+        "tagline": "Entretenimiento Premium",
+        "notAvailable": "No disponible"
       },
       "hero": {
         "featured": "Destacado",
@@ -298,7 +314,15 @@ const resources = {
         "signingUp": "Registrando...",
         "noAccount": "¿No tienes una cuenta?",
         "hasAccount": "¿Ya tienes una cuenta?",
-        "back": "Atrás"
+        "back": "Atrás",
+        "invalidEmail": "Formato de email inválido",
+        "invalidNickname": "El apodo debe tener entre 3 y 20 caracteres sin espacios.",
+        "passwordTooShort": "La contraseña debe tener al menos 6 caracteres",
+        "passwordsNotMatch": "Las contraseñas no coinciden",
+        "loginError": "Error al iniciar sesión",
+        "registerError": "Error al crear la cuenta",
+        "selectLanguage": "Seleccionar Idioma",
+        "changeLanguage": "Cambiar idioma"
       },
       "favorites": {
         "title": "Mis Favoritos",
@@ -316,7 +340,7 @@ const resources = {
         "movies": "Películas",
         "collections": "Colecciones",
         "support": "Soporte",
-        "faq": "FAQ",
+        "faq": "Preguntas Frecuentes",
         "contact": "Contacto",
         "privacy": "Privacidad",
         "connect": "Conecta"
@@ -335,7 +359,7 @@ const resources = {
       },
       "faq": {
         "title": "Preguntas Frecuentes",
-        "subtitle": "Todo lo que necesitas saber sobre el producto y la facturación, respondido de forma ágil y transparente por nuestra base de conocimiento.",
+        "subtitle": "Todo lo que necesitas saber sobre la plataforma, respondido de forma ágil y transparente por nuestra base de conocimiento.",
         "q1": "¿Qué es CineScope?",
         "a1": "CineScope es una plataforma premium de recomendaciones y descubrimiento de películas y series que utiliza algoritmos de vanguardia para acercarte contenido basado estrictamente en tus gustos personales y métricas de popularidad global.",
         "q2": "¿Tienen todas las películas y series del mundo?",
@@ -375,6 +399,12 @@ const resources = {
         "right1": "Derecho a rectificar tus datos registrados.",
         "right2": "Derecho al borrado instantáneo y permanente de tu historial de favoritos (cuenta).",
         "right3": "Derecho a la exclusión de campañas de mailing o promoción."
+      },
+      "recommendations": {
+        "title": "Selección Especial para ti",
+        "subtitle": "Basado en lo que disfrutas, hemos preparado este catálogo exclusivo con películas que seguramente te encantarán hoy.",
+        "highlyRecommended": "Muy Recomendada",
+        "chosenForYou": "Elegida para ti"
       },
       "errors": {
         "general": "Algo salió mal al cargar las películas.",

@@ -15,7 +15,7 @@ const LANGUAGES = [
 ];
 
 export default function LanguageSwitcher() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const currentLang = LANGUAGES.find(lang => lang.code === i18n.language) || LANGUAGES[1];
 
   const changeLanguage = (lang) => {
@@ -39,7 +39,7 @@ export default function LanguageSwitcher() {
             "transition-all duration-500",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           )}
-          title="Change language"
+          title={t('auth.changeLanguage')}
         >
           <Globe className="w-4 h-4" />
           <span className="text-xs uppercase tracking-widest">{currentLang.code}</span>
@@ -57,7 +57,7 @@ export default function LanguageSwitcher() {
         sideOffset={12}
       >
         <div className="px-3 py-2 mb-2 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/50 border-b border-border/30">
-          Select Language
+          {t('auth.selectLanguage')}
         </div>
         {LANGUAGES.map((lang) => (
           <DropdownMenuItem

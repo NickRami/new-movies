@@ -169,7 +169,7 @@ export default function NavbarAdaptive() {
                               </div>
                               <div className="flex-1 min-w-0">
                                 <h4 className="text-sm font-bold text-foreground truncate group-hover:text-primary transition-colors">{movie.title}</h4>
-                                <p className="text-xs text-muted-foreground truncate">{new Date(movie.release_date || Date.now()).getFullYear() || 'N/A'}</p>
+                                <p className="text-xs text-muted-foreground truncate">{movie.release_date ? new Date(movie.release_date).getFullYear() : t('common.notAvailable')}</p>
                               </div>
                             </Link>
                           ))}
@@ -446,7 +446,7 @@ export default function NavbarAdaptive() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <h4 className="text-sm font-bold text-foreground truncate group-hover:text-primary transition-colors">{movie.title}</h4>
-                              <p className="text-xs text-muted-foreground truncate">{new Date(movie.release_date || Date.now()).getFullYear() || 'N/A'}</p>
+                              <p className="text-xs text-muted-foreground truncate">{movie.release_date ? new Date(movie.release_date).getFullYear() : t('common.notAvailable')}</p>
                             </div>
                           </Link>
                         ))}
@@ -467,7 +467,7 @@ export default function NavbarAdaptive() {
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.nav>
+      </motion.nav >
     </>
   );
 }

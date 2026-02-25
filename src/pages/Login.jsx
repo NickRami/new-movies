@@ -33,7 +33,7 @@ export default function Login() {
     // Regex validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setErrorMsg(t('auth.invalidEmail', 'Formato de email inválido'));
+      setErrorMsg(t('auth.invalidEmail'));
       return;
     }
 
@@ -44,7 +44,7 @@ export default function Login() {
       navigate('/');
     } catch (error) {
       console.error('Login error:', error);
-      setErrorMsg(error.message || t('auth.loginError', 'Failed to login'));
+      setErrorMsg(error.message || t('auth.loginError'));
     } finally {
       setLoading(false);
     }
