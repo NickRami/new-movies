@@ -15,6 +15,7 @@ import Collections from './pages/Collections';
 import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
+import NotFound from './pages/NotFound';
 import ScrollToTop from './components/ScrollToTop';
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/contacto" element={<Contact />} />
                 <Route path="/privacidad" element={<Privacy />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
             <Footer />

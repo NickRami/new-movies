@@ -26,16 +26,17 @@ export default function MovieCard({ movie, index = 0 }) {
     >
       <Link
         to={movie.media_type === 'tv' ? `/tv/${movie.id}` : `/movie/${movie.id}`}
-        className="block h-full w-full group relative"
+        className="block h-full w-full group relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl"
       >
-        <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-card border border-white/5 hover-card-premium group">
+        {/* Outer wrapper for shadow and lifting. 'isolate' fixes Webkit border-radius animation bleed */}
+        <div className="relative aspect-[2/3] overflow-hidden rounded-xl bg-card border border-white/5 transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:-translate-y-1.5 group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.7),0_0_25px_-5px_hsla(var(--primary),0.3)] group-hover:border-primary/50 isolate will-change-transform">
 
           {/* Poster Image */}
           {movie.poster_path ? (
             <img
               src={movie.poster_path}
               alt={movie.title}
-              className="w-full h-full object-cover hover-image-zoom will-change-transform"
+              className="w-full h-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-105 will-change-transform"
               loading="lazy"
             />
           ) : (
@@ -74,12 +75,12 @@ export default function MovieCard({ movie, index = 0 }) {
           </button>
 
           {/* Hover Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-90 md:opacity-0 md:group-hover:opacity-100" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-60 transition-opacity duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:opacity-90 md:opacity-0 md:group-hover:opacity-100" />
 
           {/* Center Icon (Play or Eye) - Mobile hidden, Desktop show on hover */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            <div className="bg-primary/90 text-white p-3 rounded-full shadow-lg backdrop-blur-sm transform scale-50 group-hover:scale-100 transition-transform duration-300">
-              <Play className="w-6 h-6 fill-current" />
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] pointer-events-none">
+            <div className="bg-primary/90 text-white p-3.5 rounded-full shadow-[0_0_20px_hsla(var(--primary),0.5)] backdrop-blur-sm transform scale-50 group-hover:scale-100 transition-transform duration-[600ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]">
+              <Play className="w-5 h-5 fill-current ml-0.5" />
             </div>
           </div>
 

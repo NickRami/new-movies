@@ -122,7 +122,7 @@ export default function MovieList({ movies, loading, error }) {
       className="responsive-grid"
     >
       {movies.map((movie, index) => (
-        <MovieCard key={movie.id} movie={movie} index={index} />
+        <MovieCard key={`${movie.id}-${index}`} movie={movie} index={index} />
       ))}
     </motion.div>
   );

@@ -26,7 +26,7 @@ export default function GenreSection({ section, sectionIndex }) {
       className="space-y-6"
     >
       <div className="flex items-center justify-between gap-2 glass-dark p-4 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 group">
-        <motion.h3 
+        <motion.h3
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.6 + sectionIndex * 0.15, duration: 0.5 }}
@@ -34,7 +34,7 @@ export default function GenreSection({ section, sectionIndex }) {
         >
           {section.genre.name}
         </motion.h3>
-        
+
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -56,15 +56,15 @@ export default function GenreSection({ section, sectionIndex }) {
           </Button>
         </div>
       </div>
-      
+
       {/* Horizontal Scrollable Carousel */}
-      <div 
+      <div
         ref={scrollContainerRef}
         className="flex gap-4 overflow-x-auto pb-4 pt-2 no-scrollbar pl-1 snap-x snap-mandatory scroll-smooth"
       >
         {section.movies.map((movie, index) => (
           <div
-            key={movie.id}
+            key={`${movie.id}-${index}`}
             className="w-36 sm:w-40 md:w-44 flex-shrink-0 transition-transform duration-300 hover:scale-105 snap-start"
           >
             <MovieCard movie={movie} index={index} />

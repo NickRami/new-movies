@@ -210,10 +210,10 @@ export default function NavbarAdaptive() {
                     className="flex items-center gap-2 p-1 pl-2 md:pr-4 rounded-full border border-white/5 bg-secondary/30 hover:bg-secondary/50 transition-all"
                   >
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-inner">
-                      {user.name.charAt(0).toUpperCase()}
+                      {(user.user_metadata?.username || user.email || 'U').charAt(0).toUpperCase()}
                     </div>
                     <span className="hidden md:block text-sm font-medium text-white max-w-[100px] truncate">
-                      {user.name}
+                      {user.user_metadata?.username || user.email?.split('@')[0]}
                     </span>
                     <ChevronDown className="w-3 h-3 text-muted-foreground hidden md:block" />
                   </button>
@@ -227,7 +227,7 @@ export default function NavbarAdaptive() {
                         className="absolute right-0 top-full mt-2 w-56 rounded-xl bg-[#111] border border-white/10 shadow-2xl overflow-hidden py-1 z-50"
                       >
                         <div className="px-4 py-3 border-b border-white/5 bg-white/5">
-                          <p className="text-sm font-bold text-white">{user.name}</p>
+                          <p className="text-sm font-bold text-white">{user.user_metadata?.username || user.email?.split('@')[0]}</p>
                           <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                         </div>
 
@@ -348,10 +348,10 @@ export default function NavbarAdaptive() {
                         <div className="space-y-3">
                           <div className="flex items-center gap-3 px-2">
                             <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                              {user.name[0]}
+                              {(user.user_metadata?.username || user.email || 'U').charAt(0).toUpperCase()}
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-white truncate">{user.name}</p>
+                              <p className="text-sm font-medium text-white truncate">{user.user_metadata?.username || user.email?.split('@')[0]}</p>
                               <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                             </div>
                           </div>
