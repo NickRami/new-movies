@@ -48,7 +48,7 @@ export default function MovieCard({ movie, index = 0 }) {
 
           {/* Rating Badge — always visible */}
           <div className="absolute top-2.5 left-2.5 z-20">
-            <div className="flex items-center gap-1 bg-black/60 backdrop-blur-md border border-white/10 px-2 py-1 rounded-lg shadow-sm">
+            <div className="flex items-center gap-1 bg-black/80 border border-white/20 px-2 py-1 rounded-lg shadow-xl">
               <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
               <span className="text-[11px] font-bold text-white leading-none">
                 {movie.vote_average?.toFixed(1) || t('common.notAvailable')}
@@ -60,8 +60,8 @@ export default function MovieCard({ movie, index = 0 }) {
           <button
             onClick={handleFavoriteClick}
             className={cn(
-              "absolute top-2.5 right-2.5 z-20 p-1.5 rounded-full backdrop-blur-md transition-all duration-300",
-              "bg-black/40 border border-white/10 hover:bg-black/60 active:scale-90",
+              "absolute top-2.5 right-2.5 z-20 p-1.5 rounded-full shadow-lg transition-all duration-300",
+              "bg-black/70 border border-white/20 hover:bg-black active:scale-90",
               favorite ? "opacity-100" : "opacity-0 group-hover:opacity-100"
             )}
             title={favorite ? t('movieCard.removeFromFavorites') : t('movieCard.addToFavorites')}
@@ -79,7 +79,7 @@ export default function MovieCard({ movie, index = 0 }) {
 
           {/* Center Play Icon — hover only */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] pointer-events-none">
-            <div className="bg-primary/90 text-primary-foreground p-3 rounded-full shadow-[0_0_20px_hsla(var(--primary),0.5)] backdrop-blur-sm transform scale-50 group-hover:scale-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
+            <div className="bg-primary hover:bg-primary/90 text-primary-foreground p-3 rounded-full shadow-[0_10px_30px_hsla(var(--primary),0.8)] transform scale-50 group-hover:scale-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
               <Play className="w-5 h-5 fill-current ml-0.5" />
             </div>
           </div>

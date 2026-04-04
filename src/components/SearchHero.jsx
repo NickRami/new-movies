@@ -140,7 +140,7 @@ function HeroBackground({ currentMovie }) {
       >
         {/* Backdrop image */}
         <div
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] ease-out scale-105 group-hover:scale-110"
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-[20s] ease-out scale-105 will-change-transform"
           style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${currentMovie.backdrop_path})` }}
         />
 
@@ -206,7 +206,7 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
           <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
           {new Date(currentMovie.release_date).getFullYear()}
         </span>
-        <span className="ml-2 border border-white/40 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold uppercase tracking-wider backdrop-blur-md text-white/80">
+        <span className="ml-2 border border-white/20 bg-black/60 px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white/90 shadow-sm">
           HD
         </span>
       </div>
@@ -241,8 +241,8 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
           size="lg"
           variant="outline"
           className={cn(
-            "w-full sm:w-auto min-w-0 rounded-xl font-semibold backdrop-blur-xl bg-white/10 border-white/30 text-white hover:bg-white/20 h-12 md:h-14 text-sm md:text-base px-4 md:px-8 transition-all duration-300",
-            isFavorite(currentMovie.id) && "bg-primary/30 border-primary/70 text-white shadow-[0_0_20px_rgba(225,29,72,0.3)] hover:bg-primary/40"
+            "w-full sm:w-auto min-w-0 rounded-xl font-semibold bg-black/60 border border-white/20 text-white hover:bg-black/90 h-12 md:h-14 text-sm md:text-base px-4 md:px-8 transition-all duration-300 shadow-xl",
+            isFavorite(currentMovie.id) && "bg-primary/50 border-primary/70 text-white hover:bg-primary/70"
           )}
         >
           <div className="flex items-center justify-center w-full">
@@ -261,7 +261,7 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
 // Desktop Indicators
 function HeroIndicators({ total, current, onChange }) {
   return (
-    <div className="flex gap-3 bg-secondary/20 backdrop-blur-md p-3 rounded-2xl border border-border/50">
+    <div className="flex gap-3 bg-black/80 shadow-lg p-3 rounded-2xl border border-white/10">
       {Array.from({ length: total }).map((_, i) => (
         <button
           key={i}
