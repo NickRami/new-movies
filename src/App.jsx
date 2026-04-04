@@ -28,7 +28,7 @@ function App() {
             <ScrollToTop />
             <div className="min-h-screen bg-background flex flex-col text-foreground transition-colors duration-300">
               <NavbarAdaptive />
-              <main className="flex-1 w-full pt-16">
+              <main className="flex-1 w-full pt-16 md:pt-20">
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/search" element={<Search />} />

@@ -72,8 +72,8 @@ export default function GenresHoverMenu({ genres, onGenreClick }) {
             className={cn(
               "absolute left-0 top-full",
               "w-[540px]",
-              "glass border border-border/50",
-              "rounded-3xl shadow-2xl",
+              "bg-background dark:bg-[#0c0f16] border-t-2 border-t-primary border-l border-r border-b border-border/60",
+              "rounded-b-2xl shadow-[0_30px_80px_-15px_rgba(0,0,0,0.7)]",
               "z-50 overflow-hidden"
             )}
           >

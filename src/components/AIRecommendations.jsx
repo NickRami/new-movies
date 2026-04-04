@@ -15,7 +15,7 @@ export default function AIRecommendations() {
     if (loading || error || recommendations.length === 0) return null;
 
     return (
-        <section className={cn("py-20 md:py-32 relative overflow-hidden bg-background")}>
+        <section className={cn("py-16 md:py-24 lg:py-32 relative overflow-hidden bg-background")}>
             {/* Vínculo con el cyberpunk / 2026 aesthetics */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[100px] dark:mix-blend-screen mix-blend-plus-lighter opacity-60" />
@@ -61,14 +61,14 @@ export default function AIRecommendations() {
                         <img
                             src={recommendations[0].backdrop_path}
                             alt={recommendations[0].title}
-                            className="w-full h-[400px] lg:h-[600px] object-cover transition-transform duration-1000 group-hover:scale-105"
+                            className="w-full h-[280px] sm:h-[350px] lg:h-[500px] object-cover transition-transform duration-1000 group-hover:scale-105"
                         />
-                        <div className="absolute bottom-0 left-0 w-full p-8 lg:p-12 z-20">
+                        <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 lg:p-12 z-20">
                             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/20 text-indigo-300 text-sm font-bold backdrop-blur-md border border-indigo-500/30 mb-4 transform group-hover:-translate-y-1 transition-transform">
                                 <Sparkles className="w-4 h-4" />
                                 {t('recommendations.highlyRecommended')}
                             </div>
-                            <h3 className="text-3xl lg:text-5xl font-black mb-4 text-white group-hover:text-indigo-300 transition-colors">
+                            <h3 className="text-2xl sm:text-3xl lg:text-5xl font-black mb-3 text-white group-hover:text-indigo-300 transition-colors">
                                 {recommendations[0].title}
                             </h3>
                             <p className="text-gray-300 line-clamp-3 text-base lg:text-lg max-w-3xl">
@@ -87,7 +87,7 @@ export default function AIRecommendations() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.2, duration: 0.7 }}
-                                className="relative flex-1 rounded-3xl overflow-hidden group border border-border/50 cursor-pointer shadow-xl h-[300px] lg:h-auto"
+                                className="relative flex-1 rounded-2xl sm:rounded-3xl overflow-hidden group border border-border/50 cursor-pointer shadow-xl h-[200px] sm:h-[250px] lg:h-auto"
                             >
                                 <div className="absolute inset-0 bg-black/50 z-10 group-hover:bg-black/30 transition-colors duration-500" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />

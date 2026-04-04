@@ -104,7 +104,7 @@ export default function TvDetails() {
             <BackNavigation />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
 
             {/* Left Column: Glass Poster & Actions */}
             <div className="lg:col-span-4 flex flex-col items-center lg:items-start space-y-8 lg:sticky lg:top-32 relative z-20">
@@ -112,7 +112,7 @@ export default function TvDetails() {
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
-                className="w-3/4 sm:w-1/2 lg:w-full aspect-[2/3] rounded-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] ring-1 ring-white/10 group relative"
+                className="w-2/3 sm:w-1/2 lg:w-full aspect-[2/3] rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] ring-1 ring-white/10 group relative"
               >
                 {movie.poster_path ? (
                   <img
@@ -133,7 +133,7 @@ export default function TvDetails() {
               {/* 2026 Action Panel */}
               <motion.div
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-                className="w-full sm:w-1/2 lg:w-full flex flex-col gap-4 p-4 rounded-3xl bg-secondary/10 border border-border/50 backdrop-blur-2xl shadow-xl"
+                className="w-2/3 sm:w-1/2 lg:w-full flex flex-col gap-3 p-4 rounded-2xl bg-secondary/10 border border-border/50 backdrop-blur-2xl shadow-xl"
               >
                 {trailer && (
                   <Button
@@ -257,7 +257,7 @@ export default function TvDetails() {
                   initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
                 >
                   <h2 className="text-2xl font-bold mb-6 text-foreground/90">{t('details.topCast')}</h2>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                     {movie.credits.cast.slice(0, 8).map((actor) => (
                       <div key={actor.id} className="group p-4 rounded-3xl bg-secondary/10 border border-border/50 hover:bg-secondary/30 transition-all cursor-pointer">
                         <div className="w-16 h-16 rounded-2xl overflow-hidden bg-secondary mb-4 shadow-lg group-hover:scale-105 transition-transform">
@@ -305,7 +305,7 @@ export default function TvDetails() {
                   initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
                 >
                   <h2 className="text-2xl font-bold mb-6 text-foreground/90 border-b border-border/50 pb-4">{t('common.similar')}</h2>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                     {movie.similar.slice(0, 4).map((m, idx) => (
                       <div key={m.id} className="transform hover:-translate-y-2 transition-transform duration-300">
                         <MovieCard movie={m} index={idx} />

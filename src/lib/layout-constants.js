@@ -3,8 +3,9 @@
  * Centralized layout tokens for consistent spacing and sizing across the app
  */
 
-// Navbar
-export const NAVBAR_HEIGHT = 64; // 4rem = 64px
+// Navbar (responsive: 64px mobile, 80px desktop)
+export const NAVBAR_HEIGHT = 64; // Mobile: 4rem = 64px
+export const NAVBAR_HEIGHT_DESKTOP = 80; // Desktop: 5rem = 80px
 export const NAVBAR_HEIGHT_REM = 4;
 
 // Container Max Widths (based on Tailwind defaults)

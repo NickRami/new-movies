@@ -106,7 +106,7 @@ export default function SearchHero() {
         </div>
 
         {/* Mobile Indicators (Absolute bottom) */}
-        <div className="absolute bottom-6 left-0 right-0 z-30 lg:hidden flex justify-center pb-safe">
+        <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 z-30 lg:hidden flex justify-center">
           <div className="flex gap-2 p-2 rounded-full backdrop-blur-sm bg-black/10">
             {heroMovies.map((_, i) => (
               <button
@@ -177,7 +177,7 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
       className="max-w-5xl"
     >
       {/* Title — always white, image overlay guarantees contrast */}
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-black tracking-tighter text-white leading-tight md:leading-[1] drop-shadow-[0_2px_20px_rgba(0,0,0,0.8)] mb-3 md:mb-5 line-clamp-2 w-full lg:max-w-4xl">
+      <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-black tracking-tighter text-white leading-tight md:leading-[1] drop-shadow-[0_2px_20px_rgba(0,0,0,0.8)] mb-3 md:mb-5 line-clamp-2 w-full lg:max-w-4xl">
         {currentMovie.title}
       </h1>
 
@@ -212,7 +212,7 @@ function HeroContent({ currentMovie, isFavorite, toggleFavorite, t, genres }) {
       </div>
 
       {/* Overview */}
-      <div className="relative pl-4 border-l-4 border-primary/60 mb-8 rounded-sm">
+      <div className="relative pl-4 border-l-4 border-primary/60 mb-6 sm:mb-8 rounded-sm">
         <p className="text-base md:text-lg text-white/85 line-clamp-2 md:line-clamp-3 max-w-xl leading-relaxed font-medium drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)]">
           {currentMovie.overview}
         </p>

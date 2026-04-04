@@ -53,7 +53,7 @@
     --selection-bg: 346 87% 56% / 0.15;
     --selection-text: 346 87% 56%;
 
-    /* New specific variables for unification */
+    /* Unified glass & surface tokens */
     --glass-opacity: 0.7;
     --glass-blur: 16px;
     --surface-shadow: 0 10px 40px -15px rgba(0, 0, 0, 0.08);
@@ -113,6 +113,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-body);
   background-color: hsl(var(--background));
@@ -120,19 +124,7 @@ body {
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
   scroll-behavior: smooth;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-::selection {
-  background-color: hsl(var(--selection-bg));
-  color: hsl(var(--selection-text));
-}
-
-/* Per-theme ambient background gradients */
-:root body {
+  /* Ambient background — Light Mode */
   background-image:
     radial-gradient(circle at 0% 0%, hsla(346, 87%, 56%, 0.12) 0%, transparent 45%),
     radial-gradient(circle at 100% 0%, hsla(220, 85%, 65%, 0.1) 0%, transparent 45%),
@@ -141,12 +133,18 @@ html {
   background-attachment: fixed;
 }
 
+/* Ambient background — Dark Mode override */
 .dark body {
   background-image:
     radial-gradient(circle at 0% 0%, hsla(346, 87%, 62%, 0.1) 0%, transparent 45%),
     radial-gradient(circle at 100% 0%, hsla(220, 85%, 65%, 0.08) 0%, transparent 45%),
     radial-gradient(circle at 50% 100%, hsla(346, 87%, 56%, 0.05) 0%, transparent 50%);
   background-attachment: fixed;
+}
+
+::selection {
+  background-color: hsl(var(--selection-bg));
+  color: hsl(var(--selection-text));
 }
 
 h1,
@@ -187,7 +185,7 @@ h4 {
     text-wrap: balance;
   }
 
-  /* Contenedores sin scrollbar visibles */
+  /* Hide scrollbar */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -197,7 +195,7 @@ h4 {
     scrollbar-width: none;
   }
 
-  /* Unified Glassmorphism System */
+  /* ── Unified Glassmorphism System ── */
   .glass {
     background: hsla(var(--card), var(--glass-opacity));
     backdrop-filter: blur(var(--glass-blur));
@@ -206,7 +204,6 @@ h4 {
     box-shadow: var(--surface-shadow);
   }
 
-  /* For even more presence */
   .glass-dark {
     background: hsla(var(--card), calc(var(--glass-opacity) + 0.1));
     backdrop-filter: blur(calc(var(--glass-blur) + 8px));
@@ -215,7 +212,7 @@ h4 {
     box-shadow: var(--surface-shadow);
   }
 
-  /* Gradientes animados adaptativos */
+  /* ── Gradient Utilities ── */
   .gradient-primary {
     background: linear-gradient(135deg, hsl(var(--primary)) 0%, #e11d48 100%);
   }
@@ -243,7 +240,7 @@ h4 {
     left: 100%;
   }
 
-  /* Sombras premium dinámicas */
+  /* ── Premium Dynamic Shadows ── */
   .shadow-glow {
     box-shadow: 0 0 20px hsla(var(--primary), 0.2), 0 0 40px hsla(var(--primary), 0.05);
   }
@@ -260,7 +257,7 @@ h4 {
     box-shadow: 0 0 25px hsla(var(--accent), 0.3), 0 0 50px hsla(var(--accent), 0.15);
   }
 
-  /* Efectos de hover suaves */
+  /* ── Hover Effects ── */
   .hover-lift {
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
   }
@@ -269,7 +266,7 @@ h4 {
     transform: translateY(-5px);
   }
 
-  /* Bordes con gradiente premium */
+  /* ── Gradient Border ── */
   .border-gradient {
     border: 1px solid transparent;
     background-clip: padding-box;
@@ -294,7 +291,9 @@ h4 {
   }
 }
 
-/* Animaciones keyframes refinadas */
+/* ══════════════════════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+   ══════════════════════════════════════════════════════════════ */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -379,7 +378,7 @@ h4 {
   }
 }
 
-/* Clases de animación */
+/* ── Animation Classes ── */
 .animate-fadeIn {
   animation: fadeIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -409,14 +408,19 @@ h4 {
   animation: pulse-glow 2.5s ease-in-out infinite;
 }
 
-/* --- Developer Design Hover System --- */
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
 
-/* 1. Premium Card Hover (Lift + Depth) — adaptive per theme */
+/* ══════════════════════════════════════════════════════════════
+   HOVER DESIGN SYSTEM
+   ══════════════════════════════════════════════════════════════ */
+
+/* 1. Premium Card Hover (Lift + Depth) */
 .hover-card-premium {
   transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Light mode refinement */
 .hover-card-premium:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow:
@@ -425,7 +429,6 @@ h4 {
   border-color: hsla(var(--primary), 0.4);
 }
 
-/* Dark mode refinement */
 .dark .hover-card-premium:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow:
@@ -481,47 +484,48 @@ h4 {
   color: hsl(var(--foreground));
 }
 
-.animate-float {
-  animation: float 8s ease-in-out infinite;
-}
-
-/* Standard Responsive Grid for Cards */
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE CARD GRID  ·  Professional Breakpoint System
+   Based on Netflix / Disney+ / Apple TV+ layout patterns
+   ══════════════════════════════════════════════════════════════ */
 .responsive-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  /* 16px */
+  gap: 0.75rem;
 }
 
-@media (min-width: 640px) {
-
-  /* sm */
+/* ≥ 480px — still 2 cols, but more breathing room */
+@media (min-width: 480px) {
   .responsive-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
   }
 }
 
-@media (min-width: 768px) {
+/* sm ≥ 640px — 3 columns */
+@media (min-width: 640px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
 
-  /* md */
+/* md ≥ 768px — 4 columns */
+@media (min-width: 768px) {
   .responsive-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1.5rem;
-    /* 24px */
   }
 }
 
+/* lg ≥ 1024px — 5 columns */
 @media (min-width: 1024px) {
-
-  /* lg */
   .responsive-grid {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 
+/* xl ≥ 1280px — 6 columns */
 @media (min-width: 1280px) {
-
-  /* xl */
   .responsive-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }

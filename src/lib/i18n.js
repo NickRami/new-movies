@@ -32,7 +32,7 @@ const resources = {
         "match": "Match"
       },
       "search": {
-        "placeholder": "Search movies, genres or actors...",
+        "placeholder": "Search movies, series...",
         "noResults": "No movies found",
         "noResultsFor": "No results found for",
         "adjustSearch": "Try adjusting your search or category",
@@ -238,7 +238,7 @@ const resources = {
         "match": "Coincidencia"
       },
       "search": {
-        "placeholder": "Buscar películas, géneros o actores...",
+        "placeholder": "Buscar películas, series...",
         "noResults": "No se encontraron películas",
         "noResultsFor": "No se encontraron resultados para",
         "adjustSearch": "Intenta ajustar tu búsqueda o categoría",

@@ -80,7 +80,7 @@ export default function NavbarAdaptive() {
           <div className="flex items-center justify-between w-full">
 
             {/* --- LEFT SECTION: Logo & Desktop Links --- */}
-            <div className="flex items-center gap-10">
+            <div className="flex items-center gap-4 lg:gap-8 min-w-0 flex-shrink-0">
               <Link to="/" className="flex items-center gap-2 group">
                 <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-violet-600 shadow-lg shadow-primary/20 group-hover:shadow-primary/40 transition-all duration-300">
                   <Film className="w-5 h-5 text-white" />
@@ -91,13 +91,16 @@ export default function NavbarAdaptive() {
               </Link>
 
               {/* Desktop Navigation */}
-              <div className="hidden lg:flex items-center gap-1">
+              <div className={cn(
+                "hidden lg:flex items-center gap-0 lg:gap-1 transition-all duration-500 ease-in-out flex-shrink-0",
+                isSearchFocused ? "opacity-0 -translate-x-4 max-w-0 overflow-hidden" : "opacity-100 translate-x-0 w-auto max-w-[600px] visible"
+              )}>
                 {navLinks.map((link) => (
                   <Link
                     key={link.path}
                     to={link.path}
                     className={cn(
-                      "relative px-4 py-2 text-sm font-medium transition-colors duration-200",
+                      "relative px-2 xl:px-4 py-2 text-xs xl:text-sm font-medium transition-colors duration-200 whitespace-nowrap outline-none",
                       isActive(link.path)
                         ? "text-primary font-bold"
                         : "text-muted-foreground hover:text-foreground link-underline"
@@ -122,12 +125,15 @@ export default function NavbarAdaptive() {
             </div>
 
             {/* --- RIGHT SECTION: Search & Auth --- */}
-            <div className="flex items-center gap-3 md:gap-4">
+            <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0">
 
               {/* Desktop Search Bar */}
               <form onSubmit={handleSubmit} className="hidden md:block relative group">
-                <div className="relative flex items-center">
-                  <SearchIcon className="absolute left-3 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <div className="relative flex items-center justify-end">
+                  <SearchIcon className={cn(
+                    "absolute w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors z-10",
+                    isSearchFocused ? "left-4" : "left-3"
+                  )} />
                   <input
                     type="text"
                     value={term}
@@ -135,7 +141,12 @@ export default function NavbarAdaptive() {
                     onFocus={() => setIsSearchFocused(true)}
                     onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
                     placeholder={t('search.placeholder')}
-                    className="w-64 lg:w-72 xl:w-80 focus:w-[400px] bg-secondary/30 hover:bg-secondary/50 focus:bg-secondary/80 border border-transparent focus:border-primary/30 rounded-full py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-all duration-300"
+                    className={cn(
+                      "bg-secondary/30 hover:bg-secondary/50 focus:bg-secondary/80 border border-transparent focus:border-primary/30 rounded-full py-2 pr-4 text-xs xl:text-sm text-foreground placeholder:text-muted-foreground/50 outline-none transition-all duration-500 ease-in-out flex-shrink-0",
+                      isSearchFocused 
+                        ? "w-[30vw] md:w-[40vw] lg:w-[400px] xl:w-[600px] pl-10 shadow-inner bg-secondary/60" 
+                        : "w-32 md:w-40 lg:w-48 xl:w-64 pl-10"
+                    )}
                   />
                 </div>
 
@@ -145,7 +156,10 @@ export default function NavbarAdaptive() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 mt-3 w-full sm:w-[400px] bg-card/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden z-50 flex flex-col p-2"
+                      className={cn(
+                        "absolute top-full mt-3 w-[calc(100vw-2rem)] sm:w-[400px] md:w-[450px] bg-card/98 backdrop-blur-xl border border-border/60 rounded-2xl shadow-[0_30px_80px_-15px_rgba(0,0,0,0.7)] overflow-hidden z-50 flex flex-col p-2",
+                        "right-0 lg:left-auto lg:right-0 xl:left-0 xl:right-auto"
+                      )}
                     >
                       {searchLoading ? (
                         <div className="p-4 text-center text-sm text-muted-foreground">{t('search.searching')}</div>
@@ -221,10 +235,10 @@ export default function NavbarAdaptive() {
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-inner">
                       {(user.user_metadata?.username || user.email || 'U').charAt(0).toUpperCase()}
                     </div>
-                    <span className="hidden md:block text-sm font-medium text-foreground max-w-[100px] truncate">
+                    <span className="hidden xl:block text-sm font-medium text-foreground max-w-[100px] truncate">
                       {user.user_metadata?.username || user.email?.split('@')[0]}
                     </span>
-                    <ChevronDown className="w-3 h-3 text-muted-foreground hidden md:block" />
+                    <ChevronDown className="w-3 h-3 text-muted-foreground hidden xl:block" />
                   </button>
 
                   <AnimatePresence>

@@ -42,7 +42,7 @@ export default function LanguageSwitcher() {
           title={t('auth.changeLanguage')}
         >
           <Globe className="w-4 h-4" />
-          <span className="text-xs uppercase tracking-widest">{currentLang.code}</span>
+          <span className="hidden xl:inline-block text-xs uppercase tracking-widest">{currentLang.code}</span>
           <ChevronDown className="w-3 h-3 opacity-50" />
         </motion.button>
       </DropdownMenuTrigger>

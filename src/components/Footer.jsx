@@ -10,7 +10,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-24 overflow-hidden bg-background border-t border-border/50 pt-20 pb-10">
+    <footer className="relative mt-16 overflow-hidden bg-background border-t border-border/50 pt-16 md:pt-20 pb-8 md:pb-10">
       {/* Background Orbs */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute -bottom-1/2 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] dark:mix-blend-screen mix-blend-plus-lighter opacity-50" />
@@ -18,7 +18,7 @@ export default function Footer() {
       </div>
 
       <div className={cn(getContainerClasses(), "relative z-10")}>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12 md:mb-16">
           {/* Main Info */}
           <div className="lg:col-span-5 space-y-8">
             <Link to="/" className="flex items-center gap-3 group w-fit">
@@ -89,7 +89,7 @@ export default function Footer() {
 
         {/* Massive 2026 Typography */}
         <div className="w-full flex justify-center mb-8 border-t border-border/50 pt-12 overflow-hidden flex-col items-center">
-          <h2 className="text-[14vw] leading-[0.8] font-black text-transparent bg-clip-text bg-gradient-to-b from-foreground/15 to-transparent dark:from-foreground/10 tracking-tighter select-none pointer-events-none mb-2">
+          <h2 className="text-[clamp(3rem,10vw,10rem)] leading-[0.85] font-black text-transparent bg-clip-text bg-gradient-to-b from-foreground/12 to-transparent dark:from-foreground/8 tracking-tighter select-none pointer-events-none mb-2">
             CINESCOPE
           </h2>
         </div>
